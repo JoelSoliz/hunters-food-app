@@ -1,20 +1,23 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import Intl from 'intl';
+import 'intl/locale-data/jsonp/en';
+import { en, registerTranslation } from 'react-native-paper-dates';
+import { Provider as ReduxProvider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { Text } from 'react-native';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+import store, { persistor } from './src/redux/store';
+import App from './src/app/App';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+registerTranslation('en', en);
+
+const Root = () => {
+	return (
+		<ReduxProvider store={store}>
+			<PersistGate loading={<Text>Loading ...</Text>} persistor={persistor}>
+				<App />
+			</PersistGate>
+		</ReduxProvider>
+	);
+};
+
+export default Root;
