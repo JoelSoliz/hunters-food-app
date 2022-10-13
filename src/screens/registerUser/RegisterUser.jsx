@@ -1,6 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, ScrollView, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
-
 import RegisterForm from '../../components/auth/RegisterForm';
 
 const RegisterUser = () => {
@@ -8,10 +7,16 @@ const RegisterUser = () => {
 	const handleSubmit = (data) => console.log(data);
 
 	return (
-		<View style={styles.container}>
-			<Text style={{ ...styles.title, color: colors.primary }}>Registro de Usuario</Text>
-			<RegisterForm onSubmit={handleSubmit} />
-		</View>
+		<>
+			<ScrollView>
+				<View style={styles.container}>
+					<Text style={{ ...styles.title, color: colors.primary }}>
+						Registro de Usuario
+					</Text>
+					<RegisterForm onSubmit={handleSubmit} />
+				</View>
+			</ScrollView>
+		</>
 	);
 };
 

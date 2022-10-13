@@ -7,8 +7,10 @@ const theme = {
 		...DefaultTheme.colors,
 		primary: '#F97316',
 		accent: '#169CF9',
+		error: '#F43939',
 		text: '#ffffff',
 		placeholder: '#948F8F',
+		surface: '#282928',
 	},
 	roundness: 20,
 };
