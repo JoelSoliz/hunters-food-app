@@ -2,6 +2,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { StatusBar, StyleSheet, Text, View, Image } from 'react-native';
 import { Button, TextInput, useTheme } from 'react-native-paper';
 import {} from 'react-native-image-picker';
+import ImagePicker from '../../components/input/ImagePicker';
 
 const RegisterForm = () => {
 	const { colors } = useTheme();
@@ -13,7 +14,6 @@ const RegisterForm = () => {
 		<View style={styles.container}>
 			<Text style={{ ...styles.title, color: colors.primary }}>Registro de Negocio</Text>
 			<View style={styles.containerForm}>
-				<Text>Nombre: </Text>
 				<Controller
 					control={control}
 					name='name'
@@ -67,6 +67,11 @@ const RegisterForm = () => {
 							/>
 						</>
 					)}
+				/>
+				<Controller
+					control={control}
+					name='ImagePicker'
+					render={({ field: { onChange, value } }) => <ImagePicker></ImagePicker>}
 				/>
 
 				<View style={styles.buttonContainer}></View>
