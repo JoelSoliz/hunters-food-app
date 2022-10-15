@@ -1,17 +1,20 @@
 import { Controller, useForm } from 'react-hook-form';
-import { StatusBar, StyleSheet, Text, View, Image } from 'react-native';
+import { StatusBar, StyleSheet, Text, View, ScrollView } from 'react-native';
 import { Button, TextInput, useTheme } from 'react-native-paper';
-import {} from 'react-native-image-picker';
 import ImagePicker from '../../components/input/ImagePicker';
+import DropDown from 'react-native-paper-dropdown';
+import categories from '../../data/categories.json';
+import { useState } from 'react';
 
 const RegisterForm = () => {
+	const [visible, setVisible] = useState(false);
 	const { colors } = useTheme();
 	const { control, errors, formState, handleSubmit } = useForm({ mode: 'onChange' });
 
 	const submit = (data) => console.log(data);
 
 	return (
-		<View style={styles.container}>
+		<ScrollView style={styles.container}>
 			<Text style={{ ...styles.title, color: colors.primary }}>Registro de Negocio</Text>
 			<View style={styles.containerForm}>
 				<Controller
@@ -20,6 +23,7 @@ const RegisterForm = () => {
 					render={({ field: { onChange, value } }) => (
 						<TextInput
 							label='Nombre'
+							mode='outlined'
 							style={styles.input}
 							value={value}
 							onChangeText={(value) => onChange(value)}
@@ -33,6 +37,7 @@ const RegisterForm = () => {
 						<>
 							<TextInput
 								label='Descripción'
+								mode='outlined'
 								style={styles.input}
 								value={value}
 								onChangeText={(value) => onChange(value)}
@@ -47,6 +52,7 @@ const RegisterForm = () => {
 						<>
 							<TextInput
 								label='Ubicación'
+								mode='outlined'
 								style={styles.input}
 								value={value}
 								onChangeText={(value) => onChange(value)}
@@ -59,11 +65,16 @@ const RegisterForm = () => {
 					name='categoria'
 					render={({ field: { onChange, value } }) => (
 						<>
-							<TextInput
-								label='Categoría'
-								style={styles.input}
+							<DropDown
+								label='categoria'
+								mode='outlined'
 								value={value}
-								onChangeText={(value) => onChange(value)}
+								setValue={onChange}
+								list={categories}
+								visible={visible}
+								showDropDown={() => setVisible(true)}
+								onDismiss={() => setVisible(false)}
+								inputProps={{ style: styles.input }}
 							/>
 						</>
 					)}
@@ -87,7 +98,7 @@ const RegisterForm = () => {
 					</Button>
 				</View>
 			</View>
-		</View>
+		</ScrollView>
 	);
 };
 const styles = StyleSheet.create({
@@ -109,8 +120,7 @@ const styles = StyleSheet.create({
 		marginVertical: 5,
 		borderColor: 'red',
 		borderRadius: 20,
-		//color: '#ffffff',
-		backgroundColor: '#52525240',
+		backgroundColor: '#52525240 !important',
 	},
 	button: {
 		width: 200,

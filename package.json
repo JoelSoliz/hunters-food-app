@@ -31,6 +31,7 @@
     "react-native": "0.69.6",
     "react-native-paper": "^4.12.5",
     "react-native-paper-dates": "^0.9.2",
+    "react-native-paper-dropdown": "^1.0.7",
     "react-native-web": "^0.18.9",
     "react-redux": "^8.0.4",
     "redux-persist": "^6.0.0"
