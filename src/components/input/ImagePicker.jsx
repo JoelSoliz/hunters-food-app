@@ -2,11 +2,10 @@ import { useState } from 'react';
 import { View, Image, StyleSheet, Text } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Button } from 'react-native-paper';
+import logo from '../../../assets/picture.png';
 
 const ImagePickerComponent = () => {
-	const [image, setImage] = useState(
-		'https://cdn.icon-icons.com/icons2/564/PNG/512/Gallery_icon-icons.com_54177.png'
-	);
+	const [image, setImage] = useState(null);
 
 	const pickImage = async () => {
 		let result = await ImagePicker.launchImageLibraryAsync({
@@ -22,17 +21,18 @@ const ImagePickerComponent = () => {
 	};
 	return (
 		<View>
-			<Button
-				style={styles.button}
-				onPress={pickImage}
-				//mode='contained'
-			>
+			<Button style={styles.button} onPress={pickImage} mode='outlined'>
 				<Text style={styles.texto}>Seleccionar logo</Text>
 			</Button>
-			{image && <Image source={{ uri: image }} style={styles.logo} />}
+			{image ? (
+				<Image source={{ uri: image }} style={styles.logo} />
+			) : (
+				<Image source={logo} style={styles.logo} />
+			)}
 		</View>
 	);
 };
+
 const styles = StyleSheet.create({
 	button: {
 		marginVertical: 5,
