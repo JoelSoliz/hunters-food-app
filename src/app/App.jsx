@@ -1,7 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
-import RegisterForm from '../screens/registerBusiness/Form';
 
 import theme from './theme';
 
@@ -10,7 +9,7 @@ const App = () => {
 		<PaperProvider theme={theme}>
 			<View style={styles.container}>
 				<View style={styles.container}>
-					<RegisterForm></RegisterForm>
+					<Text>Open up App.js to start working on your app!</Text>
 				</View>
 				<StatusBar style='dark' />
 			</View>
