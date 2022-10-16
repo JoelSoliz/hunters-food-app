@@ -1,11 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Image, StyleSheet, Text } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Button } from 'react-native-paper';
 import logo from '../../../assets/picture.png';
 
-const ImagePickerComponent = () => {
-	const [image, setImage] = useState(null);
+const ImagePickerComponent = ({ onChange, value }) => {
+	useEffect(() => {
+		if (!value) {
+			onChange('default');
+		}
+	}, []);
 
 	const pickImage = async () => {
 		let result = await ImagePicker.launchImageLibraryAsync({
@@ -16,16 +20,17 @@ const ImagePickerComponent = () => {
 		});
 		console.log(result);
 		if (!result.cancelled) {
-			setImage(result.uri);
+			onChange(result.uri);
 		}
 	};
+
 	return (
 		<View>
 			<Button style={styles.button} onPress={pickImage} mode='outlined'>
 				<Text style={styles.texto}>Seleccionar logo</Text>
 			</Button>
-			{image ? (
-				<Image source={{ uri: image }} style={styles.logo} />
+			{value !== 'default' ? (
+				<Image source={{ uri: value }} style={styles.logo} />
 			) : (
 				<Image source={logo} style={styles.logo} />
 			)}
