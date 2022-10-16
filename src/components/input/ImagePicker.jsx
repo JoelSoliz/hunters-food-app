@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, StyleSheet, Text } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Button } from 'react-native-paper';
 
@@ -20,10 +20,37 @@ const ImagePickerComponent = () => {
 	};
 	return (
 		<View>
-			<Button onPress={pickImage}>pickImage</Button>
-			{image && <Image source={{ uri: image }} style={{ width: 150, height: 150 }} />}
+			<Button
+				style={styles.button}
+				onPress={pickImage}
+				//mode='contained'
+			>
+				<Text style={styles.texto}>Seleccionar logo</Text>
+			</Button>
+			{image && <Image source={{ uri: image }} style={styles.logo} />}
 		</View>
 	);
 };
+const styles = StyleSheet.create({
+	button: {
+		marginVertical: 5,
+		backgroundColor: '#52525240 !important',
+		borderColor: 'gray',
+		borderWidth: 1.2,
+		borderRadius: 15,
+		marginVertical: 10,
+	},
+	texto: {
+		color: 'gray',
+	},
+
+	logo: {
+		width: 150,
+		height: 150,
+		borderRadius: 20,
+		marginHorizontal: 70,
+		marginVertical: 5,
+	},
+});
 
 export default ImagePickerComponent;

@@ -1,4 +1,12 @@
 [
 	{ "label": "Repostería", "value": "1" },
-	{ "label": "Restaurante", "value": "2" }
+	{ "label": "Cafetería", "value": "2" },
+	{ "label": "Heladería", "value": "3" },
+	{ "label": "Restaurante Familiar", "value": "4" },
+	{ "label": "Restaurante Gourmet", "value": "5" },
+	{ "label": "Restaurante de Comida Rápida", "value": "6" },
+	{ "label": "Restaurante Temático", "value": "7" },
+	{ "label": "Restaurante Buffet ", "value": "8" },
+	{ "label": "Restaurante de Comida Típica", "value": "9" },
+	{ "label": "Restaurante Vegano", "value": "10" }
 ]

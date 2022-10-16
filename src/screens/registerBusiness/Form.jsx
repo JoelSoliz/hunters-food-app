@@ -60,13 +60,23 @@ const RegisterForm = () => {
 						</>
 					)}
 				/>
+
+				<Controller
+					control={control}
+					name='ImagePicker'
+					render={({ field: { onChange, value } }) => (
+						<ImagePicker>
+							<View mode='outlined' style={styles.input} />
+						</ImagePicker>
+					)}
+				/>
 				<Controller
 					control={control}
 					name='categoria'
 					render={({ field: { onChange, value } }) => (
 						<>
 							<DropDown
-								label='categoria'
+								label='Categoría'
 								mode='outlined'
 								value={value}
 								setValue={onChange}
@@ -79,12 +89,6 @@ const RegisterForm = () => {
 						</>
 					)}
 				/>
-				<Controller
-					control={control}
-					name='ImagePicker'
-					render={({ field: { onChange, value } }) => <ImagePicker></ImagePicker>}
-				/>
-
 				<View style={styles.buttonContainer}></View>
 				<StatusBar style='auto' />
 				<View style={styles.buttonContainer}>
@@ -106,12 +110,12 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		fontSize: 30,
 		fontWeight: 'bold',
-		marginBottom: 40,
+		marginBottom: 15,
 	},
 	container: {
 		flex: 1,
 		marginHorizontal: 30,
-		marginVertical: 80,
+		marginVertical: 70,
 	},
 	containerForm: {
 		flex: 1,
@@ -127,21 +131,9 @@ const styles = StyleSheet.create({
 		borderRadius: 45,
 	},
 	buttonContainer: {
-		marginTop: 150,
+		marginVertical: 5,
 		display: 'flex',
 		alignItems: 'center',
-	},
-	logo: {
-		justifyContent: 'center',
-		alignItems: 'center',
-		width: 200,
-		height: 150,
-	},
-	image: {
-		top: '-8%',
-		left: '-23%',
-		width: 500,
-		height: 320,
 	},
 });
 
