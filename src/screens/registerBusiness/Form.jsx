@@ -1,5 +1,5 @@
 import { Controller, useForm } from 'react-hook-form';
-import { StatusBar, StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StatusBar, StyleSheet, Text, View, ScrollView, Image } from 'react-native';
 import { Button, TextInput, useTheme } from 'react-native-paper';
 import ImagePicker from '../../components/input/ImagePicker';
 import DropDown from 'react-native-paper-dropdown';
@@ -60,16 +60,6 @@ const RegisterForm = () => {
 						</>
 					)}
 				/>
-
-				<Controller
-					control={control}
-					name='ImagePicker'
-					render={({ field: { onChange, value } }) => (
-						<ImagePicker>
-							<View mode='outlined' style={styles.input} />
-						</ImagePicker>
-					)}
-				/>
 				<Controller
 					control={control}
 					name='categoria'
@@ -87,6 +77,15 @@ const RegisterForm = () => {
 								inputProps={{ style: styles.input }}
 							/>
 						</>
+					)}
+				/>
+				<Controller
+					control={control}
+					name='ImagePicker'
+					render={({ field: { onChange, value } }) => (
+						<ImagePicker>
+							<View mode='outlined' style={styles.input} />
+						</ImagePicker>
 					)}
 				/>
 				<View style={styles.buttonContainer}></View>

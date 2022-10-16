@@ -4,7 +4,9 @@ import * as ImagePicker from 'expo-image-picker';
 import { Button } from 'react-native-paper';
 
 const ImagePickerComponent = () => {
-	const [image, setImage] = useState(null);
+	const [image, setImage] = useState(
+		'https://cdn.icon-icons.com/icons2/564/PNG/512/Gallery_icon-icons.com_54177.png'
+	);
 
 	const pickImage = async () => {
 		let result = await ImagePicker.launchImageLibraryAsync({
