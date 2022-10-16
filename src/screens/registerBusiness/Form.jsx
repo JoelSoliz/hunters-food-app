@@ -1,15 +1,26 @@
 import { Controller, useForm } from 'react-hook-form';
 import { StatusBar, StyleSheet, Text, View, ScrollView, Image } from 'react-native';
-import { Button, TextInput, useTheme } from 'react-native-paper';
+import { Button, TextInput, useTheme, HelperText } from 'react-native-paper';
 import ImagePicker from '../../components/input/ImagePicker';
 import DropDown from 'react-native-paper-dropdown';
 import categories from '../../data/categories.json';
 import { useState } from 'react';
 
+const ERROR_MESSAGES = {
+	link: 'Url inválido',
+	maxLength: 'La longitud máxima es',
+	minLength: 'La longitud mínima es',
+	required: 'Este campo es requerido.',
+};
+
 const RegisterForm = () => {
 	const [visible, setVisible] = useState(false);
 	const { colors } = useTheme();
-	const { control, errors, formState, handleSubmit } = useForm({ mode: 'onChange' });
+	const {
+		control,
+		formState: { errors, isValid },
+		handleSubmit,
+	} = useForm({ mode: 'onChange' });
 
 	const submit = (data) => console.log(data);
 
@@ -20,19 +31,32 @@ const RegisterForm = () => {
 				<Controller
 					control={control}
 					name='name'
+					rules={{
+						maxLength: { message: `${ERROR_MESSAGES.maxLength} 50.`, value: 50 },
+						minLength: { message: `${ERROR_MESSAGES.minLength} 3.`, value: 3 },
+						required: { message: ERROR_MESSAGES.required, value: true },
+					}}
 					render={({ field: { onChange, value } }) => (
-						<TextInput
-							label='Nombre'
-							mode='outlined'
-							style={styles.input}
-							value={value}
-							onChangeText={(value) => onChange(value)}
-						/>
+						<>
+							<TextInput
+								label='Nombre'
+								mode='outlined'
+								style={styles.input}
+								value={value}
+								onChangeText={(value) => onChange(value)}
+							/>
+							<HelperText type='error'>{errors.name?.message}</HelperText>
+						</>
 					)}
 				/>
 				<Controller
 					control={control}
-					name='descripcion'
+					name='description'
+					rules={{
+						maxLength: { message: `${ERROR_MESSAGES.maxLength} 256.`, value: 256 },
+						minLength: { message: `${ERROR_MESSAGES.minLength} 10.`, value: 10 },
+						required: { message: ERROR_MESSAGES.required, value: true },
+					}}
 					render={({ field: { onChange, value } }) => (
 						<>
 							<TextInput
@@ -42,12 +66,20 @@ const RegisterForm = () => {
 								value={value}
 								onChangeText={(value) => onChange(value)}
 							/>
+							<HelperText type='error'>{errors.description?.message}</HelperText>
 						</>
 					)}
 				/>
 				<Controller
 					control={control}
-					name='ubicacion'
+					name='location'
+					rules={{
+						pattern: {
+							message: ERROR_MESSAGES.link,
+							value: /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/,
+						},
+						required: { message: ERROR_MESSAGES.required, value: true },
+					}}
 					render={({ field: { onChange, value } }) => (
 						<>
 							<TextInput
@@ -57,12 +89,16 @@ const RegisterForm = () => {
 								value={value}
 								onChangeText={(value) => onChange(value)}
 							/>
+							<HelperText type='error'>{errors.location?.message}</HelperText>
 						</>
 					)}
 				/>
 				<Controller
 					control={control}
-					name='categoria'
+					name='category'
+					rules={{
+						required: { message: ERROR_MESSAGES.required, value: true },
+					}}
 					render={({ field: { onChange, value } }) => (
 						<>
 							<DropDown
@@ -76,16 +112,23 @@ const RegisterForm = () => {
 								onDismiss={() => setVisible(false)}
 								inputProps={{ style: styles.input }}
 							/>
+							<HelperText type='error'>{errors.category?.message}</HelperText>
 						</>
 					)}
 				/>
 				<Controller
 					control={control}
-					name='ImagePicker'
+					name='logo'
+					rules={{
+						required: { message: ERROR_MESSAGES.required, value: true },
+					}}
 					render={({ field: { onChange, value } }) => (
-						<ImagePicker>
-							<View mode='outlined' style={styles.input} />
-						</ImagePicker>
+						<>
+							<ImagePicker onChange={onChange} value={value}>
+								<View mode='outlined' style={styles.input} />
+							</ImagePicker>
+							<HelperText type='error'>{errors.logo?.message}</HelperText>
+						</>
 					)}
 				/>
 				<View style={styles.buttonContainer}></View>
@@ -95,7 +138,7 @@ const RegisterForm = () => {
 						style={styles.button}
 						mode='contained'
 						onPress={handleSubmit(submit)}
-						disabled={!formState.isValid}
+						disabled={!isValid}
 					>
 						Registrar
 					</Button>
