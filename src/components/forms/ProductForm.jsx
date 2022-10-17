@@ -4,7 +4,7 @@ import DropDown from 'react-native-paper-dropdown';
 import productCategory from '../../data/productCategory.json';
 import { useState } from 'react';
 import { StyleSheet, View, StatusBar, ScrollView } from 'react-native';
-
+import TimePicker from '../../components/input/TimePicker';
 import { Button, TextInput, HelperText } from 'react-native-paper';
 
 const ERROR_MESSAGES = {
@@ -78,6 +78,7 @@ const ProductForm = ({ onSubmit }) => {
 						<>
 							<TextInput
 								label='Precio'
+								keyboardType='numeric'
 								mode='outlined'
 								style={styles.input}
 								value={value}
@@ -91,14 +92,15 @@ const ProductForm = ({ onSubmit }) => {
 					control={control}
 					name='discount'
 					rules={{
-						maxDiscount: { message: `${ERROR_MESSAGES.maxDiscount} 100%.`, value: 100 },
-						minDiscount: { message: `${ERROR_MESSAGES.minDiscount} 1%.`, value: 1 },
 						required: { message: ERROR_MESSAGES.required, value: true },
+						validate: (value) =>
+							(value >= 0 && value < 100) || 'El porcentaje debe ser entre 1%-100 %',
 					}}
 					render={({ field: { onChange, value } }) => (
 						<>
 							<TextInput
 								label='Porcentaje de descuento'
+								keyboardType='numeric'
 								mode='outlined'
 								style={styles.input}
 								value={value}
@@ -119,12 +121,38 @@ const ProductForm = ({ onSubmit }) => {
 					render={({ field: { onChange, value } }) => (
 						<>
 							<TextInput
+								//disabled
 								label='Horario de descuento'
 								mode='outlined'
 								style={styles.input}
-								value={value}
-								onChangeText={(value) => onChange(value)}
+								value={`${value?.hours || '00'}:${value?.minutes || '00'}`}
+								right={<TimePicker onChange={onChange} value={value} />}
 							/>
+
+							<HelperText type='error'>
+								{errors.discount_schedule?.message}
+							</HelperText>
+						</>
+					)}
+				/>
+				<Controller
+					control={control}
+					name='discount_schedule'
+					rules={{
+						discountSchedule: { message: `${ERROR_MESSAGES.minHour} .`, value: 1 },
+						required: { message: ERROR_MESSAGES.required, value: true },
+					}}
+					render={({ field: { onChange, value } }) => (
+						<>
+							<TextInput
+								//disabled
+								label='Horario de descuento'
+								mode='outlined'
+								style={styles.input}
+								value={`${value?.hours || '00'}:${value?.minutes || '00'}`}
+								right={<TimePicker onChange={onChange} value={value} />}
+							/>
+
 							<HelperText type='error'>
 								{errors.discount_schedule?.message}
 							</HelperText>
