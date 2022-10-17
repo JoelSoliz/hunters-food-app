@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
 	},
 	buttonContainer: {
 		marginBottom: 20,
-		marginTop: 100,
+		marginTop: 50,
 		display: 'flex',
 		alignItems: 'center',
 	},

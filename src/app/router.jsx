@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
+import { useTheme } from 'react-native-paper';
 
 import SignIn from '../screens/login/Login';
 import SignUp from '../screens/registerUser/RegisterUser';
@@ -8,13 +9,15 @@ import Home from '../screens/home/Home';
 const Stack = createNativeStackNavigator();
 
 const Router = () => {
+	const theme = useTheme();
+
 	return (
-		<NavigationContainer>
+		<NavigationContainer theme={theme}>
 			<Stack.Navigator
-				initialRouteName='login'
+				initialRouteName='home'
 				screenOptions={{
 					headerStyle: {
-						backgroundColor: '#F97316',
+						backgroundColor: theme.colors.primary,
 					},
 					headerTintColor: 'black',
 					headerTitleStyle: {
