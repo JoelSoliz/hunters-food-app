@@ -10,7 +10,7 @@ const ERROR_MESSAGES = {
 	required: 'Este campo es requerido.',
 };
 
-const RegisterForm = ({ onSubmit }) => {
+const RegisterForm = ({ loading, onSubmit }) => {
 	const {
 		control,
 		formState: { errors, isValid },
@@ -146,7 +146,7 @@ const RegisterForm = ({ onSubmit }) => {
 					minLength: { message: `${ERROR_MESSAGES.minLength} 6.`, value: 6 },
 					required: { message: ERROR_MESSAGES.required, value: true },
 					validate: (value) =>
-						value !== watch('password') && 'La contraseña no coincide.',
+						value === watch('password') || 'La contraseña no coincide.',
 				}}
 				render={({ field: { onBlur, onChange, value } }) => (
 					<>
@@ -165,14 +165,18 @@ const RegisterForm = ({ onSubmit }) => {
 				)}
 			/>
 			<View style={styles.buttonContainer}>
-				<Button
-					style={styles.button}
-					mode='contained'
-					onPress={handleSubmit(onSubmit)}
-					disabled={!isValid}
-				>
-					Crear cuenta
-				</Button>
+				{loading ? (
+					<HelperText type='info'>Loading</HelperText>
+				) : (
+					<Button
+						style={styles.button}
+						mode='contained'
+						onPress={handleSubmit(onSubmit)}
+						disabled={!isValid}
+					>
+						Crear cuenta
+					</Button>
+				)}
 			</View>
 		</View>
 	);
