@@ -6,6 +6,7 @@ export const getUserInfoAsync = (token) => {
 		headers: {
 			Authorization: `Bearer ${token}`,
 		},
+		mode: 'cors',
 	})
 		.then((response) => response.json())
 		.catch((e) => {
@@ -18,6 +19,7 @@ export const loginAsync = (user) => {
 	const apiURL = `${HOST}/auth/login`;
 	return fetch(apiURL, {
 		method: 'POST',
+		mode: 'cors',
 		headers: {
 			'Content-type': 'application/json',
 		},
@@ -36,6 +38,7 @@ export const registerUserAsync = (user) => {
 
 	return fetch(apiURL, {
 		method: 'POST',
+		mode: 'cors',
 		headers: {
 			'Content-type': 'application/json',
 		},

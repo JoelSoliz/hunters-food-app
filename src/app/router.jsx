@@ -5,6 +5,7 @@ import { useTheme } from 'react-native-paper';
 import SignIn from '../screens/login/Login';
 import SignUp from '../screens/registerUser/RegisterUser';
 import Home from '../screens/home/Home';
+import RegisterBusiness from '../screens/registerBusiness/Form';
 
 const Stack = createNativeStackNavigator();
 
@@ -37,6 +38,11 @@ const Router = () => {
 					options={{ title: 'Registrar Usuario' }}
 				/>
 				<Stack.Screen name='home' component={Home} options={{ title: 'Home' }} />
+				<Stack.Screen
+					name='registerBusiness'
+					component={RegisterBusiness}
+					options={{ title: 'Registrar Negocio' }}
+				/>
 			</Stack.Navigator>
 		</NavigationContainer>
 	);

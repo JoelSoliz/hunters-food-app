@@ -1,10 +1,13 @@
+import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { StatusBar, StyleSheet, Text, View, ScrollView, Image } from 'react-native';
-import { Button, TextInput, useTheme, HelperText } from 'react-native-paper';
-import ImagePicker from '../../components/input/ImagePicker';
+import { StyleSheet, View, ScrollView } from 'react-native';
+import { Button, TextInput, HelperText, Snackbar } from 'react-native-paper';
 import DropDown from 'react-native-paper-dropdown';
+import { useSelector, useDispatch } from 'react-redux';
+
+import ImagePicker from '../../components/input/ImagePicker';
 import categories from '../../data/categories.json';
-import { useState } from 'react';
+import { businessSelector, registerBusiness } from '../../redux/slices/business';
 
 const ERROR_MESSAGES = {
 	link: 'Url inválido',
@@ -13,20 +16,27 @@ const ERROR_MESSAGES = {
 	required: 'Este campo es requerido.',
 };
 
-const RegisterForm = () => {
+const RegisterForm = ({ navigation }) => {
+	const [visibleS, setVisibleS] = useState(true);
 	const [visible, setVisible] = useState(false);
-	const { colors } = useTheme();
 	const {
 		control,
 		formState: { errors, isValid },
 		handleSubmit,
 	} = useForm({ mode: 'onChange' });
+	const { loading } = useSelector(businessSelector);
+	const dispatch = useDispatch();
 
-	const submit = (data) => console.log(data);
+	useEffect(() => {
+		if (loading === 'succeeded') {
+			setVisibleS(true);
+		}
+	}, [loading]);
+
+	const onSubmit = (data) => dispatch(registerBusiness(data));
 
 	return (
 		<ScrollView style={styles.container}>
-			<Text style={{ ...styles.title, color: colors.primary }}>Registro de Negocio</Text>
 			<View style={styles.containerForm}>
 				<Controller
 					control={control}
@@ -51,7 +61,7 @@ const RegisterForm = () => {
 				/>
 				<Controller
 					control={control}
-					name='description'
+					name='descriptionn'
 					rules={{
 						maxLength: { message: `${ERROR_MESSAGES.maxLength} 256.`, value: 256 },
 						minLength: { message: `${ERROR_MESSAGES.minLength} 10.`, value: 10 },
@@ -66,7 +76,7 @@ const RegisterForm = () => {
 								value={value}
 								onChangeText={(value) => onChange(value)}
 							/>
-							<HelperText type='error'>{errors.description?.message}</HelperText>
+							<HelperText type='error'>{errors.descriptionn?.message}</HelperText>
 						</>
 					)}
 				/>
@@ -131,19 +141,34 @@ const RegisterForm = () => {
 						</>
 					)}
 				/>
-				<View style={styles.buttonContainer}></View>
-				<StatusBar style='auto' />
 				<View style={styles.buttonContainer}>
-					<Button
-						style={styles.button}
-						mode='contained'
-						onPress={handleSubmit(submit)}
-						disabled={!isValid}
-					>
-						Registrar
-					</Button>
+					{loading === 'pending' ? (
+						<HelperText type='info'>Loading...</HelperText>
+					) : (
+						<Button
+							style={styles.button}
+							mode='contained'
+							onPress={handleSubmit(onSubmit)}
+							disabled={!isValid}
+						>
+							Registrar
+						</Button>
+					)}
 				</View>
 			</View>
+			<Snackbar
+				visible={visibleS}
+				onDismiss={() => setVisibleS(false)}
+				duration={4000}
+				action={{
+					label: 'Ir a Home',
+					onPress: () => {
+						navigation.navigate('home');
+					},
+				}}
+			>
+				Negocio creado correctamente.
+			</Snackbar>
 		</ScrollView>
 	);
 };
@@ -155,9 +180,9 @@ const styles = StyleSheet.create({
 		marginBottom: 15,
 	},
 	container: {
-		flex: 1,
-		marginHorizontal: 30,
-		marginVertical: 70,
+		backgroundColor: '#282928',
+		paddingHorizontal: 30,
+		paddingTop: 40,
 	},
 	containerForm: {
 		flex: 1,
