@@ -4,6 +4,7 @@ import { View, StyleSheet } from 'react-native';
 import { Button, HelperText, TextInput } from 'react-native-paper';
 
 const ERROR_MESSAGES = {
+	email: 'Correo electrónico inválido.',
 	required: 'Este campo es requerido.',
 };
 
@@ -20,7 +21,13 @@ const LoginForm = ({ onSubmit }) => {
 			<Controller
 				control={control}
 				name='email'
-				rules={{ required: { message: ERROR_MESSAGES.required, value: true } }}
+				rules={{
+					pattern: {
+						message: ERROR_MESSAGES.email,
+						value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+					},
+					required: { message: ERROR_MESSAGES.required, value: true },
+				}}
 				render={({ field: { onBlur, onChange, value } }) => (
 					<>
 						<TextInput
