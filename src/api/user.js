@@ -1,5 +1,5 @@
 export const registerUserAsync = (user) => {
-	const apiURL = 'http://192.168.1.8:8000/auth/signup';
+	const apiURL = 'https://blooming-inlet-07928.herokuapp.com/auth/signup';
 	user['date_of_birth'] = user['birthday'];
 
 	return fetch(apiURL, {
