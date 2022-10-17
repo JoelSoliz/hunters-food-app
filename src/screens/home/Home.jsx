@@ -3,8 +3,9 @@ import { useTheme } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 
 import { sessionSelector } from '../../redux/slices/session';
+import ListProducts from './ListProducts';
 
-const Home = () => {
+const Home = ({ navigation }) => {
 	const { colors } = useTheme();
 	const { isAuthenticate, user } = useSelector(sessionSelector);
 
@@ -22,6 +23,7 @@ const Home = () => {
 					<Text style={{ ...styles.navigate, color: colors.accent }}>Iniciar sesión</Text>
 				</Pressable>
 			)}
+			<ListProducts />
 		</View>
 	);
 };
