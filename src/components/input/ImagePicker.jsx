@@ -5,11 +5,12 @@ import { Button } from 'react-native-paper';
 import logo from '../../../assets/picture.png';
 
 const ImagePickerComponent = ({ onChange, value }) => {
-	useEffect(() => {
-		if (!value) {
-			onChange('default');
-		}
-	}, []);
+	console.log(value);
+	// useEffect(() => {
+	// 	if (!value) {
+	// 		onChange('default');
+	// 	}
+	// }, []);
 
 	const pickImage = async () => {
 		let result = await ImagePicker.launchImageLibraryAsync({
@@ -27,9 +28,9 @@ const ImagePickerComponent = ({ onChange, value }) => {
 	return (
 		<View>
 			<Button style={styles.button} onPress={pickImage} mode='outlined'>
-				<Text style={styles.texto}>Seleccionar logo</Text>
+				<Text style={styles.texto}>Seleccionar imagen</Text>
 			</Button>
-			{value !== 'default' ? (
+			{value ? (
 				<Image source={{ uri: value }} style={styles.logo} />
 			) : (
 				<Image source={logo} style={styles.logo} />
