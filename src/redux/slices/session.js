@@ -9,8 +9,10 @@ export const login = createAsyncThunk('login/loginAsync', async (userLogin) => {
 		console.error(detail);
 		throw Error(detail);
 	}
-	AsyncStorage.setItem('token', access_token);
+
+	await AsyncStorage.setItem('token', access_token);
 	const user = await getUserInfoAsync(access_token);
+
 	return user;
 });
 

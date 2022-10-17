@@ -15,14 +15,13 @@ const Login = ({ navigation }) => {
 		if (loading === 'succeeded' && isAuthenticate) {
 			navigation.navigate('home');
 		}
-		console.log(loading);
 	}, [loading]);
 
 	const handleSubmit = (data) => dispatch(login(data));
 
 	return (
 		<View style={styles.container}>
-			<LoginForm onSubmit={handleSubmit} />
+			<LoginForm loading={loading === 'pending'} onSubmit={handleSubmit} />
 			<Pressable
 				onPress={() => {
 					navigation.navigate('signUp');
