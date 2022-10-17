@@ -150,7 +150,11 @@ const ProductForm = ({ onSubmit }) => {
 								mode='outlined'
 								style={styles.input}
 								value={`${value?.hours || '00'}:${value?.minutes || '00'}`}
-								right={<TimePicker onChange={onChange} value={value} />}
+								right={
+									<TextInput.Affix
+										text={<TimePicker onChange={onChange} value={value} />}
+									/>
+								}
 							/>
 
 							<HelperText type='error'>
