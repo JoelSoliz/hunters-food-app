@@ -166,7 +166,7 @@ const RegisterForm = ({ loading, onSubmit }) => {
 			/>
 			<View style={styles.buttonContainer}>
 				{loading ? (
-					<HelperText type='info'>Loading</HelperText>
+					<HelperText type='info'>Loading...</HelperText>
 				) : (
 					<Button
 						style={styles.button}

@@ -5,13 +5,6 @@ import { Button } from 'react-native-paper';
 import logo from '../../../assets/picture.png';
 
 const ImagePickerComponent = ({ onChange, value }) => {
-	console.log(value);
-	// useEffect(() => {
-	// 	if (!value) {
-	// 		onChange('default');
-	// 	}
-	// }, []);
-
 	const pickImage = async () => {
 		let result = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -19,7 +12,7 @@ const ImagePickerComponent = ({ onChange, value }) => {
 			aspect: [4, 3],
 			quality: 1,
 		});
-		console.log(result);
+
 		if (!result.cancelled) {
 			onChange(result.uri);
 		}
@@ -30,11 +23,13 @@ const ImagePickerComponent = ({ onChange, value }) => {
 			<Button style={styles.button} onPress={pickImage} mode='outlined'>
 				<Text style={styles.texto}>Seleccionar imagen</Text>
 			</Button>
-			{value ? (
-				<Image source={{ uri: value }} style={styles.logo} />
-			) : (
-				<Image source={logo} style={styles.logo} />
-			)}
+			<View style={styles.container}>
+				{value ? (
+					<Image source={{ uri: value }} style={styles.logo} />
+				) : (
+					<Image source={logo} style={styles.logo} />
+				)}
+			</View>
 		</View>
 	);
 };
@@ -51,13 +46,14 @@ const styles = StyleSheet.create({
 	texto: {
 		color: 'gray',
 	},
-
 	logo: {
 		width: 150,
 		height: 150,
 		borderRadius: 20,
-		marginHorizontal: 70,
-		marginVertical: 5,
+	},
+	container: {
+		flex: 1,
+		alignItems: 'center',
 	},
 });
 

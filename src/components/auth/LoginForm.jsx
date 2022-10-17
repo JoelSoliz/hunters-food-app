@@ -8,7 +8,7 @@ const ERROR_MESSAGES = {
 	required: 'Este campo es requerido.',
 };
 
-const LoginForm = ({ onSubmit }) => {
+const LoginForm = ({ loading, onSubmit }) => {
 	const [showPassword, setShowPassword] = useState(false);
 	const {
 		control,
@@ -78,14 +78,18 @@ const LoginForm = ({ onSubmit }) => {
 				)}
 			/>
 			<View style={styles.buttonContainer}>
-				<Button
-					mode='contained'
-					onPress={handleSubmit(onSubmit)}
-					disabled={!isValid}
-					style={styles.button}
-				>
-					Login
-				</Button>
+				{loading ? (
+					<HelperText type='info'>Loading...</HelperText>
+				) : (
+					<Button
+						mode='contained'
+						onPress={handleSubmit(onSubmit)}
+						disabled={!isValid}
+						style={styles.button}
+					>
+						Login
+					</Button>
+				)}
 			</View>
 		</View>
 	);

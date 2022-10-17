@@ -26,8 +26,6 @@ const ProductForm = ({ onSubmit }) => {
 		watch,
 	} = useForm({ mode: 'onChange' });
 
-	console.log(errors);
-
 	return (
 		<ScrollView style={styles.container}>
 			<View style={styles.containerForm}>
