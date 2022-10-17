@@ -1,5 +1,18 @@
+import { AsyncStorage } from 'react-native';
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
-import { registerUserAsync } from '../../api/user';
+import { getUserInfoAsync, loginAsync, registerUserAsync } from '../../api/user';
+
+export const login = createAsyncThunk('login/loginAsync', async (userLogin) => {
+	const result = await loginAsync(userLogin);
+	const { access_token, detail } = result;
+	if (!access_token) {
+		console.error(detail);
+		throw Error(detail);
+	}
+	AsyncStorage.setItem('token', access_token);
+	const user = await getUserInfoAsync(access_token);
+	return user;
+});
 
 export const registerUser = createAsyncThunk('registerUser/registerUserAsync', async (user) => {
 	const result = await registerUserAsync(user);
@@ -35,10 +48,23 @@ export const sessionSlice = createSlice({
 		builder.addCase(registerUser.pending, (state, _) => {
 			state.loading = 'pending';
 		});
-		builder.addCase(registerUser.fulfilled, (state, { payload }) => {
+		builder.addCase(registerUser.fulfilled, (state, _) => {
 			state.loading = 'succeeded';
 		});
 		builder.addCase(registerUser.rejected, (state, _) => {
+			state.isAuthenticate = false;
+			state.loading = 'failed';
+		});
+
+		builder.addCase(login.pending, (state, _) => {
+			state.loading = 'pending';
+		});
+		builder.addCase(login.fulfilled, (state, { payload }) => {
+			state.loading = 'succeeded';
+			state.user = payload;
+			state.isAuthenticate = true;
+		});
+		builder.addCase(login.rejected, (state, _) => {
 			state.isAuthenticate = false;
 			state.loading = 'failed';
 		});
