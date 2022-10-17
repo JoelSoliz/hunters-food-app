@@ -23,7 +23,10 @@ const ProductForm = ({ onSubmit }) => {
 		control,
 		formState: { errors, isValid },
 		handleSubmit,
+		watch,
 	} = useForm({ mode: 'onChange' });
+
+	console.log(errors);
 
 	return (
 		<ScrollView style={styles.container}>
@@ -110,43 +113,26 @@ const ProductForm = ({ onSubmit }) => {
 						</>
 					)}
 				/>
-
 				<Controller
 					control={control}
-					name='discount_schedule'
+					name='discount_schedule_end'
 					rules={{
-						discountSchedule: { message: `${ERROR_MESSAGES.minHour} .`, value: 1 },
+						validate: (value) => {
+							a = new Date(0);
+							a.setHours(value?.hours || 0);
+							a.setMinutes(value?.minutes || 0);
+							b = new Date(0);
+							b.setHours(watch('discount_schedule_start')?.hours || 0);
+							b.setMinutes(watch('discount_schedule_start')?.minutes || 0);
+							return a > b || 'La hora final debe ser después de la hora de inicio';
+						},
 						required: { message: ERROR_MESSAGES.required, value: true },
 					}}
 					render={({ field: { onChange, value } }) => (
 						<>
 							<TextInput
-								//disabled
-								label='Horario de descuento'
-								mode='outlined'
-								style={styles.input}
-								value={`${value?.hours || '00'}:${value?.minutes || '00'}`}
-								right={<TimePicker onChange={onChange} value={value} />}
-							/>
-
-							<HelperText type='error'>
-								{errors.discount_schedule?.message}
-							</HelperText>
-						</>
-					)}
-				/>
-				<Controller
-					control={control}
-					name='discount_schedule'
-					rules={{
-						discountSchedule: { message: `${ERROR_MESSAGES.minHour} .`, value: 1 },
-						required: { message: ERROR_MESSAGES.required, value: true },
-					}}
-					render={({ field: { onChange, value } }) => (
-						<>
-							<TextInput
-								//disabled
-								label='Horario de descuento'
+								editable={false}
+								label='Fin de descuento'
 								mode='outlined'
 								style={styles.input}
 								value={`${value?.hours || '00'}:${value?.minutes || '00'}`}
@@ -158,7 +144,47 @@ const ProductForm = ({ onSubmit }) => {
 							/>
 
 							<HelperText type='error'>
-								{errors.discount_schedule?.message}
+								{errors.discount_schedule_end?.message}
+							</HelperText>
+						</>
+					)}
+				/>
+				<Controller
+					control={control}
+					name='discount_schedule_start'
+					rules={{
+						validate: (value) => {
+							a = new Date(0);
+							a.setHours(value?.hours || 0);
+							a.setMinutes(value?.minutes || 0);
+							b = new Date(0);
+							b.setHours(watch('discount_schedule_end')?.hours || 0);
+							b.setMinutes(watch('discount_schedule_end')?.minutes || 0);
+
+							return (
+								a < b || 'La hora de inicio debe ser antes que la hora del final'
+							);
+						},
+
+						required: { message: ERROR_MESSAGES.required, value: true },
+					}}
+					render={({ field: { onChange, value } }) => (
+						<>
+							<TextInput
+								editable={false}
+								label='Inicio de descuento'
+								mode='outlined'
+								style={styles.input}
+								value={`${value?.hours || '00'}:${value?.minutes || '00'}`}
+								right={
+									<TextInput.Affix
+										text={<TimePicker onChange={onChange} value={value} />}
+									/>
+								}
+							/>
+
+							<HelperText type='error'>
+								{errors.discount_schedule_start?.message}
 							</HelperText>
 						</>
 					)}
@@ -166,15 +192,12 @@ const ProductForm = ({ onSubmit }) => {
 				<Controller
 					control={control}
 					name='amount'
-					rules={{
-						discountSchedule: { message: `${ERROR_MESSAGES.minHour} .`, value: 1 },
-						required: { message: ERROR_MESSAGES.required, value: true },
-					}}
 					render={({ field: { onChange, value } }) => (
 						<>
 							<TextInput
 								label='Cantidad de elementos disponibles'
 								mode='outlined'
+								keyboardType='numeric'
 								style={styles.input}
 								value={value}
 								onChangeText={(value) => onChange(value)}
