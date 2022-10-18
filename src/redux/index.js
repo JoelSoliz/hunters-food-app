@@ -4,6 +4,7 @@ import { persistReducer } from 'redux-persist';
 
 import businessReducer from './slices/business';
 import sessionReducer from './slices/session';
+import productsReducer from './slices/product';
 
 const sessionPersistConfig = {
 	key: 'session',
@@ -16,8 +17,9 @@ const businessPersistConfig = {
 };
 
 const rootReducer = combineReducers({
+	session: persistReducer(sessionPersistConfig, sessionReducer), 
+	products: productsReducer,
 	business: persistReducer(businessPersistConfig, businessReducer),
-	session: persistReducer(sessionPersistConfig, sessionReducer),
 });
 
 export default rootReducer;

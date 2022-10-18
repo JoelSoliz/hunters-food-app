@@ -3,6 +3,7 @@ import { useTheme } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { businessSelector } from '../../redux/slices/business';
 
+import ListProducts from './ListProducts';
 import { logout, sessionSelector } from '../../redux/slices/session';
 
 const Home = ({ navigation }) => {
@@ -27,6 +28,7 @@ const Home = ({ navigation }) => {
 					<Text style={{ ...styles.navigate, color: colors.accent }}>Iniciar sesión</Text>
 				</Pressable>
 			)}
+
 			{isAuthenticate && (
 				<>
 					{business && (
@@ -56,6 +58,7 @@ const Home = ({ navigation }) => {
 					</Pressable>
 				</>
 			)}
+			<ListProducts />
 		</View>
 	);
 };
