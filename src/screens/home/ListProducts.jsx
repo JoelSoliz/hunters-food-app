@@ -1,15 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {
-	Text,
-	View,
-	Button,
-	StyleSheet,
-	Image,
-	TextInput,
-	TouchableOpacity,
-	FlatList,
-} from 'react-native';
-import { StatusBar } from 'expo-status-bar';
+import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, FlatList } from 'react-native';
+
 import AntDesing from 'react-native-vector-icons/AntDesign';
 import Fecha from '../../components/operaciones/fecha.js';
 import { useDispatch, useSelector } from 'react-redux';
