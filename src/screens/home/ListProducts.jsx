@@ -46,6 +46,10 @@ const ListProducts = () => {
 							name='shoppingcart'
 							style={{ fontSize: 25, color: '#F97316', top: 25, left: 310 }}
 						/>
+						<Image
+							source={require('../../../assets/comida.png')}
+							style={styles.imageFood}
+						/>
 						<Text
 							style={{
 								color: '#FFFFFF',
@@ -53,21 +57,21 @@ const ListProducts = () => {
 								paddingTop: 10,
 								padding: 10,
 								paddingBottom: 5,
-								top: -11,
+								top: -90,
 								left: 100,
 							}}
 						>
-							{datos.name_product}
+							{datos.name}
 						</Text>
 
 						<Text
 							style={{
 								color: '#FFFFFF',
 								fontSize: 15,
-								paddingTop: 10,
 								padding: 10,
 								paddingBottom: 5,
-								left: 300,
+								top: -100,
+								left: 295,
 							}}
 						>
 							Bs. {datos.price}
@@ -77,13 +81,13 @@ const ListProducts = () => {
 								style={{
 									color: '#FFFFFF',
 									fontSize: 15,
-									paddingTop: 10,
 									padding: 10,
 									paddingBottom: 5,
 									left: 10,
+									top: -70,
 								}}
 							>
-								Expira en:{Fecha(datos)}
+								Expira en: {Fecha(datos)}
 							</Text>
 						</View>
 					</View>
@@ -165,6 +169,11 @@ const styles = StyleSheet.create({
 		borderRadius: 15,
 		borderWidth: 1,
 		borderColor: '#F97316',
+	},
+	imageFood: {
+		width: 80,
+		height: 80,
+		left: 10,
 	},
 });
 
