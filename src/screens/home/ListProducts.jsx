@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, Image, TextInput, TouchableOpacity, FlatList } from 'react-native';
 
 import AntDesing from 'react-native-vector-icons/AntDesign';
-import Fecha from '../../components/operaciones/fecha.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProduct, productsSelector, reset } from '../../redux/slices/product';
+import fecha from '../../components/operaciones/fecha.js';
+import { Chip } from 'react-native-paper';
 
 const ListProducts = () => {
 	const [page, setPage] = useState(1);
@@ -37,6 +38,8 @@ const ListProducts = () => {
 			</TouchableOpacity>
 
 			<FlatList
+				contentContainerStyle={{ justifyContent: 'center' }}
+				// style={{ flex: 1 }}
 				data={products}
 				onEndReached={() => setPage(page + 1)}
 				ItemSeparatorComponent={() => <Text> </Text>}
@@ -44,7 +47,7 @@ const ListProducts = () => {
 					<View style={styles.box}>
 						<AntDesing
 							name='shoppingcart'
-							style={{ fontSize: 25, color: '#F97316', top: 25, left: 310 }}
+							style={{ fontSize: 25, color: '#F97316', top: '10%', left: '85%' }}
 						/>
 						<Image
 							source={require('../../../assets/comida.png')}
@@ -55,7 +58,7 @@ const ListProducts = () => {
 								color: '#FFFFFF',
 								fontSize: 18,
 								paddingTop: 10,
-								padding: 10,
+								margin: 10,
 								paddingBottom: 5,
 								top: -90,
 								left: 100,
@@ -70,8 +73,8 @@ const ListProducts = () => {
 								fontSize: 15,
 								padding: 10,
 								paddingBottom: 5,
-								top: -100,
-								left: 295,
+								top: '-78%',
+								left: '80%',
 							}}
 						>
 							Bs. {datos.price}
@@ -84,10 +87,43 @@ const ListProducts = () => {
 									padding: 10,
 									paddingBottom: 5,
 									left: 10,
-									top: -70,
+									top: -88,
 								}}
 							>
-								Expira en: {Fecha(datos)}
+								Expira en: {fecha(datos)}
+							</Text>
+						</View>
+
+						<View>
+							<Chip
+								mode='outlined'
+								textStyle={{ color: '#FFFFFF' }}
+								style={{
+									width: '50%',
+									height: '30%',
+									color: '#FFFFFF',
+									fontSize: 15,
+									padding: -5,
+									paddingBottom: 5,
+									top: -170,
+									left: '30%',
+								}}
+							>
+								{datos.product_type}
+							</Chip>
+							<Text
+								style={{
+									color: '#FFFFFF',
+									fontSize: 15,
+									padding: 10,
+									paddingBottom: 5,
+									top: -180,
+									left: '35%',
+								}}
+							>
+								Cantidad: {datos.amount}
+								{'\n'}
+								Descuento: {datos.discount} %
 							</Text>
 						</View>
 					</View>
@@ -109,15 +145,15 @@ const styles = StyleSheet.create({
 	image: {
 		width: 50,
 		height: 50,
-		top: -10,
-		left: 90,
+		top: '-3%',
+		left: '15%',
 	},
 	titulo: {
 		fontSize: 30,
 		color: '#ffff',
 		fontWeight: 'bold',
-		top: -55,
-		left: 150,
+		top: '-11%',
+		left: '35%',
 	},
 	subTitle: {
 		fontSize: 15,
