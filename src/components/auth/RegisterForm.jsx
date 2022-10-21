@@ -2,6 +2,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { StyleSheet, View } from 'react-native';
 import { Button, HelperText, TextInput } from 'react-native-paper';
 import { DatePickerInput } from 'react-native-paper-dates';
+import { validateBirthday } from '../operaciones/fecha';
 
 const ERROR_MESSAGES = {
 	email: 'Correo electrónico inválido.',
@@ -11,7 +12,7 @@ const ERROR_MESSAGES = {
 	required: 'Este campo es requerido.',
 };
 
-const RegisterForm = ({ loading, onCancel, onSubmit }) => {
+const RegisterForm = ({ error, loading, onCancel, onSubmit }) => {
 	const {
 		control,
 		formState: { errors, isValid },
@@ -72,6 +73,8 @@ const RegisterForm = ({ loading, onCancel, onSubmit }) => {
 				name='birthday'
 				rules={{
 					required: { message: ERROR_MESSAGES.required, value: true },
+					validate: (value) =>
+						validateBirthday(value) || 'Debes tener al menos 16 años para registrarte.',
 				}}
 				render={({ field: { onBlur, onChange, value } }) => (
 					<>
@@ -167,6 +170,11 @@ const RegisterForm = ({ loading, onCancel, onSubmit }) => {
 					</>
 				)}
 			/>
+			{error && (
+				<HelperText type='error' style={{ textAlign: 'center' }}>
+					Correo electrónico ya registrado.
+				</HelperText>
+			)}
 			<View style={styles.buttonContainer}>
 				{loading ? (
 					<HelperText type='info'>Loading...</HelperText>

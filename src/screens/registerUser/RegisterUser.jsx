@@ -4,20 +4,26 @@ import { Snackbar } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 
 import RegisterForm from '../../components/auth/RegisterForm';
-import { registerUser, sessionSelector } from '../../redux/slices/session';
+import { registerUser, resetLoading, sessionSelector } from '../../redux/slices/session';
 
 const RegisterUser = ({ navigation }) => {
-	const [visible, setVisible] = useState(true);
+	const [loaded, setLoaded] = useState(false);
+	const [visible, setVisible] = useState(false);
 	const { isAuthenticate, loading } = useSelector(sessionSelector);
 	const dispatch = useDispatch();
 
 	const handleSubmit = (data) => dispatch(registerUser(data));
 
 	useEffect(() => {
+		dispatch(resetLoading());
+		setLoaded(true);
+	}, []);
+
+	useEffect(() => {
 		if (isAuthenticate) {
 			navigation.navigate('home');
 		}
-		if (loading === 'succeeded') {
+		if (loading === 'succeeded' && loaded) {
 			setVisible(true);
 		}
 	}, [loading]);
@@ -26,6 +32,7 @@ const RegisterUser = ({ navigation }) => {
 		<ScrollView>
 			<View style={styles.container}>
 				<RegisterForm
+					error={loading === 'failed' && loaded}
 					loading={loading === 'pending'}
 					onCancel={() => navigation.navigate('login')}
 					onSubmit={handleSubmit}

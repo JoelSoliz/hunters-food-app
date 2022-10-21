@@ -45,6 +45,9 @@ export const sessionSlice = createSlice({
 			state.isAuthenticate = false;
 			state.user = undefined;
 		},
+		resetLoading: (state, _) => {
+			state.loading = 'idle';
+		},
 	},
 	extraReducers: (builder) => {
 		builder.addCase(registerUser.pending, (state, _) => {
@@ -80,6 +83,6 @@ export const sessionSelector = createSelector(
 	(state) => state
 );
 
-export const { changeTheme, logout, setPathToRedirect } = sessionSlice.actions;
+export const { changeTheme, logout, resetLoading } = sessionSlice.actions;
 
 export default sessionSlice.reducer;
