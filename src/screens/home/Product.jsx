@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { Chip } from 'react-native-paper';
 import AntDesing from 'react-native-vector-icons/AntDesign';
@@ -5,12 +6,28 @@ import AntDesing from 'react-native-vector-icons/AntDesign';
 import image from '../../../assets/comida.png';
 import fecha from '../../components/operaciones/fecha.js';
 
+const API_HOST = 'https://blooming-inlet-07928.herokuapp.com';
+
 const Product = ({ value }) => {
+	const [imageError, setImageError] = useState(false);
+
 	return (
 		<View style={styles.card}>
 			<View style={styles.content}>
 				<View style={styles.imageContainer}>
-					<Image source={image} style={styles.image} />
+					<Image
+						onError={() => {
+							setImageError(true);
+						}}
+						source={
+							imageError
+								? image
+								: {
+										uri: `${API_HOST}/product/${value.id_product}/image`,
+								  }
+						}
+						style={styles.image}
+					/>
 					<Text
 						style={{
 							...styles.subText,
@@ -78,7 +95,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	buyContainer: {
-		// alignItems: 'flex-end',
 		marginRight: 10,
 		marginTop: 20,
 	},

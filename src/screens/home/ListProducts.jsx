@@ -11,7 +11,7 @@ import Product from './Product';
 const ListProducts = () => {
 	const [page, setPage] = useState(1);
 	const { colors } = useTheme();
-	const { loading, products } = useSelector(productsSelector);
+	const { loading, products, total_pages } = useSelector(productsSelector);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -36,7 +36,11 @@ const ListProducts = () => {
 			<FlatList
 				contentContainerStyle={{ justifyContent: 'center' }}
 				data={products}
-				onEndReached={() => setPage(page + 1)}
+				onEndReached={() => {
+					if (page + 1 <= total_pages) {
+						setPage(page + 1);
+					}
+				}}
 				ItemSeparatorComponent={() => <></>}
 				ListEmptyComponent={() =>
 					loading !== 'pending' && (
