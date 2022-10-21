@@ -25,7 +25,11 @@ const RegisterUser = ({ navigation }) => {
 	return (
 		<ScrollView>
 			<View style={styles.container}>
-				<RegisterForm loading={loading === 'pending'} onSubmit={handleSubmit} />
+				<RegisterForm
+					loading={loading === 'pending'}
+					onCancel={() => navigation.navigate('login')}
+					onSubmit={handleSubmit}
+				/>
 				<Snackbar
 					visible={visible}
 					onDismiss={() => setVisible(false)}

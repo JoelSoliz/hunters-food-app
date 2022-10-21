@@ -5,12 +5,13 @@ import { DatePickerInput } from 'react-native-paper-dates';
 
 const ERROR_MESSAGES = {
 	email: 'Correo electrónico inválido.',
+	letters: 'Solo se admiten letras.',
 	maxLength: 'La longitud máxima es',
 	minLength: 'La longitud mínima es',
 	required: 'Este campo es requerido.',
 };
 
-const RegisterForm = ({ loading, onSubmit }) => {
+const RegisterForm = ({ loading, onCancel, onSubmit }) => {
 	const {
 		control,
 		formState: { errors, isValid },
@@ -24,6 +25,7 @@ const RegisterForm = ({ loading, onSubmit }) => {
 				control={control}
 				name='name'
 				rules={{
+					pattern: { message: ERROR_MESSAGES.letters, value: /^[a-zA-Z\s]*$/i },
 					maxLength: { message: `${ERROR_MESSAGES.maxLength} 30.`, value: 30 },
 					minLength: { message: `${ERROR_MESSAGES.minLength} 3.`, value: 3 },
 					required: { message: ERROR_MESSAGES.required, value: true },
@@ -46,6 +48,7 @@ const RegisterForm = ({ loading, onSubmit }) => {
 				control={control}
 				name='surname'
 				rules={{
+					pattern: { message: ERROR_MESSAGES.letters, value: /^[a-zA-Z\s]*$/i },
 					maxLength: { message: `${ERROR_MESSAGES.maxLength} 30.`, value: 30 },
 					minLength: { message: `${ERROR_MESSAGES.minLength} 3.`, value: 3 },
 					required: { message: ERROR_MESSAGES.required, value: true },
@@ -94,7 +97,7 @@ const RegisterForm = ({ loading, onSubmit }) => {
 					minLength: { message: `${ERROR_MESSAGES.minLength} 6.`, value: 6 },
 					pattern: {
 						message: ERROR_MESSAGES.email,
-						value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+						value: /^[A-Z0-9._]+@[A-Z0-9.]+\.[A-Z]{2,}$/i,
 					},
 					required: { message: ERROR_MESSAGES.required, value: true },
 				}}
@@ -168,14 +171,23 @@ const RegisterForm = ({ loading, onSubmit }) => {
 				{loading ? (
 					<HelperText type='info'>Loading...</HelperText>
 				) : (
-					<Button
-						style={styles.button}
-						mode='contained'
-						onPress={handleSubmit(onSubmit)}
-						disabled={!isValid}
-					>
-						Crear cuenta
-					</Button>
+					<View style={{ flexDirection: 'row' }}>
+						<Button
+							style={{ ...styles.button, marginRight: 10 }}
+							mode='outlined'
+							onPress={onCancel}
+						>
+							Cancelar
+						</Button>
+						<Button
+							style={styles.button}
+							mode='contained'
+							onPress={handleSubmit(onSubmit)}
+							disabled={!isValid}
+						>
+							Crear cuenta
+						</Button>
+					</View>
 				)}
 			</View>
 		</View>
@@ -184,12 +196,12 @@ const RegisterForm = ({ loading, onSubmit }) => {
 
 const styles = StyleSheet.create({
 	button: {
-		width: 200,
+		width: 170,
 		borderRadius: 45,
 	},
 	buttonContainer: {
 		marginBottom: 20,
-		marginTop: 50,
+		marginTop: 10,
 		display: 'flex',
 		alignItems: 'center',
 	},
