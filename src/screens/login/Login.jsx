@@ -1,18 +1,24 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Pressable, Text, StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 
 import LoginForm from '../../components/auth/LoginForm';
-import { login, sessionSelector } from '../../redux/slices/session';
+import { login, resetLoading, sessionSelector } from '../../redux/slices/session';
 
 const Login = ({ navigation }) => {
+	const [loaded, setLoaded] = useState(false);
 	const { colors } = useTheme();
 	const { isAuthenticate, loading } = useSelector(sessionSelector);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		if (loading === 'succeeded' && isAuthenticate) {
+		dispatch(resetLoading());
+		setLoaded(true);
+	}, []);
+
+	useEffect(() => {
+		if (isAuthenticate) {
 			navigation.navigate('profile');
 		}
 	}, [loading]);
@@ -22,7 +28,7 @@ const Login = ({ navigation }) => {
 	return (
 		<View style={styles.container}>
 			<LoginForm
-				error={loading === 'failed'}
+				error={loading === 'failed' && loaded}
 				loading={loading === 'pending'}
 				onSubmit={handleSubmit}
 			/>

@@ -6,3 +6,13 @@ export default function fecha(datos) {
 	const diasTranscurridos = Math.round((milisegundosTranscurridos / milisegundosDia) * 100) / 100;
 	return diasTranscurridos;
 }
+
+export function validateBirthday(dateStr) {
+	let date = new Date(dateStr);
+	let latestDate = new Date();
+	latestDate.setFullYear(latestDate.getFullYear() - 16);
+	let oldestDate = new Date();
+	oldestDate.setFullYear(latestDate.getFullYear() - 100);
+
+	return date <= latestDate && oldestDate <= date;
+}
