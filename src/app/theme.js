@@ -12,6 +12,7 @@ const theme = {
 		placeholder: '#948F8F',
 		surface: '#282928',
 		card: '#202027',
+		background: '#52525240',
 	},
 	roundness: 20,
 };
