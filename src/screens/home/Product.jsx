@@ -29,17 +29,19 @@ const Product = ({ value }) => {
 					>
 						{value.name}
 					</Text>
-					<Chip
-						compact={true}
-						mode='outlined'
-						textStyle={{ ...styles.subText, fontSize: 12 }}
-						style={{
-							backgroundColor: '#FFAE8050',
-							marginVertical: 5,
-						}}
-					>
-						{value.product_type}
-					</Chip>
+					<View style={{ flexDirection: 'row' }}>
+						<Chip
+							compact={true}
+							mode='outlined'
+							textStyle={{ ...styles.subText, fontSize: 12 }}
+							style={{
+								backgroundColor: '#FFAE8050',
+								marginVertical: 5,
+							}}
+						>
+							{value.product_type}
+						</Chip>
+					</View>
 					<Text
 						style={{
 							...styles.subText,

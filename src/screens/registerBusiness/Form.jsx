@@ -36,7 +36,7 @@ const RegisterForm = ({ navigation }) => {
 	const onSubmit = (data) => dispatch(registerBusiness(data));
 
 	return (
-		<ScrollView style={styles.container}>
+		<ScrollView>
 			<View style={styles.containerForm}>
 				<Controller
 					control={control}
@@ -49,7 +49,7 @@ const RegisterForm = ({ navigation }) => {
 					render={({ field: { onChange, value } }) => (
 						<>
 							<TextInput
-								label='Nombre'
+								label='Nombre de Negocio'
 								mode='outlined'
 								style={styles.input}
 								value={value}
@@ -93,6 +93,7 @@ const RegisterForm = ({ navigation }) => {
 					render={({ field: { onChange, value } }) => (
 						<>
 							<TextInput
+								col
 								label='Ubicación'
 								mode='outlined'
 								style={styles.input}
@@ -179,19 +180,16 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		marginBottom: 15,
 	},
-	container: {
+	containerForm: {
 		backgroundColor: '#282928',
+		flex: 1,
 		paddingHorizontal: 30,
 		paddingTop: 40,
-	},
-	containerForm: {
-		flex: 1,
 	},
 	input: {
 		marginVertical: 5,
 		borderColor: 'red',
 		borderRadius: 20,
-		backgroundColor: '#52525240 !important',
 	},
 	button: {
 		width: 200,
