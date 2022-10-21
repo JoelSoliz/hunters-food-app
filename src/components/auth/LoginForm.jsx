@@ -8,7 +8,7 @@ const ERROR_MESSAGES = {
 	required: 'Este campo es requerido.',
 };
 
-const LoginForm = ({ loading, onSubmit }) => {
+const LoginForm = ({ error, loading, onSubmit }) => {
 	const [showPassword, setShowPassword] = useState(false);
 	const {
 		control,
@@ -24,7 +24,7 @@ const LoginForm = ({ loading, onSubmit }) => {
 				rules={{
 					pattern: {
 						message: ERROR_MESSAGES.email,
-						value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+						value: /^[A-Z0-9._]+@[A-Z0-9.]+\.[A-Z]{2,}$/i,
 					},
 					required: { message: ERROR_MESSAGES.required, value: true },
 				}}
@@ -77,6 +77,11 @@ const LoginForm = ({ loading, onSubmit }) => {
 					</>
 				)}
 			/>
+			{error && (
+				<HelperText type='error' style={{ textAlign: 'center' }}>
+					Correo electrónico y/o Contraseña incorrectos.
+				</HelperText>
+			)}
 			<View style={styles.buttonContainer}>
 				{loading ? (
 					<HelperText type='info'>Loading...</HelperText>

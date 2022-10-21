@@ -11,6 +11,7 @@ const theme = {
 		text: '#ffffff',
 		placeholder: '#948F8F',
 		surface: '#282928',
+		card: '#202027',
 	},
 	roundness: 20,
 };

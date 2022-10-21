@@ -13,7 +13,7 @@ const Login = ({ navigation }) => {
 
 	useEffect(() => {
 		if (loading === 'succeeded' && isAuthenticate) {
-			navigation.navigate('home');
+			navigation.navigate('profile');
 		}
 	}, [loading]);
 
@@ -21,7 +21,11 @@ const Login = ({ navigation }) => {
 
 	return (
 		<View style={styles.container}>
-			<LoginForm loading={loading === 'pending'} onSubmit={handleSubmit} />
+			<LoginForm
+				error={loading === 'failed'}
+				loading={loading === 'pending'}
+				onSubmit={handleSubmit}
+			/>
 			<Pressable
 				onPress={() => {
 					navigation.navigate('signUp');
