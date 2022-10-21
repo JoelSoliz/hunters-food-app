@@ -16,3 +16,26 @@ export function validateBirthday(dateStr) {
 
 	return date <= latestDate && oldestDate <= date;
 }
+
+export function validateGreaterThanToday(dateStr, timeStr) {
+	let date = new Date(dateStr);
+	let [hours, minutes] = timeStr ? [timeStr['hours'], timeStr['minutes']] : [0, 0];
+	date.setHours(parseInt(hours));
+	date.setMinutes(parseInt(minutes));
+
+	return date >= new Date();
+}
+
+export function validateGreater(dateStr1, timeStr1, dateStr2, timeStr2) {
+	let date1 = new Date(dateStr1);
+	let [hours1, minutes1] = timeStr1 ? [timeStr1['hours'], timeStr1['minutes']] : [0, 0];
+	date1.setHours(hours1);
+	date1.setMinutes(minutes1);
+
+	let date2 = new Date(dateStr2);
+	let [hours2, minutes2] = timeStr2 ? [timeStr2['hours'], timeStr2['minutes']] : [0, 0];
+	date2.setHours(hours2);
+	date2.setMinutes(minutes2);
+
+	return date2 > date1;
+}

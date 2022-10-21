@@ -21,8 +21,9 @@ const styles = StyleSheet.create({
 	},
 	container: {
 		flex: 1,
-		marginHorizontal: 30,
-		marginVertical: 70,
+		backgroundColor: '#282928',
+		paddingHorizontal: 30,
+		paddingTop: 40,
 	},
 });
 export default RegisterProductForm;

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
-import { getProductAsync } from '../../api/product';
+import { getProductAsync, registerProductAsync } from '../../api/product';
 
 export const getProduct = createAsyncThunk('getProduct/getProductAsync', async (page) => {
 	const result = await getProductAsync(page);
@@ -10,6 +10,27 @@ export const getProduct = createAsyncThunk('getProduct/getProductAsync', async (
 	}
 	return result;
 });
+
+export const registerProduct = createAsyncThunk(
+	'registerProduct/registerProductAsync',
+	async (business_id, product) => {
+		let token = await AsyncStorage.getItem('token');
+		if (!token) {
+			console.error('Vuelve a iniciar sesión');
+			throw new Error('invalid credential');
+		}
+		const result = await registerProductAsync(product, business_id, token);
+		if (!result) {
+			console.error('Intenta de nuevo');
+			throw new Error('Intenta de nuevo');
+		}
+		if (result?.detail) {
+			console.error(detail);
+			throw new Error(detail);
+		}
+		return result;
+	}
+);
 
 const initialState = {
 	loading: 'idle',

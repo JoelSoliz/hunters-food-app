@@ -1,11 +1,13 @@
 import { Controller, useForm } from 'react-hook-form';
 import ImagePicker from '../../components/input/ImagePicker';
+import { DatePickerInput } from 'react-native-paper-dates';
 import DropDown from 'react-native-paper-dropdown';
 import productCategory from '../../data/productCategory.json';
 import { useState } from 'react';
 import { StyleSheet, View, StatusBar, ScrollView } from 'react-native';
 import TimePicker from '../../components/input/TimePicker';
 import { Button, TextInput, HelperText } from 'react-native-paper';
+import { validateGreater, validateGreaterThanToday } from '../operaciones/fecha';
 
 const ERROR_MESSAGES = {
 	discountSchedule: 'Introducir un rango de tiempo',
@@ -113,55 +115,63 @@ const ProductForm = ({ onSubmit }) => {
 				/>
 				<Controller
 					control={control}
-					name='discount_schedule_end'
+					name='date_start'
 					rules={{
-						validate: (value) => {
-							a = new Date(0);
-							a.setHours(value?.hours || 0);
-							a.setMinutes(value?.minutes || 0);
-							b = new Date(0);
-							b.setHours(watch('discount_schedule_start')?.hours || 0);
-							b.setMinutes(watch('discount_schedule_start')?.minutes || 0);
-							return a > b || 'La hora final debe ser después de la hora de inicio';
-						},
 						required: { message: ERROR_MESSAGES.required, value: true },
-					}}
-					render={({ field: { onChange, value } }) => (
-						<>
-							<TextInput
-								editable={false}
-								label='Fin de descuento'
-								mode='outlined'
-								style={styles.input}
-								value={`${value?.hours || '00'}:${value?.minutes || '00'}`}
-								right={
-									<TextInput.Affix
-										text={<TimePicker onChange={onChange} value={value} />}
-									/>
-								}
-							/>
+						validate: (value) => {
+							if (!validateGreaterThanToday(value, watch('time_start'))) {
+								return ERROR_MESSAGES.greaterToday;
+							}
+							if (
+								validateGreater(
+									value,
+									watch('time_start'),
+									watch('date_end'),
+									watch('time_end')
+								)
+							) {
+								return ERROR_MESSAGES.greaterEnd;
+							}
 
-							<HelperText type='error'>
-								{errors.discount_schedule_end?.message}
-							</HelperText>
+							return true;
+						},
+					}}
+					render={({ field: { onBlur, onChange, value } }) => (
+						<>
+							<DatePickerInput
+								mode='outlined'
+								inputMode='start'
+								locale='es'
+								label='Fecha de Inicio del descuento'
+								value={value}
+								style={styles.input}
+								onBlur={onBlur}
+								onChange={(date) => onChange(date)}
+							/>
+							<HelperText type='error'>{errors.date_start?.message}</HelperText>
 						</>
 					)}
 				/>
 				<Controller
 					control={control}
-					name='discount_schedule_start'
+					name='time_start'
 					rules={{
 						validate: (value) => {
-							a = new Date(0);
-							a.setHours(value?.hours || 0);
-							a.setMinutes(value?.minutes || 0);
-							b = new Date(0);
-							b.setHours(watch('discount_schedule_end')?.hours || 0);
-							b.setMinutes(watch('discount_schedule_end')?.minutes || 0);
+							if (!validateGreaterThanToday(watch('date_start'), value)) {
+								return ERROR_MESSAGES.greaterToday;
+							}
+							if (
+								validateGreater(
+									watch('date_start'),
+									value,
+									watch('date_end'),
+									watch('time_end')
+								)
+							) {
+								return ERROR_MESSAGES.greaterEnd;
+							}
 
-							return (
-								a < b || 'La hora de inicio debe ser antes que la hora del final'
-							);
+							return true;
 						},
 
 						required: { message: ERROR_MESSAGES.required, value: true },
@@ -170,7 +180,7 @@ const ProductForm = ({ onSubmit }) => {
 						<>
 							<TextInput
 								editable={false}
-								label='Inicio de descuento'
+								label='Hora de Inicio del descuento'
 								mode='outlined'
 								style={styles.input}
 								value={`${value?.hours || '00'}:${value?.minutes || '00'}`}
@@ -181,9 +191,67 @@ const ProductForm = ({ onSubmit }) => {
 								}
 							/>
 
-							<HelperText type='error'>
-								{errors.discount_schedule_start?.message}
-							</HelperText>
+							<HelperText type='error'>{errors.time_start?.message}</HelperText>
+						</>
+					)}
+				/>
+				<Controller
+					control={control}
+					name='date_end'
+					rules={{
+						required: { message: ERROR_MESSAGES.required, value: true },
+						validate: (value) =>
+							!validateGreater(
+								watch('date_start'),
+								watch('time_start'),
+								value,
+								watch('time_end')
+							) || ERROR_MESSAGES.greaterStart,
+					}}
+					render={({ field: { onBlur, onChange, value } }) => (
+						<>
+							<DatePickerInput
+								mode='outlined'
+								inputMode='start'
+								locale='es'
+								label='Fecha de Fin del descuento'
+								value={value}
+								style={styles.input}
+								onBlur={onBlur}
+								onChange={(date) => onChange(date)}
+							/>
+							<HelperText type='error'>{errors.date_end?.message}</HelperText>
+						</>
+					)}
+				/>
+				<Controller
+					control={control}
+					name='time_end'
+					rules={{
+						validate: (value) =>
+							!validateGreater(
+								watch('date_start'),
+								watch('time_start'),
+								watch('date_end'),
+								value
+							) || ERROR_MESSAGES.greaterStart,
+						required: { message: ERROR_MESSAGES.required, value: true },
+					}}
+					render={({ field: { onChange, value } }) => (
+						<>
+							<TextInput
+								editable={false}
+								label='Hora de Fin del descuento'
+								mode='outlined'
+								style={styles.input}
+								value={`${value?.hours || '00'}:${value?.minutes || '00'}`}
+								right={
+									<TextInput.Affix
+										text={<TimePicker onChange={onChange} value={value} />}
+									/>
+								}
+							/>
+							<HelperText type='error'>{errors.time_end?.message}</HelperText>
 						</>
 					)}
 				/>
@@ -206,7 +274,7 @@ const ProductForm = ({ onSubmit }) => {
 				/>
 				<Controller
 					control={control}
-					name='category'
+					name='product_type'
 					rules={{
 						required: { message: ERROR_MESSAGES.required, value: true },
 					}}
@@ -223,7 +291,7 @@ const ProductForm = ({ onSubmit }) => {
 								onDismiss={() => setVisible(false)}
 								inputProps={{ style: styles.input }}
 							/>
-							<HelperText type='error'>{errors.category?.message}</HelperText>
+							<HelperText type='error'>{errors.product_type?.message}</HelperText>
 						</>
 					)}
 				/>
@@ -242,25 +310,25 @@ const ProductForm = ({ onSubmit }) => {
 						</>
 					)}
 				/>
-				<View style={styles.buttonContainer}></View>
-				<StatusBar style='auto' />
 				<View style={styles.buttonContainer}>
-					<Button
-						style={styles.button}
-						mode='contained'
-						onPress={handleSubmit(submit)}
-						disabled={!isValid}
-					>
-						Guardar
-					</Button>
-					<Button
-						style={styles.button}
-						mode='contained'
-						onPress={handleSubmit(submit)}
-						disabled={!isValid}
-					>
-						Cancelar
-					</Button>
+					<View style={{ flexDirection: 'row' }}>
+						<Button
+							style={{ ...styles.button, marginRight: 10 }}
+							mode='outlined'
+							onPress={handleSubmit(submit)}
+							disabled={!isValid}
+						>
+							Cancelar
+						</Button>
+						<Button
+							style={styles.button}
+							mode='contained'
+							onPress={handleSubmit(submit)}
+							disabled={!isValid}
+						>
+							Guardar
+						</Button>
+					</View>
 				</View>
 			</View>
 		</ScrollView>
