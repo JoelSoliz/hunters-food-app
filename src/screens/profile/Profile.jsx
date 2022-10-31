@@ -30,15 +30,26 @@ const Profile = ({ navigation }) => {
 			{isAuthenticate && (
 				<>
 					{business && (
-						<Text
-							style={{
-								...styles.navigate,
-								textDecorationLine: 'none',
-								color: colors.text,
-							}}
-						>
-							Negocio: {business.name}
-						</Text>
+						<>
+							<Text
+								style={{
+									...styles.navigate,
+									textDecorationLine: 'none',
+									color: colors.text,
+								}}
+							>
+								Negocio: {business.name}
+							</Text>
+							<Pressable
+								onPress={() => {
+									navigation.navigate('registerProduct');
+								}}
+							>
+								<Text style={{ ...styles.navigate, color: colors.accent }}>
+									Registrar Producto
+								</Text>
+							</Pressable>
+						</>
 					)}
 					<Pressable
 						onPress={() => {
