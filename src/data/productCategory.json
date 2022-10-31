@@ -1,0 +1,9 @@
+[
+	{ "label": "Cereal", "value": "cereal" },
+	{ "label": "Fruta", "value": "fruta" },
+	{ "label": "Lacteo y derivados", "value": "lacteo-y-derivados" },
+	{ "label": "Proteína", "value": "proteina" },
+	{ "label": "Fruto seco", "value": "fruto-seco" },
+	{ "label": "Aceite", "value": "aceite" },
+	{ "label": "Verdura", "value": "verdura" }
+]

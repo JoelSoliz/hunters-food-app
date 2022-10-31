@@ -4,21 +4,22 @@ An application that attempts to reduce the amount of wasted food by promoting th
 
 ## Table of contents
 
-- [Technologies](#technologies)
-- [Setup](#setup)
+-   [Technologies](#technologies)
+-   [Setup](#setup)
 
 ## Technologies
 
-- NodeJS version: 16.17.1
-- JavaScript
-- React
-- React Native
+-   NodeJS version: 16.17.1
+-   JavaScript
+-   React
+-   React Native
 
 ## Setup
 
 1. Install all dependencies.
 
-   `npm install`
+    `npm install`
 
 2. Run build for android.
-   `npm run android`
+
+    `npm start`
