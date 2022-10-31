@@ -30,7 +30,7 @@ const ProfileRouter = () => {
 	const theme = useTheme();
 	return (
 		<Stack.Navigator
-			initialRouteName='home'
+			initialRouteName='profile'
 			screenOptions={{
 				headerStyle: {
 					backgroundColor: theme.colors.primary,
@@ -57,7 +57,7 @@ const ProfileRouter = () => {
 			<Stack.Screen
 				name='registerProduct'
 				component={RegisterProduct}
-				options={{ title: 'Registrar Product' }}
+				options={{ title: 'Registrar Producto' }}
 			/>
 		</Stack.Navigator>
 	);

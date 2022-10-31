@@ -1,13 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native';
-import { useTheme } from 'react-native-paper';
+import { StyleSheet, View } from 'react-native';
+
 import ProductForm from '../../components/forms/ProductForm';
 
 const RegisterProductForm = () => {
-	const { colors } = useTheme();
 	const handleSubmit = (data) => console.log(data);
 	return (
 		<View style={styles.container}>
-			<Text style={{ ...styles.title, color: colors.primary }}>Registro de Producto</Text>
 			<ProductForm onSubmit={handleSubmit} />
 		</View>
 	);
