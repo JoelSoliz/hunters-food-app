@@ -36,14 +36,14 @@ const ERROR_MESSAGES = {
 	required: 'Este campo es requerido.',
 };
 
-const ProductForm = ({ onSubmit }) => {
+const ProductForm = ({ error, loading, onCancel, onSubmit }) => {
 	const [visible, setVisible] = useState(false);
 
 	const submit = (data) => onSubmit(data);
 
 	const {
 		control,
-		formState: { errors, isValid },
+		formState: { errors },
 		handleSubmit,
 		trigger,
 		watch,
@@ -269,23 +269,32 @@ const ProductForm = ({ onSubmit }) => {
 						</>
 					)}
 				/>
+				{error && (
+					<HelperText type='error' style={{ textAlign: 'center' }}>
+						Producto no registrado, vuelve a intentarlo en unos minutos.
+					</HelperText>
+				)}
 				<View style={styles.buttonContainer}>
-					<View style={{ flexDirection: 'row' }}>
-						<Button
-							style={{ ...styles.button, marginRight: 10 }}
-							mode='outlined'
-							onPress={handleSubmit(submit)}
-						>
-							Cancelar
-						</Button>
-						<Button
-							style={styles.button}
-							mode='contained'
-							onPress={handleSubmit(submit)}
-						>
-							Guardar
-						</Button>
-					</View>
+					{loading ? (
+						<HelperText type='info'>Loading...</HelperText>
+					) : (
+						<View style={{ flexDirection: 'row' }}>
+							<Button
+								style={{ ...styles.button, marginRight: 10 }}
+								mode='outlined'
+								onPress={onCancel}
+							>
+								Cancelar
+							</Button>
+							<Button
+								style={styles.button}
+								mode='contained'
+								onPress={handleSubmit(submit)}
+							>
+								Guardar
+							</Button>
+						</View>
+					)}
 				</View>
 			</View>
 		</ScrollView>
@@ -316,11 +325,10 @@ const styles = StyleSheet.create({
 		borderRadius: 45,
 	},
 	buttonContainer: {
-		marginVertical: 5,
+		marginBottom: 20,
+		marginTop: 10,
 		display: 'flex',
 		alignItems: 'center',
-		flexDirection: 'row',
-		justifyContent: 'space-between',
 	},
 });
 

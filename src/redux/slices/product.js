@@ -1,7 +1,8 @@
+import { AsyncStorage } from 'react-native';
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
 import { getProductAsync, registerProductAsync } from '../../api/product';
 
-export const getProduct = createAsyncThunk('getProduct/getProductAsync', async (page) => {
+export const getProducts = createAsyncThunk('getProduct/getProductAsync', async (page) => {
 	const result = await getProductAsync(page);
 	const { detail } = result;
 	if (detail) {
@@ -13,20 +14,20 @@ export const getProduct = createAsyncThunk('getProduct/getProductAsync', async (
 
 export const registerProduct = createAsyncThunk(
 	'registerProduct/registerProductAsync',
-	async (business_id, product) => {
+	async ({ id, data }) => {
 		let token = await AsyncStorage.getItem('token');
 		if (!token) {
 			console.error('Vuelve a iniciar sesión');
 			throw new Error('invalid credential');
 		}
-		const result = await registerProductAsync(product, business_id, token);
+		const result = await registerProductAsync(data, id, token);
 		if (!result) {
 			console.error('Intenta de nuevo');
 			throw new Error('Intenta de nuevo');
 		}
 		if (result?.detail) {
-			console.error(detail);
-			throw new Error(detail);
+			console.log(result.detail);
+			throw new Error(result.detail);
 		}
 		return result;
 	}
@@ -47,15 +48,25 @@ export const productsSlice = createSlice({
 		},
 	},
 	extraReducers: (builder) => {
-		builder.addCase(getProduct.pending, (state, _) => {
+		builder.addCase(getProducts.pending, (state, _) => {
 			state.loading = 'pending';
 		});
-		builder.addCase(getProduct.fulfilled, (state, { payload }) => {
+		builder.addCase(getProducts.fulfilled, (state, { payload }) => {
 			state.loading = 'succeeded';
 			state.products = [...state.products, ...payload.results];
 			state.total_pages = payload.total_pages;
 		});
-		builder.addCase(getProduct.rejected, (state, _) => {
+		builder.addCase(getProducts.rejected, (state, _) => {
+			state.loading = 'failed';
+		});
+		builder.addCase(registerProduct.pending, (state, _) => {
+			state.loading = 'pending';
+		});
+		builder.addCase(registerProduct.fulfilled, (state, { payload }) => {
+			state.loading = 'succeeded';
+			console.log(payload);
+		});
+		builder.addCase(registerProduct.rejected, (state, _) => {
 			state.loading = 'failed';
 		});
 	},
