@@ -36,7 +36,7 @@ const ERROR_MESSAGES = {
 	required: 'Este campo es requerido.',
 };
 
-const ProductForm = ({ error, loading, onCancel, onSubmit }) => {
+const ProductForm = ({ error, loading, onCancel, onSubmit, value = {} }) => {
 	const [visible, setVisible] = useState(false);
 
 	const submit = (data) => onSubmit(data);
@@ -47,7 +47,7 @@ const ProductForm = ({ error, loading, onCancel, onSubmit }) => {
 		handleSubmit,
 		trigger,
 		watch,
-	} = useForm({ mode: 'onChange' });
+	} = useForm({ mode: 'onChange', defaultValues: value });
 
 	return (
 		<ScrollView style={styles.container}>

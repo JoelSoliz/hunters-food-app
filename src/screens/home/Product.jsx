@@ -8,7 +8,7 @@ import fecha from '../../components/operaciones/fecha.js';
 
 const API_HOST = 'https://blooming-inlet-07928.herokuapp.com';
 
-const Product = ({ value }) => {
+const Product = ({ value, isOwner, onSelect }) => {
 	const [imageError, setImageError] = useState(false);
 
 	return (
@@ -82,6 +82,17 @@ const Product = ({ value }) => {
 					>
 						Bs. {value.price}
 					</Text>
+					{isOwner && (
+						<Text
+							onPress={() => onSelect(value.id_product)}
+							style={{
+								...styles.text,
+								fontSize: 15,
+							}}
+						>
+							IsOwner
+						</Text>
+					)}
 				</View>
 			</View>
 		</View>

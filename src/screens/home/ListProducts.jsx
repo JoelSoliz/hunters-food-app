@@ -7,12 +7,14 @@ import { Chip, useTheme } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
 import HomeHeader from './HomeHeader';
 import Product from './Product';
+import { businessSelector } from '../../redux/slices/business';
 
-const ListProducts = () => {
+const ListProducts = ({ navigation }) => {
 	const [page, setPage] = useState(1);
 	const [refreshing, setRefreshing] = useState(false);
 	const { colors } = useTheme();
 	const { loading, products, total_pages } = useSelector(productsSelector);
+	const { userBusiness } = useSelector(businessSelector);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -30,6 +32,9 @@ const ListProducts = () => {
 		dispatch(getProducts(1));
 		setRefreshing(false);
 	}, [refreshing]);
+
+	const onSelectProduct = (id_product) =>
+		navigation.navigate('updateProduct', { id: id_product });
 
 	return (
 		<View style={styles.container}>
@@ -60,7 +65,13 @@ const ListProducts = () => {
 						</View>
 					)
 				}
-				renderItem={({ item }) => <Product value={item} />}
+				renderItem={({ item }) => (
+					<Product
+						value={item}
+						isOwner={item.id_business === userBusiness?.id_business}
+						onSelect={onSelectProduct}
+					/>
+				)}
 				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
 			/>
 			{loading === 'pending' && (

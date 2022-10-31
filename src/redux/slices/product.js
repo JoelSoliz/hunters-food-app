@@ -1,9 +1,9 @@
 import { AsyncStorage } from 'react-native';
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
-import { getProductAsync, registerProductAsync } from '../../api/product';
+import { getProductsAsync, getProductAsync, registerProductAsync } from '../../api/product';
 
-export const getProducts = createAsyncThunk('getProduct/getProductAsync', async (page) => {
-	const result = await getProductAsync(page);
+export const getProducts = createAsyncThunk('getProducts/getProductsAsync', async (page) => {
+	const result = await getProductsAsync(page);
 	const { detail } = result;
 	if (detail) {
 		console.error(detail);
@@ -33,11 +33,23 @@ export const registerProduct = createAsyncThunk(
 	}
 );
 
+export const getProduct = createAsyncThunk('getProduct/getProductAsync', async (id) => {
+	const result = await getProductAsync(id);
+	const { detail } = result;
+	if (detail) {
+		console.error(detail);
+		throw Error(detail);
+	}
+	return result;
+});
+
 const initialState = {
 	loading: 'idle',
 	products: [],
 	total_pages: 1,
+	selectedProduct: undefined,
 };
+
 export const productsSlice = createSlice({
 	name: 'products',
 	initialState,
@@ -48,6 +60,17 @@ export const productsSlice = createSlice({
 		},
 	},
 	extraReducers: (builder) => {
+		builder.addCase(getProduct.pending, (state, _) => {
+			state.loading = 'pending';
+		});
+		builder.addCase(getProduct.fulfilled, (state, { payload }) => {
+			state.loading = 'succeeded';
+			state.selectedProduct = payload;
+		});
+		builder.addCase(getProduct.rejected, (state, _) => {
+			state.loading = 'failed';
+		});
+
 		builder.addCase(getProducts.pending, (state, _) => {
 			state.loading = 'pending';
 		});

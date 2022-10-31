@@ -10,18 +10,36 @@ import RegisterBusiness from '../screens/registerBusiness/Form';
 import RegisterProduct from '../screens/registerProduct/RegisterProduct';
 import SignIn from '../screens/login/Login';
 import SignUp from '../screens/registerUser/RegisterUser';
+import UpdateProduct from '../screens/updateProduct/UpdateProduct';
 
 const Stack = createNativeStackNavigator();
 
 const HomeRouter = () => {
+	const theme = useTheme();
 	return (
 		<Stack.Navigator
 			initialRouteName='home'
 			screenOptions={{
-				headerShown: false,
+				headerStyle: {
+					backgroundColor: theme.colors.primary,
+				},
+				headerTintColor: 'black',
+				headerTitleStyle: {
+					textAlign: 'center',
+					fontWeight: '#F97316',
+				},
 			}}
 		>
-			<Stack.Screen name='home' component={Home} options={{ title: 'Home' }} />
+			<Stack.Screen
+				name='home'
+				component={Home}
+				options={{ title: 'Home', headerShown: false }}
+			/>
+			<Stack.Screen
+				name='updateProduct'
+				component={UpdateProduct}
+				options={{ title: 'Actualizar Producto' }}
+			/>
 		</Stack.Navigator>
 	);
 };
@@ -58,6 +76,11 @@ const ProfileRouter = () => {
 				name='registerProduct'
 				component={RegisterProduct}
 				options={{ title: 'Registrar Producto' }}
+			/>
+			<Stack.Screen
+				name='updateProduct'
+				component={UpdateProduct}
+				options={{ title: 'Actualizar Producto' }}
 			/>
 		</Stack.Navigator>
 	);
