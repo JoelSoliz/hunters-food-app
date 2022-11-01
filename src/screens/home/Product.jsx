@@ -82,16 +82,13 @@ const Product = ({ value, isOwner, onSelect }) => {
 					>
 						Bs. {value.price}
 					</Text>
+					<Text></Text>
 					{isOwner && (
-						<Text
+						<AntDesing
+							name='edit'
+							style={{ fontSize: 25, color: '#F97316' }}
 							onPress={() => onSelect(value.id_product)}
-							style={{
-								...styles.text,
-								fontSize: 15,
-							}}
-						>
-							IsOwner
-						</Text>
+						/>
 					)}
 				</View>
 			</View>

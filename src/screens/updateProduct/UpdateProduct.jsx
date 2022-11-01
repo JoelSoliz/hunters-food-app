@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import ProductForm from '../../components/forms/ProductForm';
-import { getProduct, productsSelector } from '../../redux/slices/product';
+import { getProduct, productsSelector, updateProduct } from '../../redux/slices/product';
 
 const date = (datetime) => {
 	const dt = new Date(datetime);
@@ -13,9 +13,19 @@ const date = (datetime) => {
 	};
 };
 
-const UpdateProduct = ({ route }) => {
+const UpdateProduct = ({ route, navigation }) => {
 	const { selectedProduct, loading } = useSelector(productsSelector);
 	const dispatch = useDispatch();
+	const API_HOST = 'https://blooming-inlet-07928.herokuapp.com';
+
+	const handleSubmit = (data) =>
+		dispatch(
+			updateProduct({
+				idProduct: selectedProduct?.id_product,
+				idBusiness: selectedProduct?.id_business,
+				data,
+			})
+		);
 
 	useEffect(() => {
 		dispatch(getProduct(route.params.id));
@@ -25,20 +35,27 @@ const UpdateProduct = ({ route }) => {
 	}, [selectedProduct]);
 	return (
 		<View style={styles.container}>
-			<Text>{route.params.id}</Text>
+			<Text></Text>
 			{loading === 'succeeded' && (
 				<ProductForm
 					error={false}
 					loading={false}
 					onCancel={() => {}}
-					onSubmit={() => {}}
-					value={{
+					onSubmit={handleSubmit}
+					defaultValue={{
 						name: selectedProduct?.name,
+						description: selectedProduct?.description,
+						price: selectedProduct?.price.toString(),
+						discount: selectedProduct?.discount.toString(),
+						date_start: date(selectedProduct?.start_time),
 						date_end: date(selectedProduct?.final_time),
+						amount: selectedProduct?.amount.toString(),
+						product_type: selectedProduct?.product_type,
+						logo: `${API_HOST}/product/${selectedProduct?.id_product}/image`,
 					}}
 				/>
 			)}
-			<Text>mmmm</Text>
+			<Text></Text>
 		</View>
 	);
 };

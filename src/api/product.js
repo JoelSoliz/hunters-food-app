@@ -51,11 +51,11 @@ export const registerProductAsync = async (product, business_id, token) => {
 		.catch((error) => console.error(error));
 };
 
-export const update = async (product, business_id, token) => {
-	const apiURL = new URL(`${HOST}/product/register`);
+export const updateProductAsync = async (idProduct, idBusiness, product, token) => {
+	const apiURL = new URL(`${HOST}/product/${idProduct}`);
 	const dataList = ['name', 'description', 'product_type', 'amount', 'price', 'discount'];
 	dataList.forEach((key) => apiURL.searchParams.append(key, product[key] || ''));
-	apiURL.searchParams.append('id_business', business_id);
+	apiURL.searchParams.append('id_business', idBusiness);
 	apiURL.searchParams.append('start_time', convertToDate(product.date_start).toISOString());
 	apiURL.searchParams.append('final_time', convertToDate(product.date_end).toISOString());
 
@@ -67,15 +67,15 @@ export const update = async (product, business_id, token) => {
 		let image = {
 			uri: product['logo'],
 			name: `image.${end}`,
-			type: `image/${end}`,
+			type: `image/*`,
 		};
 		data.append('image', image);
 	}
 	let urlStr = apiURL.toString();
-	urlStr = urlStr.replace('register/', 'register');
+	urlStr = urlStr.replace(`${idProduct}/`, idProduct);
 
 	return fetch(urlStr, {
-		method: 'POST',
+		method: 'PUT',
 		headers: {
 			Authorization: `Bearer ${token}`,
 		},

@@ -1,6 +1,11 @@
 import { AsyncStorage } from 'react-native';
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
-import { getProductsAsync, getProductAsync, registerProductAsync } from '../../api/product';
+import {
+	getProductsAsync,
+	getProductAsync,
+	registerProductAsync,
+	updateProductAsync,
+} from '../../api/product';
 
 export const getProducts = createAsyncThunk('getProducts/getProductsAsync', async (page) => {
 	const result = await getProductsAsync(page);
@@ -21,6 +26,27 @@ export const registerProduct = createAsyncThunk(
 			throw new Error('invalid credential');
 		}
 		const result = await registerProductAsync(data, id, token);
+		if (!result) {
+			console.error('Intenta de nuevo');
+			throw new Error('Intenta de nuevo');
+		}
+		if (result?.detail) {
+			console.log(result.detail);
+			throw new Error(result.detail);
+		}
+		return result;
+	}
+);
+
+export const updateProduct = createAsyncThunk(
+	'updateProduct/updateProductAsync',
+	async ({ idProduct, idBusiness, data }) => {
+		let token = await AsyncStorage.getItem('token');
+		if (!token) {
+			console.error('Vuelve a iniciar sesión');
+			throw new Error('invalid credential');
+		}
+		const result = await updateProductAsync(idProduct, idBusiness, data, token);
 		if (!result) {
 			console.error('Intenta de nuevo');
 			throw new Error('Intenta de nuevo');
@@ -60,6 +86,17 @@ export const productsSlice = createSlice({
 		},
 	},
 	extraReducers: (builder) => {
+		builder.addCase(updateProduct.pending, (state, _) => {
+			state.loading = 'pending';
+		});
+		builder.addCase(updateProduct.fulfilled, (state, { payload }) => {
+			state.loading = 'succeeded';
+			console.log(payload);
+		});
+		builder.addCase(updateProduct.rejected, (state, _) => {
+			state.loading = 'failed';
+		});
+
 		builder.addCase(getProduct.pending, (state, _) => {
 			state.loading = 'pending';
 		});
