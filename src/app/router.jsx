@@ -71,8 +71,8 @@ const ProfileRouter = () => {
 };
 
 const ICONS = {
-	negocios: 'shopping-bag',
 	Home: 'home',
+	Negocios: 'shopping-bag',
 	Perfil: 'user-alt',
 };
 
@@ -97,7 +97,7 @@ const Navigator = () => {
 				})}
 			>
 				<Tab.Screen name='Home' component={HomeRouter} />
-				<Tab.Screen name='negocios' component={Busines} />
+				<Tab.Screen name='Negocios' component={Busines} />
 				<Tab.Screen name='Perfil' component={ProfileRouter} />
 			</Tab.Navigator>
 		</NavigationContainer>

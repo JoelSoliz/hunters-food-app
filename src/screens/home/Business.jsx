@@ -26,7 +26,7 @@ const Business = ({ value }) => {
 							imageError
 								? image
 								: {
-										uri: `${API_HOST}/Business/${value.id_business}/logo`,
+										uri: `${API_HOST}/business/${value.id_business}/logo`,
 								  }
 						}
 						style={styles.logo}
@@ -51,7 +51,7 @@ const Business = ({ value }) => {
 							marginTop: '15%',
 						}}
 					>
-						ubicacion
+						Ubicacion
 						<AntDesing
 							name='enviroment'
 							onPress={locations}
