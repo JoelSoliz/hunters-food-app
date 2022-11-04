@@ -42,7 +42,12 @@ const initialState = {
 export const businessSlice = createSlice({
 	name: 'business',
 	initialState,
-	reducers: {},
+	reducers: {
+		reset: (state) => {
+			state.total_pages = 1;
+			state.business = [];
+		},
+	},
 	extraReducers: (builder) => {
 		builder.addCase(registerBusiness.pending, (state, _) => {
 			state.loading = 'pending';
@@ -54,8 +59,6 @@ export const businessSlice = createSlice({
 		builder.addCase(registerBusiness.rejected, (state, _) => {
 			state.loading = 'failed';
 		});
-	},
-	extraReducers: (builder) => {
 		builder.addCase(getBusiness.pending, (state, _) => {
 			state.loading = 'pending';
 		});
@@ -77,6 +80,6 @@ export const businessSelector = createSelector(
 	(state) => state
 );
 
-// export const {} = businessSlice.actions;
+ export const {reset} = businessSlice.actions;
 
 export default businessSlice.reducer;
