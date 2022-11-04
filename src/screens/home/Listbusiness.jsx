@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Text, View, FlatList } from 'react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { businessSelector, resetLoading, getBusiness } from '../../redux/slices/business';
+import { businessSelector, reset, getBusiness } from '../../redux/slices/business';
 import { Chip, useTheme } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
 import HomeHeader from './HomeHeader';
@@ -15,7 +15,7 @@ const Listbusiness = () => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(resetLoading());
+		dispatch(reset());
 	}, []);
 
 	useEffect(() => {
