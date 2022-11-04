@@ -8,7 +8,7 @@ import { logout, sessionSelector } from '../../redux/slices/session';
 const Profile = ({ navigation }) => {
 	const { colors } = useTheme();
 	const { isAuthenticate, user } = useSelector(sessionSelector);
-	const { business } = useSelector(businessSelector);
+	const { userBusiness } = useSelector(businessSelector);
 	const dispatch = useDispatch();
 
 	const onLogout = () => dispatch(logout());
@@ -29,16 +29,27 @@ const Profile = ({ navigation }) => {
 			)}
 			{isAuthenticate && (
 				<>
-					{business && (
-						<Text
-							style={{
-								...styles.navigate,
-								textDecorationLine: 'none',
-								color: colors.text,
-							}}
-						>
-							Negocio: {business.name}
-						</Text>
+					{userBusiness && (
+						<>
+							<Text
+								style={{
+									...styles.navigate,
+									textDecorationLine: 'none',
+									color: colors.text,
+								}}
+							>
+								Negocio: {userBusiness.name}
+							</Text>
+							<Pressable
+								onPress={() => {
+									navigation.navigate('registerProduct');
+								}}
+							>
+								<Text style={{ ...styles.navigate, color: colors.accent }}>
+									Registrar Producto
+								</Text>
+							</Pressable>
+						</>
 					)}
 					<Pressable
 						onPress={() => {

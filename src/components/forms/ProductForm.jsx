@@ -1,28 +1,51 @@
-import { Controller, useForm } from 'react-hook-form';
-import ImagePicker from '../../components/input/ImagePicker';
-import DropDown from 'react-native-paper-dropdown';
-import productCategory from '../../data/productCategory.json';
 import { useState } from 'react';
-import { StyleSheet, View, StatusBar, ScrollView } from 'react-native';
-import TimePicker from '../../components/input/TimePicker';
+import { Controller, useForm } from 'react-hook-form';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { Button, TextInput, HelperText } from 'react-native-paper';
+import DropDown from 'react-native-paper-dropdown';
+
+import DatetimePicker from '../../components/input/DatetimePicker';
+import ImagePicker from '../../components/input/ImagePicker';
+import productCategory from '../../data/productCategory.json';
+import {
+	validateGreater,
+	validateGreaterThanToday,
+	validateLessThirtyDays,
+} from '../operaciones/fecha';
+
+const formatTime = (time) => {
+	return ('0' + (time || '0')).slice(-2);
+};
+
+const formatDatetime = (dt) => {
+	return `${dt?.date.toLocaleDateString() || new Date().toLocaleDateString()} ${formatTime(
+		dt?.hours
+	)}:${formatTime(dt?.minutes)}`;
+};
 
 const ERROR_MESSAGES = {
-	discountSchedule: 'Introducir un rango de tiempo',
+	greaterToday: 'El inicio del descuento debe ser mayor a hoy.',
+	greaterEnd: 'El inicio del descuento debe ser menor al fin.',
+	greaterStart: 'El fin del descuento debe ser mayor al inicio.',
+	lessThirty: 'El fin del descuento debe ser menor a 30 días en el futuro.',
 	maxDiscount: 'El descuento máximo es del',
 	minDiscount: 'El descuento mínimo es del',
-	number: 'Ingresar un número decimal.',
+	number: 'Solo son válidos numeros positivos.',
 	maxLength: 'La longitud máxima es',
 	minLength: 'La longitud mínima es',
 	required: 'Este campo es requerido.',
 };
-const ProductForm = ({ onSubmit }) => {
+
+const ProductForm = ({ error, loading, onCancel, onSubmit }) => {
 	const [visible, setVisible] = useState(false);
+
 	const submit = (data) => onSubmit(data);
+
 	const {
 		control,
-		formState: { errors, isValid },
+		formState: { errors },
 		handleSubmit,
+		trigger,
 		watch,
 	} = useForm({ mode: 'onChange' });
 
@@ -34,13 +57,13 @@ const ProductForm = ({ onSubmit }) => {
 					name='name'
 					rules={{
 						maxLength: { message: `${ERROR_MESSAGES.maxLength} 100.`, value: 100 },
-						minLength: { message: `${ERROR_MESSAGES.minLength} 4.`, value: 4 },
+						minLength: { message: `${ERROR_MESSAGES.minLength} 3.`, value: 3 },
 						required: { message: ERROR_MESSAGES.required, value: true },
 					}}
 					render={({ field: { onChange, value } }) => (
 						<>
 							<TextInput
-								label='Nombre'
+								label='Nombre*'
 								mode='outlined'
 								style={styles.input}
 								value={value}
@@ -74,11 +97,13 @@ const ProductForm = ({ onSubmit }) => {
 					name='price'
 					rules={{
 						required: { message: ERROR_MESSAGES.required, value: true },
+						validate: (value) =>
+							(!isNaN(parseFloat(value)) && value > 0) || ERROR_MESSAGES.number,
 					}}
 					render={({ field: { onChange, value } }) => (
 						<>
 							<TextInput
-								label='Precio'
+								label='Precio regular*'
 								keyboardType='numeric'
 								mode='outlined'
 								style={styles.input}
@@ -95,12 +120,12 @@ const ProductForm = ({ onSubmit }) => {
 					rules={{
 						required: { message: ERROR_MESSAGES.required, value: true },
 						validate: (value) =>
-							(value >= 0 && value < 100) || 'El porcentaje debe ser entre 1%-100 %',
+							(value >= 0 && value < 100) || 'El porcentaje debe ser entre 0%-100%',
 					}}
 					render={({ field: { onChange, value } }) => (
 						<>
 							<TextInput
-								label='Porcentaje de descuento'
+								label='Porcentaje de descuento*'
 								keyboardType='numeric'
 								mode='outlined'
 								style={styles.input}
@@ -113,16 +138,17 @@ const ProductForm = ({ onSubmit }) => {
 				/>
 				<Controller
 					control={control}
-					name='discount_schedule_end'
+					name='date_start'
 					rules={{
 						validate: (value) => {
-							a = new Date(0);
-							a.setHours(value?.hours || 0);
-							a.setMinutes(value?.minutes || 0);
-							b = new Date(0);
-							b.setHours(watch('discount_schedule_start')?.hours || 0);
-							b.setMinutes(watch('discount_schedule_start')?.minutes || 0);
-							return a > b || 'La hora final debe ser después de la hora de inicio';
+							if (!validateGreaterThanToday(value)) {
+								return ERROR_MESSAGES.greaterToday;
+							}
+							if (!validateGreater(value, watch('date_end'))) {
+								return ERROR_MESSAGES.greaterEnd;
+							}
+
+							return true;
 						},
 						required: { message: ERROR_MESSAGES.required, value: true },
 					}}
@@ -130,60 +156,64 @@ const ProductForm = ({ onSubmit }) => {
 						<>
 							<TextInput
 								editable={false}
-								label='Fin de descuento'
+								label='Inicio del descuento*'
 								mode='outlined'
 								style={styles.input}
-								value={`${value?.hours || '00'}:${value?.minutes || '00'}`}
+								value={formatDatetime(value)}
 								right={
 									<TextInput.Affix
-										text={<TimePicker onChange={onChange} value={value} />}
+										text={
+											<DatetimePicker
+												onChange={(value) => {
+													onChange(value);
+													trigger('date_end');
+												}}
+												value={value}
+											/>
+										}
 									/>
 								}
 							/>
-
-							<HelperText type='error'>
-								{errors.discount_schedule_end?.message}
-							</HelperText>
+							<HelperText type='error'>{errors.date_start?.message}</HelperText>
 						</>
 					)}
 				/>
 				<Controller
 					control={control}
-					name='discount_schedule_start'
+					name='date_end'
 					rules={{
 						validate: (value) => {
-							a = new Date(0);
-							a.setHours(value?.hours || 0);
-							a.setMinutes(value?.minutes || 0);
-							b = new Date(0);
-							b.setHours(watch('discount_schedule_end')?.hours || 0);
-							b.setMinutes(watch('discount_schedule_end')?.minutes || 0);
+							if (!validateGreater(watch('date_start'), value)) {
+								return ERROR_MESSAGES.greaterStart;
+							}
 
-							return (
-								a < b || 'La hora de inicio debe ser antes que la hora del final'
-							);
+							return validateLessThirtyDays(value) || ERROR_MESSAGES.lessThirty;
 						},
-
 						required: { message: ERROR_MESSAGES.required, value: true },
 					}}
 					render={({ field: { onChange, value } }) => (
 						<>
 							<TextInput
 								editable={false}
-								label='Inicio de descuento'
+								label='Fin del descuento*'
 								mode='outlined'
 								style={styles.input}
-								value={`${value?.hours || '00'}:${value?.minutes || '00'}`}
+								value={formatDatetime(value)}
 								right={
 									<TextInput.Affix
-										text={<TimePicker onChange={onChange} value={value} />}
+										text={
+											<DatetimePicker
+												onChange={(value) => {
+													onChange(value);
+													trigger('date_start');
+												}}
+												value={value}
+											/>
+										}
 									/>
 								}
 							/>
-
-							<HelperText type='error'>
-								{errors.discount_schedule_start?.message}
-							</HelperText>
+							<HelperText type='error'>{errors.date_end?.message}</HelperText>
 						</>
 					)}
 				/>
@@ -206,14 +236,14 @@ const ProductForm = ({ onSubmit }) => {
 				/>
 				<Controller
 					control={control}
-					name='category'
+					name='product_type'
 					rules={{
 						required: { message: ERROR_MESSAGES.required, value: true },
 					}}
 					render={({ field: { onChange, value } }) => (
 						<>
 							<DropDown
-								label='Categoría'
+								label='Categoría*'
 								mode='outlined'
 								value={value}
 								setValue={onChange}
@@ -223,16 +253,13 @@ const ProductForm = ({ onSubmit }) => {
 								onDismiss={() => setVisible(false)}
 								inputProps={{ style: styles.input }}
 							/>
-							<HelperText type='error'>{errors.category?.message}</HelperText>
+							<HelperText type='error'>{errors.product_type?.message}</HelperText>
 						</>
 					)}
 				/>
 				<Controller
 					control={control}
 					name='logo'
-					rules={{
-						required: { message: ERROR_MESSAGES.required, value: true },
-					}}
 					render={({ field: { onChange, value } }) => (
 						<>
 							<ImagePicker onChange={onChange} value={value}>
@@ -242,30 +269,38 @@ const ProductForm = ({ onSubmit }) => {
 						</>
 					)}
 				/>
-				<View style={styles.buttonContainer}></View>
-				<StatusBar style='auto' />
+				{error && (
+					<HelperText type='error' style={{ textAlign: 'center' }}>
+						Producto no registrado, vuelve a intentarlo en unos minutos.
+					</HelperText>
+				)}
 				<View style={styles.buttonContainer}>
-					<Button
-						style={styles.button}
-						mode='contained'
-						onPress={handleSubmit(submit)}
-						disabled={!isValid}
-					>
-						Guardar
-					</Button>
-					<Button
-						style={styles.button}
-						mode='contained'
-						onPress={handleSubmit(submit)}
-						disabled={!isValid}
-					>
-						Cancelar
-					</Button>
+					{loading ? (
+						<HelperText type='info'>Loading...</HelperText>
+					) : (
+						<View style={{ flexDirection: 'row' }}>
+							<Button
+								style={{ ...styles.button, marginRight: 10 }}
+								mode='outlined'
+								onPress={onCancel}
+							>
+								Cancelar
+							</Button>
+							<Button
+								style={styles.button}
+								mode='contained'
+								onPress={handleSubmit(submit)}
+							>
+								Guardar
+							</Button>
+						</View>
+					)}
 				</View>
 			</View>
 		</ScrollView>
 	);
 };
+
 const styles = StyleSheet.create({
 	title: {
 		textAlign: 'center',
@@ -290,11 +325,10 @@ const styles = StyleSheet.create({
 		borderRadius: 45,
 	},
 	buttonContainer: {
-		marginVertical: 5,
+		marginBottom: 20,
+		marginTop: 10,
 		display: 'flex',
 		alignItems: 'center',
-		flexDirection: 'row',
-		justifyContent: 'space-between',
 	},
 });
 

@@ -1,18 +1,17 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Text, View, FlatList, RefreshControl } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Text, View, FlatList } from 'react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { getProducts, productsSelector, reset } from '../../redux/slices/product';
+import { businessSelector, reset, getBusiness } from '../../redux/slices/business';
 import { Chip, useTheme } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
 import HomeHeader from './HomeHeader';
-import Product from './Product';
+import Business from './Business';
 
-const ListProducts = () => {
+const Listbusiness = () => {
 	const [page, setPage] = useState(1);
-	const [refreshing, setRefreshing] = useState(false);
 	const { colors } = useTheme();
-	const { loading, products, total_pages } = useSelector(productsSelector);
+	const { loading, business, total_pages } = useSelector(businessSelector);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -20,16 +19,8 @@ const ListProducts = () => {
 	}, []);
 
 	useEffect(() => {
-		dispatch(getProducts(page));
+		dispatch(getBusiness(page));
 	}, [page]);
-
-	const onRefresh = useCallback(() => {
-		setRefreshing(true);
-		setPage(1);
-		dispatch(reset());
-		dispatch(getProducts(1));
-		setRefreshing(false);
-	}, [refreshing]);
 
 	return (
 		<View style={styles.container}>
@@ -44,7 +35,7 @@ const ListProducts = () => {
 			</View>
 			<FlatList
 				contentContainerStyle={{ justifyContent: 'center' }}
-				data={products}
+				data={business}
 				onEndReached={() => {
 					if (page + 1 <= total_pages) {
 						setPage(page + 1);
@@ -55,13 +46,12 @@ const ListProducts = () => {
 					loading !== 'pending' && (
 						<View style={styles.center}>
 							<Text style={styles.text}>
-								No hay productos disponibles para mostrar.
+								No hay negocios disponibles para mostrar.
 							</Text>
 						</View>
 					)
 				}
-				renderItem={({ item }) => <Product value={item} />}
-				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+				renderItem={({ item }) => <Business value={item} />}
 			/>
 			{loading === 'pending' && (
 				<View style={styles.center}>
@@ -99,4 +89,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default ListProducts;
+export default Listbusiness;
