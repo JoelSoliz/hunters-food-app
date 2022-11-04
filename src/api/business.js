@@ -28,6 +28,13 @@ export const registerBusinessAsync = async (business, token) => {
 		.then((response) => response.json())
 		.catch((error) => console.log(error.sourceURL));
 };
+export const getBusinessAsync = (page) => {
+	const apiURL = `${HOST}/business/?current_page=${page}`;
+	return fetch(apiURL)
+		.then((response) => response.json())
+		.catch((error) => console.log(error));
+};
+
 
 // export const registerBusinessAsync = async (business, token) => {
 // 	const myHeaders = new Headers();

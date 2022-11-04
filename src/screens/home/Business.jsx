@@ -26,7 +26,7 @@ const Business = ({ value }) => {
 							imageError
 								? image
 								: {
-										uri: `${API_HOST}/business/${value.id_business}/logo`,
+										uri: `${API_HOST}/business/${value.id_business}/image`,
 								  }
 						}
 						style={styles.logo}
@@ -47,7 +47,7 @@ const Business = ({ value }) => {
 						style={{
 							...styles.subText,
 							fontSize: 15,
-							right: '-47%',
+							right: -80,
 							marginTop: '15%',
 						}}
 					>
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
 		borderColor: '#F97316',
 		borderRadius: 15,
 		borderWidth: 1,
-		height: 150,
+		height: 130,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		marginHorizontal: 20,
@@ -89,15 +89,15 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 	},
 	logo: {
-		height: 110,
-		width: '90%',
+		height: 100,
+		width: '100%',
 		borderRadius: 10,
 	},
 	logoContainer: {
 		alignItems: 'center',
 		marginLeft: 10,
-		marginVertical: 20,
-		width: '35%',
+		marginVertical: 15,
+		width: 100,
 	},
 	mainContainer: {
 		marginHorizontal: 15,
