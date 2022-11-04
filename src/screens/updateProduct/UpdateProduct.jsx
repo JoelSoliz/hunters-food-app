@@ -1,8 +1,12 @@
+import React from 'react';
 import { useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Modal, Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import ProductForm from '../../components/forms/ProductForm';
 import { getProduct, productsSelector, updateProduct } from '../../redux/slices/product';
+import AntDesing from 'react-native-vector-icons/AntDesign';
+import { useState } from 'react';
+import MyAlert from './MyAlert';
 
 const date = (datetime) => {
 	const dt = new Date(datetime);
@@ -17,6 +21,27 @@ const UpdateProduct = ({ route, navigation }) => {
 	const { selectedProduct, loading } = useSelector(productsSelector);
 	const dispatch = useDispatch();
 	const API_HOST = 'https://blooming-inlet-07928.herokuapp.com';
+
+	/*const alert = (data) => {
+		<Modal visible={true} transparent animationType='fade'>
+			<View style={styles.centered_view}>
+				<View style={styles.warning_modal}>
+					<View style={styles.warning_title}>
+						<Text style={styles.text}> Confirmación</Text>
+					</View>
+					<View style={styles.warning_body}>
+						<Text>¿Esta seguro de relizar los cambios?</Text>
+					</View>
+					<Pressable onPress={() => handleSubmit(data)} style={styles.warning_button}>
+						<Text>ACEPTAR</Text>
+					</Pressable>
+					<Pressable style={styles.warning_button}>
+						<Text>CANCELAR</Text>
+					</Pressable>
+				</View>
+			</View>
+		</Modal>;
+	};*/
 
 	const handleSubmit = (data) =>
 		dispatch(
@@ -40,8 +65,8 @@ const UpdateProduct = ({ route, navigation }) => {
 				<ProductForm
 					error={false}
 					loading={false}
-					onCancel={() => {}}
-					onSubmit={handleSubmit}
+					onCancel={() => navigation.navigate('home')}
+					onSubmit={() => <MyAlert />}
 					defaultValue={{
 						name: selectedProduct?.name,
 						description: selectedProduct?.description,
@@ -55,7 +80,6 @@ const UpdateProduct = ({ route, navigation }) => {
 					}}
 				/>
 			)}
-			<Text></Text>
 		</View>
 	);
 };
@@ -65,6 +89,38 @@ const styles = StyleSheet.create({
 		backgroundColor: '#282928',
 		paddingHorizontal: 30,
 		paddingTop: 40,
+	},
+	text: {
+		color: '#000000',
+		fontSize: 20,
+		margin: 10,
+	},
+	centered_view: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: '#000099',
+	},
+	warning_modal: {
+		width: 300,
+		height: 300,
+		backgroundColor: '#000000',
+		borderRadius: 15,
+	},
+	warning_title: {
+		height: 50,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	warning_body: {
+		height: 200,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	warning_button: {
+		backgroundColor: '#000000',
+		borderBottomLeftRadius: 15,
+		borderBottomRightRadius: 15,
 	},
 });
 export default UpdateProduct;
