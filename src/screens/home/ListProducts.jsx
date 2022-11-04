@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Text, View, FlatList } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Text, View, FlatList, RefreshControl } from 'react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { getProduct, productsSelector, reset } from '../../redux/slices/product';
+import { getProducts, productsSelector, reset } from '../../redux/slices/product';
 import { Chip, useTheme } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
 import HomeHeader from './HomeHeader';
@@ -10,6 +10,7 @@ import Product from './Product';
 
 const ListProducts = () => {
 	const [page, setPage] = useState(1);
+	const [refreshing, setRefreshing] = useState(false);
 	const { colors } = useTheme();
 	const { loading, products, total_pages } = useSelector(productsSelector);
 	const dispatch = useDispatch();
@@ -19,8 +20,16 @@ const ListProducts = () => {
 	}, []);
 
 	useEffect(() => {
-		dispatch(getProduct(page));
+		dispatch(getProducts(page));
 	}, [page]);
+
+	const onRefresh = useCallback(() => {
+		setRefreshing(true);
+		setPage(1);
+		dispatch(reset());
+		dispatch(getProducts(1));
+		setRefreshing(false);
+	}, [refreshing]);
 
 	return (
 		<View style={styles.container}>
@@ -52,6 +61,7 @@ const ListProducts = () => {
 					)
 				}
 				renderItem={({ item }) => <Product value={item} />}
+				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
 			/>
 			{loading === 'pending' && (
 				<View style={styles.center}>

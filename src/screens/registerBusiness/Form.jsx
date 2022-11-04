@@ -162,9 +162,9 @@ const RegisterForm = ({ navigation }) => {
 				onDismiss={() => setVisibleS(false)}
 				duration={4000}
 				action={{
-					label: 'Ir a Home',
+					label: 'Ir al Perfil',
 					onPress: () => {
-						navigation.navigate('home');
+						navigation.navigate('profile');
 					},
 				}}
 			>
@@ -173,6 +173,7 @@ const RegisterForm = ({ navigation }) => {
 		</ScrollView>
 	);
 };
+
 const styles = StyleSheet.create({
 	title: {
 		textAlign: 'center',

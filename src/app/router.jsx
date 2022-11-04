@@ -8,6 +8,7 @@ import Home from '../screens/home/Home';
 import Business from '../screens/home/HomeBusiness';
 import Profile from '../screens/profile/Profile';
 import RegisterBusiness from '../screens/registerBusiness/Form';
+import RegisterProduct from '../screens/registerProduct/RegisterProduct';
 import SignIn from '../screens/login/Login';
 import SignUp from '../screens/registerUser/RegisterUser';
 
@@ -42,7 +43,7 @@ const ProfileRouter = () => {
 	const theme = useTheme();
 	return (
 		<Stack.Navigator
-			initialRouteName='home'
+			initialRouteName='profile'
 			screenOptions={{
 				headerStyle: {
 					backgroundColor: theme.colors.primary,
@@ -65,6 +66,11 @@ const ProfileRouter = () => {
 				name='registerBusiness'
 				component={RegisterBusiness}
 				options={{ title: 'Registrar Negocio' }}
+			/>
+			<Stack.Screen
+				name='registerProduct'
+				component={RegisterProduct}
+				options={{ title: 'Registrar Producto' }}
 			/>
 		</Stack.Navigator>
 	);

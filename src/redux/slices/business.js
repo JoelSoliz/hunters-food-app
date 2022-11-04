@@ -36,29 +36,22 @@ export const registerBusiness = createAsyncThunk(
 
 const initialState = {
 	loading: 'idle',
-	business: [],
-	total_pages: 1,
+	business: undefined,
 };
 
 export const businessSlice = createSlice({
 	name: 'business',
 	initialState,
-	reducers: {
-		reset: (state) => {
-			state.total_pages = 1;
-			state.business = [];
-		},
-	},
+	reducers: {},
 	extraReducers: (builder) => {
 		builder.addCase(registerBusiness.pending, (state, _) => {
 			state.loading = 'pending';
 		});
 		builder.addCase(registerBusiness.fulfilled, (state, { payload }) => {
 			state.loading = 'succeeded';
-			state.business = payload;
+			state.userBusiness = payload;
 		});
 		builder.addCase(registerBusiness.rejected, (state, _) => {
-			console.log('Failed');
 			state.loading = 'failed';
 		});
 	},
@@ -84,6 +77,6 @@ export const businessSelector = createSelector(
 	(state) => state
 );
 
-export const {reset} = businessSlice.actions;
+// export const {} = businessSlice.actions;
 
 export default businessSlice.reducer;
