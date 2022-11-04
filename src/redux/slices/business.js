@@ -36,16 +36,15 @@ export const registerBusiness = createAsyncThunk(
 
 const initialState = {
 	loading: 'idle',
-	business: undefined,
+	userBusiness: undefined,
 };
 
 export const businessSlice = createSlice({
 	name: 'business',
 	initialState,
 	reducers: {
-		reset: (state) => {
-			state.total_pages = 1;
-			state.business = [];
+		resetLoading: (state, _) => {
+			state.loading= 'idle';
 		},
 	},
 	extraReducers: (builder) => {
@@ -80,6 +79,6 @@ export const businessSelector = createSelector(
 	(state) => state
 );
 
- export const {reset} = businessSlice.actions;
+ export const {resetLoading} = businessSlice.actions;
 
 export default businessSlice.reducer;
