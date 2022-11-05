@@ -6,7 +6,6 @@ import ProductForm from '../../components/forms/ProductForm';
 import { getProduct, productsSelector, updateProduct } from '../../redux/slices/product';
 import AntDesing from 'react-native-vector-icons/AntDesign';
 import { useState } from 'react';
-import MyAlert from './MyAlert';
 
 const date = (datetime) => {
 	const dt = new Date(datetime);
@@ -21,27 +20,37 @@ const UpdateProduct = ({ route, navigation }) => {
 	const { selectedProduct, loading } = useSelector(productsSelector);
 	const dispatch = useDispatch();
 	const API_HOST = 'https://blooming-inlet-07928.herokuapp.com';
+	const [showWarning, SetshowWarning] = useState(false);
 
-	/*const alert = (data) => {
-		<Modal visible={true} transparent animationType='fade'>
-			<View style={styles.centered_view}>
-				<View style={styles.warning_modal}>
-					<View style={styles.warning_title}>
-						<Text style={styles.text}> Confirmación</Text>
+	const alert = () => {
+		return (
+			<Modal visible={showWarning} transparent animationType='fade'>
+				<View style={styles.centered_view}>
+					<View style={styles.warning_modal}>
+						<View style={styles.warning_title}>
+							<Text style={styles.text}> Confirmación</Text>
+						</View>
+						<View style={styles.warning_body}>
+							<Text>¿Esta seguro de relizar los cambios?</Text>
+						</View>
+						<Pressable onPress={() => onPressHandler()} style={styles.warning_button}>
+							<Text>ACEPTAR</Text>
+						</Pressable>
+						<Pressable
+							style={styles.warning_button}
+							onPress={() => SetshowWarning(false)}
+						>
+							<Text>CANCELAR</Text>
+						</Pressable>
 					</View>
-					<View style={styles.warning_body}>
-						<Text>¿Esta seguro de relizar los cambios?</Text>
-					</View>
-					<Pressable onPress={() => handleSubmit(data)} style={styles.warning_button}>
-						<Text>ACEPTAR</Text>
-					</Pressable>
-					<Pressable style={styles.warning_button}>
-						<Text>CANCELAR</Text>
-					</Pressable>
 				</View>
-			</View>
-		</Modal>;
-	};*/
+			</Modal>
+		);
+	};
+
+	const onPressHandler = (data) => {
+		() => handleSubmit(data), () => SetshowWarning(false);
+	};
 
 	const handleSubmit = (data) =>
 		dispatch(
@@ -66,7 +75,7 @@ const UpdateProduct = ({ route, navigation }) => {
 					error={false}
 					loading={false}
 					onCancel={() => navigation.navigate('home')}
-					onSubmit={() => <MyAlert />}
+					onSubmit={() => SetshowWarning(true)}
 					defaultValue={{
 						name: selectedProduct?.name,
 						description: selectedProduct?.description,
