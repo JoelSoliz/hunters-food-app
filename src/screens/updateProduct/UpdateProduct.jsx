@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
 	},
 	warning_button1: {
 		position: 'absolute',
-		left: 125,
+		left: 130,
 		marginHorizontal: 50,
 		marginVertical: 250,
 	},
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
 	},
 	warning_textButton: {
 		color: '#F97316',
-		fontSize: 20,
+		fontSize: 19,
 	},
 });
 export default UpdateProduct;
