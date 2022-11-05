@@ -23,37 +23,8 @@ const UpdateProduct = ({ route, navigation }) => {
 	const [showWarning, SetshowWarning] = useState(false);
 	const [myAlert, SetmyAlert] = useState(false);
 
-	/*const alert = (data) => {
-		return (
-			<Modal visible={showWarning} transparent animationType='fade'>
-				<View style={styles.centered_view}>
-					<View style={styles.warning_modal}>
-						<View style={styles.warning_title}>
-							<Text style={styles.text}> Confirmación</Text>
-						</View>
-						<View style={styles.warning_body}>
-							<Text>¿Esta seguro de relizar los cambios?</Text>
-						</View>
-						<Pressable
-							onPress={() => onPressHandler(data)}
-							style={styles.warning_button}
-						>
-							<Text>ACEPTAR</Text>
-						</Pressable>
-						<Pressable
-							style={styles.warning_button}
-							onPress={() => SetshowWarning(false)}
-						>
-							<Text>CANCELAR</Text>
-						</Pressable>
-					</View>
-				</View>
-			</Modal>
-		);
-	};*/
-
 	const onPressHandler = () => {
-		handleSubmit(myAlert), SetshowWarning(false);
+		handleSubmit(myAlert), SetshowWarning(false), navigation.navigate('home');
 	};
 
 	const handleSubmit = (data) =>
@@ -72,56 +43,52 @@ const UpdateProduct = ({ route, navigation }) => {
 		console.log(selectedProduct);
 	}, [selectedProduct]);
 	return (
-		<View>
+		<View style={styles.container}>
 			<Modal visible={showWarning} transparent animationType='fade'>
 				<View style={styles.centered_view}>
 					<View style={styles.warning_modal}>
-						<View style={styles.warning_title}>
-							<Text style={styles.text}> Confirmación</Text>
-						</View>
 						<View style={styles.warning_body}>
-							<Text>¿Esta seguro de relizar los cambios?</Text>
+							<AntDesing name='warning' style={{ fontSize: 60, color: '#F97316' }} />
+							<Text></Text>
+							<Text style={styles.warning_text}>
+								¿Esta seguro de relizar los cambios?
+							</Text>
 						</View>
-						<Pressable
-							onPress={() => onPressHandler(data)}
-							style={styles.warning_button}
-						>
-							<Text>ACEPTAR</Text>
+						<Pressable onPress={() => onPressHandler()} style={styles.warning_button1}>
+							<Text style={styles.warning_textButton}>ACEPTAR</Text>
 						</Pressable>
 						<Pressable
-							style={styles.warning_button}
+							style={styles.warning_button2}
 							onPress={() => SetshowWarning(false)}
 						>
-							<Text>CANCELAR</Text>
+							<Text style={styles.warning_textButton}>CANCELAR</Text>
 						</Pressable>
 					</View>
 				</View>
 			</Modal>
-			<View style={styles.container}>
-				<Text></Text>
-				{loading === 'succeeded' && (
-					<ProductForm
-						error={false}
-						loading={false}
-						onCancel={() => navigation.navigate('home')}
-						onSubmit={(data) => {
-							SetshowWarning(true);
-							SetmyAlert(data);
-						}}
-						defaultValue={{
-							name: selectedProduct?.name,
-							description: selectedProduct?.description,
-							price: selectedProduct?.price.toString(),
-							discount: selectedProduct?.discount.toString(),
-							date_start: date(selectedProduct?.start_time),
-							date_end: date(selectedProduct?.final_time),
-							amount: selectedProduct?.amount.toString(),
-							product_type: selectedProduct?.product_type,
-							logo: `${API_HOST}/product/${selectedProduct?.id_product}/image`,
-						}}
-					/>
-				)}
-			</View>
+			<Text></Text>
+			{loading === 'succeeded' && (
+				<ProductForm
+					error={false}
+					loading={false}
+					onCancel={() => navigation.navigate('home')}
+					onSubmit={(data) => {
+						SetshowWarning(true);
+						SetmyAlert(data);
+					}}
+					defaultValue={{
+						name: selectedProduct?.name,
+						description: selectedProduct?.description,
+						price: selectedProduct?.price.toString(),
+						discount: selectedProduct?.discount.toString(),
+						date_start: date(selectedProduct?.start_time),
+						date_end: date(selectedProduct?.final_time),
+						amount: selectedProduct?.amount.toString(),
+						product_type: selectedProduct?.product_type,
+						logo: `${API_HOST}/product/${selectedProduct?.id_product}/image`,
+					}}
+				/>
+			)}
 		</View>
 	);
 };
@@ -132,37 +99,43 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 30,
 		paddingTop: 40,
 	},
-	text: {
-		color: '#000000',
-		fontSize: 20,
+	warning_text: {
+		color: '#ffffff',
+		fontSize: 18,
 		margin: 10,
+		textAlign: 'center',
 	},
 	centered_view: {
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
-		backgroundColor: '#000099',
 	},
 	warning_modal: {
 		width: 300,
 		height: 300,
-		backgroundColor: '#000000',
+		backgroundColor: '#1D1919',
 		borderRadius: 15,
 	},
-	warning_title: {
-		height: 50,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
 	warning_body: {
+		top: 20,
 		height: 200,
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
-	warning_button: {
-		backgroundColor: '#000000',
-		borderBottomLeftRadius: 15,
-		borderBottomRightRadius: 15,
+	warning_button1: {
+		position: 'absolute',
+		left: 125,
+		marginHorizontal: 50,
+		marginVertical: 250,
+	},
+	warning_button2: {
+		position: 'absolute',
+		marginHorizontal: 35,
+		marginVertical: 250,
+	},
+	warning_textButton: {
+		color: '#F97316',
+		fontSize: 20,
 	},
 });
 export default UpdateProduct;
