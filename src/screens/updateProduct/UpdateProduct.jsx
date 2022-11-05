@@ -21,8 +21,9 @@ const UpdateProduct = ({ route, navigation }) => {
 	const dispatch = useDispatch();
 	const API_HOST = 'https://blooming-inlet-07928.herokuapp.com';
 	const [showWarning, SetshowWarning] = useState(false);
+	const [myAlert, SetmyAlert] = useState(false);
 
-	const alert = () => {
+	/*const alert = (data) => {
 		return (
 			<Modal visible={showWarning} transparent animationType='fade'>
 				<View style={styles.centered_view}>
@@ -33,7 +34,10 @@ const UpdateProduct = ({ route, navigation }) => {
 						<View style={styles.warning_body}>
 							<Text>¿Esta seguro de relizar los cambios?</Text>
 						</View>
-						<Pressable onPress={() => onPressHandler()} style={styles.warning_button}>
+						<Pressable
+							onPress={() => onPressHandler(data)}
+							style={styles.warning_button}
+						>
 							<Text>ACEPTAR</Text>
 						</Pressable>
 						<Pressable
@@ -46,10 +50,10 @@ const UpdateProduct = ({ route, navigation }) => {
 				</View>
 			</Modal>
 		);
-	};
+	};*/
 
-	const onPressHandler = (data) => {
-		() => handleSubmit(data), () => SetshowWarning(false);
+	const onPressHandler = () => {
+		handleSubmit(myAlert), SetshowWarning(false);
 	};
 
 	const handleSubmit = (data) =>
@@ -68,27 +72,56 @@ const UpdateProduct = ({ route, navigation }) => {
 		console.log(selectedProduct);
 	}, [selectedProduct]);
 	return (
-		<View style={styles.container}>
-			<Text></Text>
-			{loading === 'succeeded' && (
-				<ProductForm
-					error={false}
-					loading={false}
-					onCancel={() => navigation.navigate('home')}
-					onSubmit={() => SetshowWarning(true)}
-					defaultValue={{
-						name: selectedProduct?.name,
-						description: selectedProduct?.description,
-						price: selectedProduct?.price.toString(),
-						discount: selectedProduct?.discount.toString(),
-						date_start: date(selectedProduct?.start_time),
-						date_end: date(selectedProduct?.final_time),
-						amount: selectedProduct?.amount.toString(),
-						product_type: selectedProduct?.product_type,
-						logo: `${API_HOST}/product/${selectedProduct?.id_product}/image`,
-					}}
-				/>
-			)}
+		<View>
+			<Modal visible={showWarning} transparent animationType='fade'>
+				<View style={styles.centered_view}>
+					<View style={styles.warning_modal}>
+						<View style={styles.warning_title}>
+							<Text style={styles.text}> Confirmación</Text>
+						</View>
+						<View style={styles.warning_body}>
+							<Text>¿Esta seguro de relizar los cambios?</Text>
+						</View>
+						<Pressable
+							onPress={() => onPressHandler(data)}
+							style={styles.warning_button}
+						>
+							<Text>ACEPTAR</Text>
+						</Pressable>
+						<Pressable
+							style={styles.warning_button}
+							onPress={() => SetshowWarning(false)}
+						>
+							<Text>CANCELAR</Text>
+						</Pressable>
+					</View>
+				</View>
+			</Modal>
+			<View style={styles.container}>
+				<Text></Text>
+				{loading === 'succeeded' && (
+					<ProductForm
+						error={false}
+						loading={false}
+						onCancel={() => navigation.navigate('home')}
+						onSubmit={(data) => {
+							SetshowWarning(true);
+							SetmyAlert(data);
+						}}
+						defaultValue={{
+							name: selectedProduct?.name,
+							description: selectedProduct?.description,
+							price: selectedProduct?.price.toString(),
+							discount: selectedProduct?.discount.toString(),
+							date_start: date(selectedProduct?.start_time),
+							date_end: date(selectedProduct?.final_time),
+							amount: selectedProduct?.amount.toString(),
+							product_type: selectedProduct?.product_type,
+							logo: `${API_HOST}/product/${selectedProduct?.id_product}/image`,
+						}}
+					/>
+				)}
+			</View>
 		</View>
 	);
 };
