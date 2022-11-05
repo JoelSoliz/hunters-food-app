@@ -8,7 +8,7 @@ import { StyleSheet } from 'react-native';
 import HomeHeader from './HomeHeader';
 import Business from './Business';
 
-const Listbusiness = () => {
+const Listbusiness = ({ navigation }) => {
 	const [page, setPage] = useState(1);
 	const { colors } = useTheme();
 	const { loading, business, total_pages } = useSelector(businessSelector);
@@ -51,7 +51,7 @@ const Listbusiness = () => {
 						</View>
 					)
 				}
-				renderItem={({ item }) => <Business value={item} />}
+				renderItem={({ item }) => <Business value={item} navigation={navigation} />}
 			/>
 			{loading === 'pending' && (
 				<View style={styles.center}>

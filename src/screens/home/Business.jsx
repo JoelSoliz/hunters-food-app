@@ -2,12 +2,13 @@ import { AntDesign } from '@expo/vector-icons';
 import { useState } from 'react';
 import { Image, StyleSheet, Text, View, Linking } from 'react-native';
 import AntDesing from 'react-native-vector-icons/AntDesign';
+import { TouchableOpacity } from 'react-native';
 
 import image from '../../../assets/comida.png';
 
 const API_HOST = 'https://blooming-inlet-07928.herokuapp.com';
 
-const Business = ({ value }) => {
+const Business = ({ value, navigation }) => {
 	const [imageError, setImageError] = useState(false);
 	const locations = async () => {
 		const supportedURL = value.location;
@@ -16,50 +17,54 @@ const Business = ({ value }) => {
 
 	return (
 		<View style={styles.card}>
-			<View style={styles.content}>
-				<View style={styles.logoContainer}>
-					<Image
-						onError={() => {
-							setImageError(true);
-						}}
-						source={
-							imageError
-								? image
-								: {
-										uri: `${API_HOST}/business/${value.id_business}/image`,
-								  }
-						}
-						style={styles.logo}
-					/>
-				</View>
-				<View style={styles.mainContainer}>
-					<Text
-						style={{
-							...styles.text,
-							fontSize: 18,
-							marginTop: '17%',
-						}}
-					>
-						{value.name}
-					</Text>
-
-					<Text
-						style={{
-							...styles.subText,
-							fontSize: 15,
-							right: -80,
-							marginTop: '15%',
-						}}
-					>
-						Ubicacion
-						<AntDesing
-							name='enviroment'
-							onPress={locations}
-							style={{ fontSize: 25, color: '#F97316' }}
+			<TouchableOpacity
+				onPress={() => navigation.navigate('detailBusiness', { id: value.id_business })}
+			>
+				<View style={styles.content}>
+					<View style={styles.logoContainer}>
+						<Image
+							onError={() => {
+								setImageError(true);
+							}}
+							source={
+								imageError
+									? image
+									: {
+											uri: `${API_HOST}/business/${value.id_business}/image`,
+									  }
+							}
+							style={styles.logo}
 						/>
-					</Text>
+					</View>
+					<View style={styles.mainContainer}>
+						<Text
+							style={{
+								...styles.text,
+								fontSize: 18,
+								marginTop: '17%',
+							}}
+						>
+							{value.name}
+						</Text>
+
+						<Text
+							style={{
+								...styles.subText,
+								fontSize: 15,
+								right: -80,
+								marginTop: '15%',
+							}}
+						>
+							Ubicacion
+							<AntDesing
+								name='enviroment'
+								onPress={locations}
+								style={{ fontSize: 25, color: '#F97316' }}
+							/>
+						</Text>
+					</View>
 				</View>
-			</View>
+			</TouchableOpacity>
 		</View>
 	);
 };

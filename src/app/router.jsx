@@ -11,6 +11,7 @@ import RegisterBusiness from '../screens/registerBusiness/Form';
 import RegisterProduct from '../screens/registerProduct/RegisterProduct';
 import SignIn from '../screens/login/Login';
 import SignUp from '../screens/registerUser/RegisterUser';
+import ShowBusinessDetail from '../screens/businessDetail/ShowBusinessDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,7 +27,7 @@ const HomeRouter = () => {
 		</Stack.Navigator>
 	);
 };
-const Busines = () => {
+const BusinessRouter = () => {
 	return (
 		<Stack.Navigator
 			initialRouteName='home'
@@ -35,6 +36,11 @@ const Busines = () => {
 			}}
 		>
 			<Stack.Screen name='home' component={Business} options={{ title: 'Home' }} />
+			<Stack.Screen
+				name='detailBusiness'
+				component={ShowBusinessDetail}
+				options={{ title: 'Detalles del Negocio' }}
+			/>
 		</Stack.Navigator>
 	);
 };
@@ -103,7 +109,7 @@ const Navigator = () => {
 				})}
 			>
 				<Tab.Screen name='Home' component={HomeRouter} />
-				<Tab.Screen name='Negocios' component={Busines} />
+				<Tab.Screen name='Negocios' component={BusinessRouter} />
 				<Tab.Screen name='Perfil' component={ProfileRouter} />
 			</Tab.Navigator>
 		</NavigationContainer>

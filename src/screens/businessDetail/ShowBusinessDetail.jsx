@@ -1,8 +1,8 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Image, Text } from 'react-native';
 import { useTheme } from 'react-native-paper';
-import logo from '../../../assets/picture.png';
-import BrowserLinking from '../../components/linking/';
-
+import image from '../../../assets/picture.png';
+import BrowserLinking from '../../components/linking/BrowserLinking';
+import { useState } from 'react';
 const API_HOST = 'https://blooming-inlet-07928.herokuapp.com';
 const business = {
 	name: 'Pollos campeón ',
@@ -11,11 +11,12 @@ const business = {
 	id_business: '0A2K',
 	description: 'Pollos esquisitos ',
 };
-const ShowBusinessDetail = () => {
+const ShowBusinessDetail = ({ route }) => {
+	console.log(route.params.id);
 	const { colors } = useTheme();
 	const [imageError, setImageError] = useState(false);
 	return (
-		<View style={{ ...styles.view, backgroundColor: colors.surface }}>
+		<View style={{ flex: 1 }}>
 			<View>
 				<Image
 					onError={() => {
@@ -25,11 +26,19 @@ const ShowBusinessDetail = () => {
 						imageError
 							? image
 							: {
-									uri: `${API_HOST}/product/${business.id_business}/image`,
+									uri: `${API_HOST}/business/${business.id_business}/image`,
 							  }
 					}
 					style={styles.image}
 				/>
+			</View>
+			<View>
+				<Text>{business.name}</Text>
+				<Text>{business.description}</Text>
+				<Text>{business.category}</Text>
+				<View>
+					<BrowserLinking url={business.location} />
+				</View>
 			</View>
 		</View>
 	);
@@ -43,5 +52,7 @@ const styles = StyleSheet.create({
 		width: '100%',
 		height: '100%',
 		justifyContent: 'center',
+		display: 'flex',
 	},
+	image: {},
 });

@@ -3,12 +3,12 @@ import { useTheme } from 'react-native-paper';
 
 import Listbusiness from './Listbusiness';
 
-const Business = () => {
+const Business = ({ navigation }) => {
 	const { colors } = useTheme();
 
 	return (
 		<View style={{ ...styles.view, backgroundColor: colors.surface }}>
-			<Listbusiness />
+			<Listbusiness navigation={navigation} />
 		</View>
 	);
 };
