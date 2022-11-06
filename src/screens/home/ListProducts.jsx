@@ -1,13 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Text, View, FlatList, RefreshControl } from 'react-native';
-
-import { useDispatch, useSelector } from 'react-redux';
-import { getProducts, productsSelector, reset } from '../../redux/slices/product';
+import { FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native';
 import { Chip, useTheme } from 'react-native-paper';
-import { StyleSheet } from 'react-native';
-import HomeHeader from './HomeHeader';
-import Product from './Product';
+import { useDispatch, useSelector } from 'react-redux';
+
+import HomeHeader from '../../components/common/HomeHeader';
+import Product from '../../components/common/Product';
 import { businessSelector } from '../../redux/slices/business';
+import { getProducts, productsSelector, reset } from '../../redux/slices/product';
 
 const ListProducts = ({ navigation }) => {
 	const [page, setPage] = useState(1);
@@ -34,7 +33,9 @@ const ListProducts = ({ navigation }) => {
 	}, [refreshing]);
 
 	const onSelectProduct = (id_product) =>
-		navigation.navigate('updateProduct', { id: id_product });
+		navigation.navigate('<route_to_details>', { id: id_product });
+
+	const onEditProduct = (id_product) => navigation.navigate('updateProduct', { id: id_product });
 
 	return (
 		<View style={styles.container}>
@@ -69,6 +70,7 @@ const ListProducts = ({ navigation }) => {
 					<Product
 						value={item}
 						isOwner={item.id_business === userBusiness?.id_business}
+						onEdit={onEditProduct}
 						onSelect={onSelectProduct}
 					/>
 				)}
@@ -84,13 +86,10 @@ const ListProducts = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-	container: {
+	center: {
+		alignContent: 'center',
+		alignItems: 'center',
 		flex: 1,
-		backgroundColor: '#282928',
-	},
-	containerHeader: {
-		paddingHorizontal: 20,
-		paddingTop: 20,
 	},
 	chipSearch: {
 		alignItems: 'center',
@@ -99,14 +98,17 @@ const styles = StyleSheet.create({
 		marginVertical: 5,
 		width: 100,
 	},
+	container: {
+		backgroundColor: '#282928',
+		flex: 1,
+	},
+	containerHeader: {
+		paddingHorizontal: 20,
+		paddingTop: 20,
+	},
 	text: {
 		color: '#FFFFFF',
 		fontSize: 18,
-	},
-	center: {
-		flex: 1,
-		alignItems: 'center',
-		alignContent: 'center',
 	},
 });
 

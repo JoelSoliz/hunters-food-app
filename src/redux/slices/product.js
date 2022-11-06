@@ -7,6 +7,16 @@ import {
 	updateProductAsync,
 } from '../../api/product';
 
+export const getProduct = createAsyncThunk('getProduct/getProductAsync', async (id) => {
+	const result = await getProductAsync(id);
+	const { detail } = result;
+	if (detail) {
+		console.error(detail);
+		throw Error(detail);
+	}
+	return result;
+});
+
 export const getProducts = createAsyncThunk('getProducts/getProductsAsync', async (page) => {
 	const result = await getProductsAsync(page);
 	const { detail } = result;
@@ -59,21 +69,11 @@ export const updateProduct = createAsyncThunk(
 	}
 );
 
-export const getProduct = createAsyncThunk('getProduct/getProductAsync', async (id) => {
-	const result = await getProductAsync(id);
-	const { detail } = result;
-	if (detail) {
-		console.error(detail);
-		throw Error(detail);
-	}
-	return result;
-});
-
 const initialState = {
 	loading: 'idle',
 	products: [],
-	total_pages: 1,
 	selectedProduct: undefined,
+	total_pages: 1,
 };
 
 export const productsSlice = createSlice({
@@ -86,17 +86,6 @@ export const productsSlice = createSlice({
 		},
 	},
 	extraReducers: (builder) => {
-		builder.addCase(updateProduct.pending, (state, _) => {
-			state.loading = 'pending';
-		});
-		builder.addCase(updateProduct.fulfilled, (state, { payload }) => {
-			state.loading = 'succeeded';
-			console.log(payload);
-		});
-		builder.addCase(updateProduct.rejected, (state, _) => {
-			state.loading = 'failed';
-		});
-
 		builder.addCase(getProduct.pending, (state, _) => {
 			state.loading = 'pending';
 		});
@@ -119,6 +108,7 @@ export const productsSlice = createSlice({
 		builder.addCase(getProducts.rejected, (state, _) => {
 			state.loading = 'failed';
 		});
+
 		builder.addCase(registerProduct.pending, (state, _) => {
 			state.loading = 'pending';
 		});
@@ -127,6 +117,17 @@ export const productsSlice = createSlice({
 			console.log(payload);
 		});
 		builder.addCase(registerProduct.rejected, (state, _) => {
+			state.loading = 'failed';
+		});
+
+		builder.addCase(updateProduct.pending, (state, _) => {
+			state.loading = 'pending';
+		});
+		builder.addCase(updateProduct.fulfilled, (state, { payload }) => {
+			state.loading = 'succeeded';
+			console.log(payload);
+		});
+		builder.addCase(updateProduct.rejected, (state, _) => {
 			state.loading = 'failed';
 		});
 	},
