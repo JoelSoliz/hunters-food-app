@@ -86,7 +86,7 @@ const RegisterForm = ({ navigation }) => {
 					rules={{
 						pattern: {
 							message: ERROR_MESSAGES.link,
-							value: /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/,
+							value: /^https:\/\/(goo\.gl\/maps|maps.app.goo.gl)\/(.{1,})/,
 						},
 						required: { message: ERROR_MESSAGES.required, value: true },
 					}}
@@ -94,7 +94,7 @@ const RegisterForm = ({ navigation }) => {
 						<>
 							<TextInput
 								col
-								label='Ubicación'
+								label='Ubicación (Link de Google Maps)'
 								mode='outlined'
 								style={styles.input}
 								value={value}

@@ -1,9 +1,12 @@
 [
 	{ "label": "Cereal", "value": "cereal" },
 	{ "label": "Fruta", "value": "fruta" },
-	{ "label": "Lacteo y derivados", "value": "lacteo-y-derivados" },
-	{ "label": "Proteína", "value": "proteina" },
+	{ "label": "Lacteos y derivados", "value": "lacteos-y-derivados" },
+	{ "label": "Soda", "value": "soda" },
 	{ "label": "Fruto seco", "value": "fruto-seco" },
-	{ "label": "Aceite", "value": "aceite" },
-	{ "label": "Verdura", "value": "verdura" }
+	{ "label": "Conservas", "value": "conservas" },
+	{ "label": "Snacks", "value": "snacks" },
+	{ "label": "Pan y masas", "value": "pan-y-masas" },
+	{ "label": "Postres", "value": "postres" },
+	{ "label": "Almuerzo", "value": "almuerzo" }
 ]
