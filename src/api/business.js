@@ -1,5 +1,26 @@
 const HOST = 'https://blooming-inlet-07928.herokuapp.com';
 
+export const getBusinessAsync = async (id) => {
+	const apiURL = `${HOST}/business/${id}`;
+	return fetch(apiURL)
+		.then((response) => response.json())
+		.catch((error) => console.log(error));
+};
+
+export const getBusinessProductsAsync = async (id, page) => {
+	const apiURL = `${HOST}/business/${id}/products?current_page=${page}`;
+	return fetch(apiURL)
+		.then((response) => response.json())
+		.catch((error) => console.log(error));
+};
+
+export const getBusinessesAsync = async (page) => {
+	const apiURL = `${HOST}/business/?current_page=${page}`;
+	return fetch(apiURL)
+		.then((response) => response.json())
+		.catch((error) => console.log(error));
+};
+
 export const registerBusinessAsync = async (business, token) => {
 	const url = `${HOST}/business/register`;
 	const apiURL = new URL(url);
@@ -28,10 +49,3 @@ export const registerBusinessAsync = async (business, token) => {
 		.then((response) => response.json())
 		.catch((error) => console.log(error));
 };
-export const getBusinessAsync = (page) => {
-	const apiURL = `${HOST}/business/?current_page=${page}`;
-	return fetch(apiURL)
-		.then((response) => response.json())
-		.catch((error) => console.log(error));
-};
-
