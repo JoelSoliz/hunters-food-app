@@ -36,6 +36,8 @@ const ListProducts = ({ navigation }) => {
 	const onSelectProduct = (id_product) =>
 		navigation.navigate('updateProduct', { id: id_product });
 
+	const onSelectProductDetail = (id_product) =>
+		navigation.navigate('productDetail', { id: id_product });
 	return (
 		<View style={styles.container}>
 			<View style={styles.containerHeader}>
@@ -70,6 +72,7 @@ const ListProducts = ({ navigation }) => {
 						value={item}
 						isOwner={item.id_business === userBusiness?.id_business}
 						onSelect={onSelectProduct}
+						onSelectDetail={onSelectProductDetail}
 					/>
 				)}
 				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}

@@ -12,6 +12,7 @@ import RegisterProduct from '../screens/registerProduct/RegisterProduct';
 import SignIn from '../screens/login/Login';
 import SignUp from '../screens/registerUser/RegisterUser';
 import UpdateProduct from '../screens/updateProduct/UpdateProduct';
+import ProductDetail from '../screens/productDetail/ProductDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -40,6 +41,11 @@ const HomeRouter = () => {
 				name='updateProduct'
 				component={UpdateProduct}
 				options={{ title: 'Actualizar Producto' }}
+			/>
+			<Stack.Screen
+				name='productDetail'
+				component={ProductDetail}
+				options={{ title: 'Detalles del producto' }}
 			/>
 		</Stack.Navigator>
 	);
