@@ -5,7 +5,7 @@ import { useTheme } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/FontAwesome5';
 
 import Home from '../screens/home/Home';
-import Business from '../screens/home/HomeBusiness';
+import Businesses from '../screens/businesses/HomeBusiness';
 import Profile from '../screens/profile/Profile';
 import RegisterBusiness from '../screens/registerBusiness/Form';
 import RegisterProduct from '../screens/registerProduct/RegisterProduct';
@@ -50,7 +50,8 @@ const HomeRouter = () => {
 		</Stack.Navigator>
 	);
 };
-const Busines = () => {
+
+const BusinessRouter = () => {
 	return (
 		<Stack.Navigator
 			initialRouteName='home'
@@ -58,7 +59,7 @@ const Busines = () => {
 				headerShown: false,
 			}}
 		>
-			<Stack.Screen name='home' component={Business} options={{ title: 'Home' }} />
+			<Stack.Screen name='home' component={Businesses} options={{ title: 'Home' }} />
 		</Stack.Navigator>
 	);
 };
@@ -132,7 +133,7 @@ const Navigator = () => {
 				})}
 			>
 				<Tab.Screen name='Home' component={HomeRouter} />
-				<Tab.Screen name='Negocios' component={Busines} />
+				<Tab.Screen name='Negocios' component={BusinessRouter} />
 				<Tab.Screen name='Perfil' component={ProfileRouter} />
 			</Tab.Navigator>
 		</NavigationContainer>

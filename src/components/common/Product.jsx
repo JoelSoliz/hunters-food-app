@@ -1,18 +1,18 @@
 import { useState } from 'react';
-import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Chip } from 'react-native-paper';
 import AntDesing from 'react-native-vector-icons/AntDesign';
 
 import image from '../../../assets/comida.png';
-import fecha from '../../components/operaciones/fecha.js';
+import fecha from '../operaciones/fecha.js';
 
 const API_HOST = 'https://blooming-inlet-07928.herokuapp.com';
 
-const Product = ({ value, isOwner, onSelect, onSelectDetail }) => {
+const Product = ({ value, isOwner, onEdit, onSelect }) => {
 	const [imageError, setImageError] = useState(false);
 
 	return (
-		<TouchableOpacity onPress={() => onSelectDetail(value.id_product)}>
+		<TouchableOpacity onPress={() => onSelect(value.id_product)}>
 			<View style={styles.card}>
 				<View style={styles.content}>
 					<View style={styles.imageContainer}>
@@ -88,7 +88,7 @@ const Product = ({ value, isOwner, onSelect, onSelectDetail }) => {
 							<AntDesing
 								name='edit'
 								style={{ fontSize: 25, color: '#F97316' }}
-								onPress={() => onSelect(value.id_product)}
+								onPress={() => onEdit(value.id_product)}
 							/>
 						)}
 					</View>

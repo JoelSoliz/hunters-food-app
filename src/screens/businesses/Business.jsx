@@ -1,22 +1,22 @@
-import { AntDesign } from '@expo/vector-icons';
 import { useState } from 'react';
-import { Image, StyleSheet, Text, View, Linking } from 'react-native';
+import { Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import AntDesing from 'react-native-vector-icons/AntDesign';
 
 import image from '../../../assets/comida.png';
 
 const API_HOST = 'https://blooming-inlet-07928.herokuapp.com';
 
-const Business = ({ value }) => {
+const Business = ({ value, onSelect }) => {
 	const [imageError, setImageError] = useState(false);
+
 	const locations = async () => {
 		const supportedURL = value.location;
 		await Linking.openURL(supportedURL);
 	};
 
 	return (
-		<View style={styles.card}>
-			<View style={styles.content}>
+		<TouchableOpacity onPress={() => onSelect(value.id_business)}>
+			<View style={styles.card}>
 				<View style={styles.logoContainer}>
 					<Image
 						onError={() => {
@@ -37,21 +37,19 @@ const Business = ({ value }) => {
 						style={{
 							...styles.text,
 							fontSize: 18,
-							marginTop: '17%',
 						}}
 					>
 						{value.name}
 					</Text>
-
 					<Text
 						style={{
 							...styles.subText,
 							fontSize: 15,
-							right: -80,
-							marginTop: '15%',
+							marginTop: 10,
+							textAlign: 'right',
 						}}
 					>
-						Ubicacion
+						Ubicación
 						<AntDesing
 							name='enviroment'
 							onPress={locations}
@@ -60,7 +58,7 @@ const Business = ({ value }) => {
 					</Text>
 				</View>
 			</View>
-		</View>
+		</TouchableOpacity>
 	);
 };
 
@@ -81,12 +79,8 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		height: 130,
 		flexDirection: 'row',
-		justifyContent: 'space-between',
 		marginHorizontal: 20,
 		marginVertical: 5,
-	},
-	content: {
-		flexDirection: 'row',
 	},
 	logo: {
 		height: 100,
@@ -100,8 +94,9 @@ const styles = StyleSheet.create({
 		width: 100,
 	},
 	mainContainer: {
-		marginHorizontal: 15,
-		marginVertical: 20,
+		flexGrow: 2,
+		justifyContent: 'center',
+		marginHorizontal: 20,
 	},
 	text: {
 		color: '#fff',
