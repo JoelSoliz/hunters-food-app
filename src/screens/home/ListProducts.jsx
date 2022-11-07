@@ -33,7 +33,7 @@ const ListProducts = ({ navigation }) => {
 	}, [refreshing]);
 
 	const onSelectProduct = (id_product) =>
-		navigation.navigate('<route_to_details>', { id: id_product });
+		navigation.navigate('productDetail', { id: id_product });
 
 	const onEditProduct = (id_product) => navigation.navigate('updateProduct', { id: id_product });
 
