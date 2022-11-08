@@ -4,13 +4,7 @@ import image from '../../../assets/picture.png';
 import BrowserLinking from '../../components/linking/BrowserLinking';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-	getBusiness,
-	getBusinesses,
-	getBusinessProducts,
-	businessSelector,
-} from '../../redux/slices/business';
-import { getProducts, productsSelector, reset } from '../../redux/slices/product';
+import { getBusiness, getBusinessProducts, businessSelector } from '../../redux/slices/business';
 import Product from '../../screens/home/Product';
 
 const API_HOST = 'https://blooming-inlet-07928.herokuapp.com';
@@ -23,14 +17,13 @@ const business = {
 	//selectedBusiness?
 };
 const ShowBusinessDetail = ({ route }) => {
-	console.log(route.params.id);
-	const { selectedBusiness, getBusinessProducts } = useSelector(businessSelector);
-	const { colors } = useTheme();
 	const [imageError, setImageError] = useState(false);
-	const { loading, products, total_pages } = useSelector(productsSelector);
 	const [page, setPage] = useState(1);
 	const [refreshing, setRefreshing] = useState(false);
+	const { selectedBusiness, getBusinessProducts } = useSelector(businessSelector);
+	const { colors } = useTheme();
 	const dispatch = useDispatch();
+
 	useEffect(() => {
 		dispatch(reset());
 	}, []);
@@ -48,7 +41,7 @@ const ShowBusinessDetail = ({ route }) => {
 	}, [refreshing]);
 
 	return (
-		<ScrollView style={styles.container}>
+		<ScrollView nestedscrollenabled style={styles.container}>
 			<View>
 				<Image
 					onError={() => {
@@ -98,39 +91,45 @@ const ShowBusinessDetail = ({ route }) => {
 					</View>
 				</View>
 			</View>
-
-			<Text style={styles.title}>Productos ofertados</Text>
-			<FlatList
-				contentContainerStyle={{
-					justifyContent: 'center',
-					paddingTop: 0,
-					paddingVertical: 8,
-				}}
-				data={products}
-				onEndReached={() => {
-					if (page + 1 <= total_pages) {
-						setPage(page + 1);
+			<View>
+				<FlatList
+					nestedscrollenabled
+					contentContainerStyle={{
+						justifyContent: 'center',
+						paddingTop: 0,
+						paddingVertical: 8,
+					}}
+					data={products}
+					onEndReached={() => {
+						if (page + 1 <= total_pages) {
+							setPage(page + 1);
+						}
+					}}
+					ItemSeparatorComponent={() => <></>}
+					ListHeaderComponent={() => (
+						<Text style={styles.title}>Productos ofertados</Text>
+					)}
+					ListEmptyComponent={() =>
+						loading !== 'pending' && (
+							<View style={styles.center}>
+								<Text style={styles.text}>
+									No hay productos disponibles para mostrar.
+								</Text>
+							</View>
+						)
 					}
-				}}
-				ItemSeparatorComponent={() => <></>}
-				ListEmptyComponent={() =>
-					loading !== 'pending' && (
-						<View style={styles.center}>
-							<Text style={styles.text}>
-								No hay productos disponibles para mostrar.
-							</Text>
-						</View>
-					)
-				}
-				renderItem={({ item }) => <Product value={item} />}
-				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-			/>
+					renderItem={({ item }) => <Product value={item} />}
+					refreshControl={
+						<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+					}
+				/>
 
-			{loading === 'pending' && (
-				<View style={styles.center}>
-					<Text style={styles.text}>Loading...</Text>
-				</View>
-			)}
+				{loading === 'pending' && (
+					<View style={styles.center}>
+						<Text style={styles.text}>Loading...</Text>
+					</View>
+				)}
+			</View>
 		</ScrollView>
 	);
 };
