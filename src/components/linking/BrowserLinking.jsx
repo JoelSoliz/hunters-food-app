@@ -1,6 +1,7 @@
 import { Linking } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'react-native-paper';
+import { View } from 'react-native';
 
 const BrowserLinking = ({ url }) => {
 	const { colors } = useTheme();
@@ -10,21 +11,17 @@ const BrowserLinking = ({ url }) => {
 
 	return (
 		<Ionicons.Button
+			alignItems='center'
+			justifyContent='center'
 			name='location-sharp'
 			mode='outlined'
 			backgroundColor='#52525240'
-			borderBottomColor='#737373'
-			borderColor='red'
-			color='orange'
-			borderRadius={45}
-			width={115}
-			marginVertical={5}
-			marginHorizontal={100}
-			display='flex'
-			alignItems='center'
+			color='#ff6600'
+			borderRadius={10}
+			compact={true}
 			onPress={handleBrowserPress}
 		>
-			Ubicación
+			Google Maps
 		</Ionicons.Button>
 	);
 };

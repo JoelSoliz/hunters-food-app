@@ -28,14 +28,26 @@ const HomeRouter = () => {
 	);
 };
 const BusinessRouter = () => {
+	const theme = useTheme();
 	return (
 		<Stack.Navigator
 			initialRouteName='home'
 			screenOptions={{
-				headerShown: false,
+				headerStyle: {
+					backgroundColor: theme.colors.primary,
+				},
+				headerTintColor: 'black',
+				headerTitleStyle: {
+					textAlign: 'center',
+					fontWeight: '#F97316',
+				},
 			}}
 		>
-			<Stack.Screen name='home' component={Business} options={{ title: 'Home' }} />
+			<Stack.Screen
+				name='home'
+				component={Business}
+				options={{ title: 'Home', headerShown: false }}
+			/>
 			<Stack.Screen
 				name='detailBusiness'
 				component={ShowBusinessDetail}
