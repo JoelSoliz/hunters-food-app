@@ -108,10 +108,12 @@ export const businessSlice = createSlice({
 		});
 		builder.addCase(getBusinessProducts.fulfilled, (state, { payload }) => {
 			state.loading = 'succeeded';
-			state.selectedBusiness.products = [
-				...state.selectedBusiness.products,
-				...payload.results,
-			];
+			if (!(state.selectedBusiness.products.length > 0 && payload.current_page === 1)) {
+				state.selectedBusiness.products = [
+					...state.selectedBusiness.products,
+					...payload.results,
+				];
+			}
 			state.selectedBusiness.total_pages = payload.total_pages;
 		});
 		builder.addCase(getBusinessProducts.rejected, (state, _) => {

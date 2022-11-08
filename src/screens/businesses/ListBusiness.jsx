@@ -22,7 +22,7 @@ const ListBusiness = ({ navigation }) => {
 	}, [page]);
 
 	const onSelectBusiness = (id_business) =>
-		navigation.navigate('<route_business_details>', { id: id_business });
+		navigation.navigate('detailBusiness', { id: id_business });
 
 	return (
 		<View style={styles.container}>
@@ -57,7 +57,7 @@ const ListBusiness = ({ navigation }) => {
 			/>
 			{loading === 'pending' && (
 				<View style={styles.center}>
-					<Text style={styles.text}>Loading...</Text>
+					<Text style={styles.text}>Cargando negocios...</Text>
 				</View>
 			)}
 		</View>

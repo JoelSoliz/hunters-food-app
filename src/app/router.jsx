@@ -77,6 +77,16 @@ const BusinessRouter = () => {
 				component={ShowBusinessDetail}
 				options={{ title: 'Detalles del Negocio' }}
 			/>
+			<Stack.Screen
+				name='updateProduct'
+				component={UpdateProduct}
+				options={{ title: 'Actualizar Producto' }}
+			/>
+			<Stack.Screen
+				name='productDetail'
+				component={ProductDetail}
+				options={{ title: 'Detalles del producto' }}
+			/>
 		</Stack.Navigator>
 	);
 };

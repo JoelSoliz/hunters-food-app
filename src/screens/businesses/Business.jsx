@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import AntDesing from 'react-native-vector-icons/AntDesign';
-import { TouchableOpacity } from 'react-native';
 
 import image from '../../../assets/comida.png';
 

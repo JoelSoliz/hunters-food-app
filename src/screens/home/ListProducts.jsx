@@ -78,7 +78,7 @@ const ListProducts = ({ navigation }) => {
 			/>
 			{loading === 'pending' && (
 				<View style={styles.center}>
-					<Text style={styles.text}>Loading...</Text>
+					<Text style={styles.text}>Cargando productos...</Text>
 				</View>
 			)}
 		</View>
