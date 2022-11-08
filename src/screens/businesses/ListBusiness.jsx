@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, FlatList } from 'react-native';
-
-import { useDispatch, useSelector } from 'react-redux';
-import { businessSelector, reset, getBusiness } from '../../redux/slices/business';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Chip, useTheme } from 'react-native-paper';
-import { StyleSheet } from 'react-native';
-import HomeHeader from './HomeHeader';
-import Business from './Business';
+import { useDispatch, useSelector } from 'react-redux';
 
-const Listbusiness = ({ navigation }) => {
+import Business from './Business';
+import HomeHeader from '../../components/common/HomeHeader';
+import { businessSelector, getBusinesses, reset } from '../../redux/slices/business';
+
+const ListBusiness = ({ navigation }) => {
 	const [page, setPage] = useState(1);
 	const { colors } = useTheme();
-	const { loading, business, total_pages } = useSelector(businessSelector);
+	const { loading, businesses, total_pages } = useSelector(businessSelector);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -19,8 +18,11 @@ const Listbusiness = ({ navigation }) => {
 	}, []);
 
 	useEffect(() => {
-		dispatch(getBusiness(page));
+		dispatch(getBusinesses(page));
 	}, [page]);
+
+	const onSelectBusiness = (id_business) =>
+		navigation.navigate('<route_business_details>', { id: id_business });
 
 	return (
 		<View style={styles.container}>
@@ -35,7 +37,7 @@ const Listbusiness = ({ navigation }) => {
 			</View>
 			<FlatList
 				contentContainerStyle={{ justifyContent: 'center' }}
-				data={business}
+				data={businesses}
 				onEndReached={() => {
 					if (page + 1 <= total_pages) {
 						setPage(page + 1);
@@ -51,7 +53,7 @@ const Listbusiness = ({ navigation }) => {
 						</View>
 					)
 				}
-				renderItem={({ item }) => <Business value={item} navigation={navigation} />}
+				renderItem={({ item }) => <Business value={item} onSelect={onSelectBusiness} />}
 			/>
 			{loading === 'pending' && (
 				<View style={styles.center}>
@@ -63,13 +65,10 @@ const Listbusiness = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-	container: {
+	center: {
+		alignContent: 'center',
+		alignItems: 'center',
 		flex: 1,
-		backgroundColor: '#282928',
-	},
-	containerHeader: {
-		paddingHorizontal: 20,
-		paddingTop: 20,
 	},
 	chipSearch: {
 		alignItems: 'center',
@@ -78,15 +77,18 @@ const styles = StyleSheet.create({
 		marginVertical: 5,
 		width: 100,
 	},
+	container: {
+		backgroundColor: '#282928',
+		flex: 1,
+	},
+	containerHeader: {
+		paddingHorizontal: 20,
+		paddingTop: 20,
+	},
 	text: {
 		color: '#FFFFFF',
 		fontSize: 18,
 	},
-	center: {
-		flex: 1,
-		alignItems: 'center',
-		alignContent: 'center',
-	},
 });
 
-export default Listbusiness;
+export default ListBusiness;

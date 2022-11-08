@@ -36,7 +36,7 @@ const ERROR_MESSAGES = {
 	required: 'Este campo es requerido.',
 };
 
-const ProductForm = ({ error, loading, onCancel, onSubmit }) => {
+const ProductForm = ({ error, loading, onCancel, onSubmit, defaultValue = {} }) => {
 	const [visible, setVisible] = useState(false);
 
 	const submit = (data) => onSubmit(data);
@@ -47,7 +47,7 @@ const ProductForm = ({ error, loading, onCancel, onSubmit }) => {
 		handleSubmit,
 		trigger,
 		watch,
-	} = useForm({ mode: 'onChange' });
+	} = useForm({ mode: 'onChange', defaultValues: defaultValue });
 
 	return (
 		<ScrollView style={styles.container}>
@@ -141,6 +141,19 @@ const ProductForm = ({ error, loading, onCancel, onSubmit }) => {
 					name='date_start'
 					rules={{
 						validate: (value) => {
+							let hours = defaultValue?.date_start?.hours;
+							let minutes = defaultValue?.date_start?.minutes;
+							let date = defaultValue?.date_start?.date;
+							if (
+								hours >= 0 &&
+								minutes >= 0 &&
+								date &&
+								value?.hours == hours &&
+								value?.minutes == minutes &&
+								value?.date == date
+							) {
+								return true;
+							}
 							if (!validateGreaterThanToday(value)) {
 								return ERROR_MESSAGES.greaterToday;
 							}

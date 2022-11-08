@@ -1,18 +1,19 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Text, View, FlatList, RefreshControl } from 'react-native';
-
-import { useDispatch, useSelector } from 'react-redux';
-import { getProducts, productsSelector, reset } from '../../redux/slices/product';
+import { FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native';
 import { Chip, useTheme } from 'react-native-paper';
-import { StyleSheet } from 'react-native';
-import HomeHeader from './HomeHeader';
-import Product from './Product';
+import { useDispatch, useSelector } from 'react-redux';
 
-const ListProducts = () => {
+import HomeHeader from '../../components/common/HomeHeader';
+import Product from '../../components/common/Product';
+import { businessSelector } from '../../redux/slices/business';
+import { getProducts, productsSelector, reset } from '../../redux/slices/product';
+
+const ListProducts = ({ navigation }) => {
 	const [page, setPage] = useState(1);
 	const [refreshing, setRefreshing] = useState(false);
 	const { colors } = useTheme();
 	const { loading, products, total_pages } = useSelector(productsSelector);
+	const { userBusiness } = useSelector(businessSelector);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -30,6 +31,11 @@ const ListProducts = () => {
 		dispatch(getProducts(1));
 		setRefreshing(false);
 	}, [refreshing]);
+
+	const onSelectProduct = (id_product) =>
+		navigation.navigate('productDetail', { id: id_product });
+
+	const onEditProduct = (id_product) => navigation.navigate('updateProduct', { id: id_product });
 
 	return (
 		<View style={styles.container}>
@@ -60,7 +66,14 @@ const ListProducts = () => {
 						</View>
 					)
 				}
-				renderItem={({ item }) => <Product value={item} />}
+				renderItem={({ item }) => (
+					<Product
+						value={item}
+						isOwner={item.id_business === userBusiness?.id_business}
+						onEdit={onEditProduct}
+						onSelect={onSelectProduct}
+					/>
+				)}
 				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
 			/>
 			{loading === 'pending' && (
@@ -73,13 +86,10 @@ const ListProducts = () => {
 };
 
 const styles = StyleSheet.create({
-	container: {
+	center: {
+		alignContent: 'center',
+		alignItems: 'center',
 		flex: 1,
-		backgroundColor: '#282928',
-	},
-	containerHeader: {
-		paddingHorizontal: 20,
-		paddingTop: 20,
 	},
 	chipSearch: {
 		alignItems: 'center',
@@ -88,14 +98,17 @@ const styles = StyleSheet.create({
 		marginVertical: 5,
 		width: 100,
 	},
+	container: {
+		backgroundColor: '#282928',
+		flex: 1,
+	},
+	containerHeader: {
+		paddingHorizontal: 20,
+		paddingTop: 20,
+	},
 	text: {
 		color: '#FFFFFF',
 		fontSize: 18,
-	},
-	center: {
-		flex: 1,
-		alignItems: 'center',
-		alignContent: 'center',
 	},
 });
 

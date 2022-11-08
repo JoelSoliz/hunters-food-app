@@ -5,25 +5,49 @@ import { useTheme } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/FontAwesome5';
 
 import Home from '../screens/home/Home';
-import Business from '../screens/home/HomeBusiness';
+import Businesses from '../screens/businesses/HomeBusiness';
 import Profile from '../screens/profile/Profile';
 import RegisterBusiness from '../screens/registerBusiness/Form';
 import RegisterProduct from '../screens/registerProduct/RegisterProduct';
 import SignIn from '../screens/login/Login';
 import SignUp from '../screens/registerUser/RegisterUser';
 import ShowBusinessDetail from '../screens/businessDetail/ShowBusinessDetail';
+import ProductDetail from '../screens/productDetail/ProductDetail';
+import UpdateProduct from '../screens/updateProduct/UpdateProduct';
 
 const Stack = createNativeStackNavigator();
 
 const HomeRouter = () => {
+	const theme = useTheme();
 	return (
 		<Stack.Navigator
 			initialRouteName='home'
 			screenOptions={{
-				headerShown: false,
+				headerStyle: {
+					backgroundColor: theme.colors.primary,
+				},
+				headerTintColor: 'black',
+				headerTitleStyle: {
+					textAlign: 'center',
+					fontWeight: '#F97316',
+				},
 			}}
 		>
-			<Stack.Screen name='home' component={Home} options={{ title: 'Home' }} />
+			<Stack.Screen
+				name='home'
+				component={Home}
+				options={{ title: 'Home', headerShown: false }}
+			/>
+			<Stack.Screen
+				name='updateProduct'
+				component={UpdateProduct}
+				options={{ title: 'Actualizar Producto' }}
+			/>
+			<Stack.Screen
+				name='productDetail'
+				component={ProductDetail}
+				options={{ title: 'Detalles del producto' }}
+			/>
 		</Stack.Navigator>
 	);
 };
@@ -45,7 +69,7 @@ const BusinessRouter = () => {
 		>
 			<Stack.Screen
 				name='home'
-				component={Business}
+				component={Businesses}
 				options={{ title: 'Home', headerShown: false }}
 			/>
 			<Stack.Screen
@@ -89,6 +113,11 @@ const ProfileRouter = () => {
 				name='registerProduct'
 				component={RegisterProduct}
 				options={{ title: 'Registrar Producto' }}
+			/>
+			<Stack.Screen
+				name='updateProduct'
+				component={UpdateProduct}
+				options={{ title: 'Actualizar Producto' }}
 			/>
 		</Stack.Navigator>
 	);
