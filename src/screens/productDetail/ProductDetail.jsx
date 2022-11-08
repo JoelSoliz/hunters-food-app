@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import { Card } from 'react-native-paper';
 
 import { Chip } from 'react-native-paper';
@@ -39,7 +39,7 @@ const ProductDetail = ({ route }) => {
 		console.log(selectedProduct);
 	}, [selectedProduct]);
 	return (
-		<View style={styles.container}>
+		<ScrollView style={styles.container}>
 			<Image
 				onError={() => {
 					setImageError(true);
@@ -55,14 +55,14 @@ const ProductDetail = ({ route }) => {
 			/>
 			<Ionicons
 				name='fast-food-outline'
-				style={{ fontSize: 60, color: '#F97316', marginVertical: 10, left: 240 }}
+				style={{ fontSize: 60, color: '#F97316', marginVertical: 10, marginLeft: 200 }}
 			/>
 			<Text style={styles.title}>{selectedProduct?.name}</Text>
 			<Text
 				style={{
 					...styles.subText,
 					marginVertical: 100,
-					left: 260,
+					marginLeft: 210,
 				}}
 			>
 				Antes:
@@ -71,7 +71,7 @@ const ProductDetail = ({ route }) => {
 				style={{
 					...styles.subText,
 					textDecorationLine: 'line-through',
-					left: 320,
+					marginLeft: 270,
 					marginVertical: -120,
 				}}
 			>
@@ -81,7 +81,7 @@ const ProductDetail = ({ route }) => {
 				style={{
 					...styles.subText,
 					marginVertical: 130,
-					left: 260,
+					marginLeft: 210,
 				}}
 			>
 				Ahora:
@@ -89,7 +89,7 @@ const ProductDetail = ({ route }) => {
 			<Text
 				style={{
 					fontSize: 20,
-					left: 320,
+					marginLeft: 270,
 					marginVertical: -155,
 					color: '#fff',
 					fontWeight: 'bold',
@@ -100,7 +100,7 @@ const ProductDetail = ({ route }) => {
 			<Text
 				style={{
 					fontSize: 28,
-					left: 310,
+					marginLeft: 260,
 					marginVertical: 35,
 					color: '#F97316',
 					fontWeight: 'bold',
@@ -114,14 +114,15 @@ const ProductDetail = ({ route }) => {
 					mode='outlined'
 					style={{
 						fontSize: 15,
-						left: 20,
+						marginLeft: 5,
 						marginVertical: -15,
 						color: '#fff',
 						fontWeight: 'bold',
-						backgroundColor: '#FFAE8050',
 						width: '45%',
 						height: 35,
 						alignItems: 'center',
+						backgroundColor: '#52525240',
+						borderRadius: 10,
 					}}
 				>
 					{selectedProduct?.product_type}
@@ -130,7 +131,7 @@ const ProductDetail = ({ route }) => {
 			<Text
 				style={{
 					fontSize: 17,
-					left: 20,
+					marginLeft: 5,
 					marginVertical: 60,
 					color: '#fff',
 					fontWeight: 'bold',
@@ -141,7 +142,7 @@ const ProductDetail = ({ route }) => {
 			<Text
 				style={{
 					fontSize: 20,
-					left: 190,
+					marginLeft: 170,
 					marginVertical: -85,
 					color: '#fff',
 				}}
@@ -151,7 +152,7 @@ const ProductDetail = ({ route }) => {
 			<Text
 				style={{
 					fontSize: 17,
-					left: 20,
+					marginLeft: 5,
 					marginVertical: 100,
 					color: '#fff',
 					fontWeight: 'bold',
@@ -162,7 +163,7 @@ const ProductDetail = ({ route }) => {
 			<Text
 				style={{
 					fontSize: 15,
-					left: 190,
+					marginLeft: 170,
 					marginVertical: -120,
 					color: '#fff',
 				}}
@@ -172,7 +173,7 @@ const ProductDetail = ({ route }) => {
 			<Text
 				style={{
 					fontSize: 17,
-					left: 20,
+					marginLeft: 5,
 					marginVertical: 140,
 					color: '#fff',
 					fontWeight: 'bold',
@@ -183,7 +184,7 @@ const ProductDetail = ({ route }) => {
 			<Text
 				style={{
 					fontSize: 15,
-					left: 190,
+					marginLeft: 170,
 					marginVertical: -160,
 					color: '#fff',
 				}}
@@ -193,13 +194,13 @@ const ProductDetail = ({ route }) => {
 			<Text
 				style={{
 					fontSize: 17,
-					left: 20,
+					marginLeft: 5,
 					marginVertical: 180,
 					color: '#fff',
 					fontWeight: 'bold',
 				}}
 			>
-				Descripción
+				Descripción:
 			</Text>
 			<View style={{ flexDirection: 'column' }}>
 				<Card>
@@ -208,10 +209,10 @@ const ProductDetail = ({ route }) => {
 							marginBottom: 10,
 							marginVertical: -160,
 							fontSize: 17,
-							left: 20,
+							marginLeft: 5,
 							color: '#fff',
 							backgroundColor: '#222222',
-							width: '90%',
+							width: '97%',
 							height: 100,
 							paddingHorizontal: 10,
 							paddingVertical: 10,
@@ -222,7 +223,7 @@ const ProductDetail = ({ route }) => {
 					</Text>
 				</Card>
 			</View>
-		</View>
+		</ScrollView>
 	);
 };
 const styles = StyleSheet.create({
@@ -241,7 +242,7 @@ const styles = StyleSheet.create({
 		color: '#fff',
 		fontSize: 35,
 		marginVertical: -70,
-		left: 20,
+		marginLeft: 5,
 	},
 	subText: {
 		color: '#fff',
