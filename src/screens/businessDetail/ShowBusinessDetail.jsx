@@ -1,16 +1,17 @@
-import { StyleSheet, ScrollView, View, Image, Text, FlatList, RefreshControl } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, ScrollView, View, Image, Text, FlatList } from 'react-native';
 import { useTheme, Chip, Card } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
+
 import image from '../../../assets/picture.png';
 import BrowserLinking from '../../components/linking/BrowserLinking';
-import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import Product from '../../components/common/Product';
 import {
 	getBusiness,
 	getBusinessProducts,
 	businessSelector,
 	resetSelectedBusiness,
 } from '../../redux/slices/business';
-import Product from '../../components/common/Product';
 
 const API_HOST = 'https://blooming-inlet-07928.herokuapp.com';
 

@@ -4,7 +4,6 @@ import { Snackbar } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 
 import RegisterForm from '../../components/auth/RegisterForm';
-import BrowserLinking from '../../components/linking/BrowserLinking';
 import { registerUser, resetLoading, sessionSelector } from '../../redux/slices/session';
 
 const RegisterUser = ({ navigation }) => {
@@ -38,7 +37,6 @@ const RegisterUser = ({ navigation }) => {
 					onCancel={() => navigation.navigate('login')}
 					onSubmit={handleSubmit}
 				/>
-				<BrowserLinking url={'https://maps.app.goo.gl/r7EfWqQHBDcj7fhb7'} />
 				<Snackbar
 					visible={visible}
 					onDismiss={() => setVisible(false)}
