@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
 		paddingTop: 10,
 	},
 	image: {
-		height: 235,
+		height: 300,
 		width: '100%',
 		borderRadius: 10,
 	},
