@@ -11,8 +11,9 @@ import RegisterBusiness from '../screens/registerBusiness/Form';
 import RegisterProduct from '../screens/registerProduct/RegisterProduct';
 import SignIn from '../screens/login/Login';
 import SignUp from '../screens/registerUser/RegisterUser';
-import UpdateProduct from '../screens/updateProduct/UpdateProduct';
+import ShowBusinessDetail from '../screens/businessDetail/ShowBusinessDetail';
 import ProductDetail from '../screens/productDetail/ProductDetail';
+import UpdateProduct from '../screens/updateProduct/UpdateProduct';
 
 const Stack = createNativeStackNavigator();
 
@@ -50,16 +51,42 @@ const HomeRouter = () => {
 		</Stack.Navigator>
 	);
 };
-
 const BusinessRouter = () => {
+	const theme = useTheme();
 	return (
 		<Stack.Navigator
 			initialRouteName='home'
 			screenOptions={{
-				headerShown: false,
+				headerStyle: {
+					backgroundColor: theme.colors.primary,
+				},
+				headerTintColor: 'black',
+				headerTitleStyle: {
+					textAlign: 'center',
+					fontWeight: '#F97316',
+				},
 			}}
 		>
-			<Stack.Screen name='home' component={Businesses} options={{ title: 'Home' }} />
+			<Stack.Screen
+				name='home'
+				component={Businesses}
+				options={{ title: 'Home', headerShown: false }}
+			/>
+			<Stack.Screen
+				name='detailBusiness'
+				component={ShowBusinessDetail}
+				options={{ title: 'Detalles del Negocio' }}
+			/>
+			<Stack.Screen
+				name='updateProduct'
+				component={UpdateProduct}
+				options={{ title: 'Actualizar Producto' }}
+			/>
+			<Stack.Screen
+				name='productDetail'
+				component={ProductDetail}
+				options={{ title: 'Detalles del producto' }}
+			/>
 		</Stack.Navigator>
 	);
 };
