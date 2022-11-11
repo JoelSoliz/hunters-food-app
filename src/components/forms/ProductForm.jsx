@@ -233,6 +233,10 @@ const ProductForm = ({ error, loading, onCancel, onSubmit, defaultValue = {} }) 
 				<Controller
 					control={control}
 					name='amount'
+					rules={{
+						validate: (value) =>
+							(!isNaN(parseFloat(value)) && value > 0) || ERROR_MESSAGES.number,
+					}}
 					render={({ field: { onChange, value } }) => (
 						<>
 							<TextInput

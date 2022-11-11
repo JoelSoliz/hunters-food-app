@@ -145,7 +145,7 @@ const ProductDetail = ({ route }) => {
 					{selectedProduct?.name}
 				</Text>
 				<View style={{ top: 0 }}>
-					<View style={{ flexDirection: 'row' }}>
+					<View style={{ alignItems: 'flex-start' }}>
 						<Chip
 							compact={true}
 							mode='outlined'
@@ -164,6 +164,28 @@ const ProductDetail = ({ route }) => {
 							{selectedProduct?.product_type}
 						</Chip>
 					</View>
+
+					<View style={{ alignItems: 'flex-end' }}>
+						<Chip
+							compact={true}
+							mode='outlined'
+							style={{
+								fontSize: 15,
+								color: '#fff',
+								fontWeight: 'bold',
+								width: '45%',
+								height: 35,
+								alignItems: 'center',
+								backgroundColor: '#52525240',
+								borderRadius: 10,
+								marginLeft: 20,
+								top: -25,
+							}}
+						>
+							{selectedProduct?.business}
+						</Chip>
+					</View>
+
 					<View
 						style={{
 							top: 10,
