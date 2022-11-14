@@ -33,6 +33,8 @@ const ERROR_MESSAGES = {
 	number: 'Solo son válidos numeros positivos.',
 	maxLength: 'La longitud máxima es',
 	minLength: 'La longitud mínima es',
+	maxQuantity: 'La cantidad máxima es',
+	minQuantity: 'La cantidad mínima es',
 	required: 'Este campo es requerido.',
 };
 
@@ -234,6 +236,9 @@ const ProductForm = ({ error, loading, onCancel, onSubmit, defaultValue = {} }) 
 					control={control}
 					name='amount'
 					rules={{
+						required: { message: ERROR_MESSAGES.required, value: true },
+						maxQuantity: { message: `${ERROR_MESSAGES.maxLength} 100.`, value: 100 },
+						minQuantity: { message: `${ERROR_MESSAGES.minLength} 1.`, value: 1 },
 						validate: (value) =>
 							(!isNaN(parseFloat(value)) && value > 0) || ERROR_MESSAGES.number,
 					}}
