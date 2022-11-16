@@ -109,6 +109,7 @@ const ProductForm = ({ error, loading, onCancel, onSubmit, defaultValue = {} }) 
 								style={styles.input}
 								value={value}
 								onChangeText={(value) => onChange(value)}
+								maxLength={4}
 							/>
 							<HelperText type='error'>{errors.price?.message}</HelperText>
 						</>
