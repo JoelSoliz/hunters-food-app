@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Chip } from 'react-native-paper';
+import { Chip, useTheme } from 'react-native-paper';
 import AntDesing from 'react-native-vector-icons/AntDesign';
+import { Feather } from '@expo/vector-icons';
 
 import image from '../../../assets/comida.png';
 import fecha from '../operaciones/fecha.js';
@@ -10,6 +11,7 @@ const API_HOST = 'https://blooming-inlet-07928.herokuapp.com';
 
 const Product = ({ value, isOwner, onEdit, onSelect }) => {
 	const [imageError, setImageError] = useState(false);
+	const theme = useTheme();
 
 	return (
 		<TouchableOpacity onPress={() => onSelect(value.id_product)}>
@@ -82,8 +84,9 @@ const Product = ({ value, isOwner, onEdit, onSelect }) => {
 							style={{
 								fontSize: 25,
 								left: 5,
-								color: '#F97316',
+								color: theme.colors.primary,
 							}}
+
 						/>
 						<Text
 							style={{
@@ -95,11 +98,23 @@ const Product = ({ value, isOwner, onEdit, onSelect }) => {
 						</Text>
 						<Text></Text>
 						{isOwner && (
-							<AntDesing
-								name='edit'
-								style={{ fontSize: 25, color: '#F97316' }}
-								onPress={() => onEdit(value.id_product)}
-							/>
+							<View
+								style={{
+									flexDirection: 'column',
+									marginTop: 10,
+								}}
+							>
+								<AntDesing
+									name='edit'
+									style={{ fontSize: 25, color: '#1687F0', marginBottom: 5 }}
+									onPress={() => onEdit(value.id_product)}
+								/>
+								<Feather
+									name='trash-2'
+									style={{ fontSize: 25, color: theme.colors.error }}
+									onPress={() => onEdit(value.id_product)}
+								/>
+							</View>
 						)}
 					</View>
 				</View>
