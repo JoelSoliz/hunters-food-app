@@ -64,16 +64,17 @@ const ProductDetail = ({ route }) => {
 					>
 						<Ionicons
 							name='fast-food-outline'
-							style={{ fontSize: 60, color: '#F97316' }}
+							style={{ fontSize: 35, color: '#F97316', left: 25 }}
 						/>
 						<Text
 							style={{
-								fontSize: 28,
+								fontSize: 25,
+								left: 25,
 								color: '#F97316',
 								fontWeight: 'bold',
 							}}
 						>
-							- {selectedProduct?.discount} %
+							{selectedProduct?.discount} %
 						</Text>
 					</View>
 
@@ -87,6 +88,7 @@ const ProductDetail = ({ route }) => {
 						<Text
 							style={{
 								...styles.subText,
+								left: 30,
 							}}
 						>
 							Antes:
@@ -96,6 +98,7 @@ const ProductDetail = ({ route }) => {
 								...styles.subText,
 								textDecorationLine: 'line-through',
 								marginLeft: 20,
+								left: 20,
 							}}
 						>
 							{selectedProduct?.price} bs
@@ -111,6 +114,7 @@ const ProductDetail = ({ route }) => {
 						<Text
 							style={{
 								...styles.subText,
+								left: 38,
 							}}
 						>
 							Ahora:
@@ -121,6 +125,7 @@ const ProductDetail = ({ route }) => {
 								color: '#fff',
 								fontWeight: 'bold',
 								marginLeft: 20,
+								left: 20,
 							}}
 						>
 							{descuento()} bs
@@ -132,9 +137,11 @@ const ProductDetail = ({ route }) => {
 				<Text
 					style={{
 						marginBottom: 10,
-						fontSize: 27,
+						fontSize: 25,
 						color: '#fff',
 						backgroundColor: '#282928',
+						top: 22,
+						left: -20,
 						width: '60%',
 						height: 120,
 						paddingVertical: 10,
