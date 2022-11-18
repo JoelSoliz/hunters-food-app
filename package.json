@@ -28,7 +28,7 @@
     "expo-image-picker": "^13.3.1",
     "expo-localization": "^13.1.0",
     "expo-status-bar": "~1.4.0",
-    "expo-updates": "~0.14.6",
+    "expo-updates": "~0.14.7",
     "intl": "^1.2.5",
     "react": "18.0.0",
     "react-dom": "18.0.0",

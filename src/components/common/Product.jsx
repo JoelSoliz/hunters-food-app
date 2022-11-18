@@ -57,16 +57,21 @@ const Product = ({ value, isOwner, onEdit, onSelect }) => {
 							<Text
 								style={{
 									...styles.text,
-									fontSize: 18,
+									fontSize: 15,
+									width: 130,
 								}}
 							>
 								{value.name}
 							</Text>
-							<View style={{ flexDirection: 'row' }}>
+							<View style={{ flexDirection: 'row', position: 'absolute', top: 55 }}>
 								<Chip
 									compact={true}
 									mode='outlined'
-									textStyle={{ ...styles.subText, fontSize: 12 }}
+									textStyle={{
+										...styles.subText,
+										fontSize: 12,
+										marginVertical: -2,
+									}}
 									style={{
 										backgroundColor: '#FFAE8050',
 										marginVertical: 5,
@@ -79,11 +84,13 @@ const Product = ({ value, isOwner, onEdit, onSelect }) => {
 								style={{
 									...styles.subText,
 									fontSize: 12,
+									position: 'absolute',
+									top: 85,
 								}}
 							>
 								Cantidad: {value.amount}
 								{'\n'}
-								Descuento: {value.discount}%
+								Descuento: {Math.round(value.discount * 100) / 100}%
 							</Text>
 						</View>
 					</View>
@@ -91,36 +98,37 @@ const Product = ({ value, isOwner, onEdit, onSelect }) => {
 						<View style={styles.buy}>
 							<AntDesign
 								name='shoppingcart'
-								style={{ fontSize: 25, color: theme.colors.primary }}
+								style={{ fontSize: 25, left: 5, color: theme.colors.primary }}
 							/>
-							<Text
-								style={{
-									...styles.text,
-									fontSize: 15,
-								}}
-							>
-								Bs. {value.price}
-							</Text>
-							<Text></Text>
-							{isOwner && (
-								<View
+							<View style={{ flex: 1, alignItems: 'center', left: -25, width: 75 }}>
+								<Text
 									style={{
-										flexDirection: 'column',
-										marginTop: 10,
+										...styles.text,
+										fontSize: 12,
 									}}
 								>
-									<AntDesign
-										name='edit'
-										style={{ fontSize: 25, color: '#1687F0', marginBottom: 5 }}
-										onPress={() => onEdit(value.id_product)}
-									/>
-									<Feather
-										name='trash-2'
-										style={{ fontSize: 25, color: theme.colors.error }}
-										onPress={() => setShowModal(true)}
-									/>
-								</View>
-							)}
+									Bs. {Math.round(value.price * 100) / 100}
+								</Text>
+							</View>
+							{/* {isOwner && ( */}
+							<View
+								style={{
+									flexDirection: 'column',
+									marginTop: 10,
+								}}
+							>
+								<AntDesign
+									name='edit'
+									style={{ fontSize: 25, color: '#1687F0', marginBottom: 5 }}
+									onPress={() => onEdit(value.id_product)}
+								/>
+								<Feather
+									name='trash-2'
+									style={{ fontSize: 25, color: theme.colors.error }}
+									onPress={() => setShowModal(true)}
+								/>
+							</View>
+							{/* )} */}
 						</View>
 					</View>
 				</View>
@@ -129,11 +137,10 @@ const Product = ({ value, isOwner, onEdit, onSelect }) => {
 	);
 };
 
-export default Product;
-
 const styles = StyleSheet.create({
 	buy: {
-		alignItems: 'center',
+		position: 'absolute',
+		left: -43,
 	},
 	buyContainer: {
 		marginRight: 10,
@@ -174,3 +181,5 @@ const styles = StyleSheet.create({
 		color: '#B0AFAF',
 	},
 });
+
+export default Product;
