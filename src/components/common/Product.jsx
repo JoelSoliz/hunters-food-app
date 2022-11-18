@@ -1,110 +1,123 @@
 import { useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Chip, useTheme } from 'react-native-paper';
-import AntDesing from 'react-native-vector-icons/AntDesign';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import { Feather } from '@expo/vector-icons';
 
 import image from '../../../assets/comida.png';
 import fecha from '../operaciones/fecha.js';
+import ConfirmationModal from './ConfirmationModal';
 
 const API_HOST = 'https://blooming-inlet-07928.herokuapp.com';
 
 const Product = ({ value, isOwner, onEdit, onSelect }) => {
 	const [imageError, setImageError] = useState(false);
+	const [showModal, setShowModal] = useState(false);
 	const theme = useTheme();
 
+	const onDelete = () => setShowModal(false);
+
 	return (
-		<TouchableOpacity onPress={() => onSelect(value.id_product)}>
-			<View style={styles.card}>
-				<View style={styles.content}>
-					<View style={styles.imageContainer}>
-						<Image
-							onError={() => {
-								setImageError(true);
-							}}
-							source={
-								imageError
-									? image
-									: {
-											uri: `${API_HOST}/product/${value.id_product}/image`,
-									  }
-							}
-							style={styles.image}
-						/>
-						<Text
-							style={{
-								...styles.subText,
-								fontSize: 12,
-							}}
-						>
-							Expira en {fecha(value)} días
-						</Text>
-					</View>
-					<View style={styles.mainContainer}>
-						<Text
-							style={{
-								...styles.text,
-								fontSize: 15,
-								width: 130,
-							}}
-						>
-							{value.name}
-						</Text>
-						<View style={{ flexDirection: 'row', position: 'absolute', top: 55 }}>
-							<Chip
-								compact={true}
-								mode='outlined'
-								textStyle={{ ...styles.subText, fontSize: 12, marginVertical: -2 }}
+		<>
+			{showModal ? (
+				<ConfirmationModal
+					isOpen={showModal}
+					message={'¿Esta seguro de eliminar el producto?'}
+					onCancel={() => setShowModal(false)}
+					onConfirm={onDelete}
+				/>
+			) : null}
+			<TouchableOpacity onPress={() => onSelect(value.id_product)}>
+				<View style={styles.card}>
+					<View style={styles.content}>
+						<View style={styles.imageContainer}>
+							<Image
+								onError={() => {
+									setImageError(true);
+								}}
+								source={
+									imageError
+										? image
+										: {
+												uri: `${API_HOST}/product/${value.id_product}/image`,
+										  }
+								}
+								style={styles.image}
+							/>
+							<Text
 								style={{
-									backgroundColor: '#FFAE8050',
-									marginVertical: 5,
+									...styles.subText,
+									fontSize: 12,
 								}}
 							>
-								{value.product_type}
-							</Chip>
+								Expira en {fecha(value)} días
+							</Text>
 						</View>
-						<Text
-							style={{
-								...styles.subText,
-								fontSize: 12,
-								position: 'absolute',
-								top: 85,
-							}}
-						>
-							Cantidad: {value.amount}
-							{'\n'}
-							Descuento: {value.discount}%
-						</Text>
+						<View style={styles.mainContainer}>
+							<Text
+								style={{
+									...styles.text,
+									fontSize: 15,
+									width: 130,
+								}}
+							>
+								{value.name}
+							</Text>
+							<View style={{ flexDirection: 'row', position: 'absolute', top: 55 }}>
+								<Chip
+									compact={true}
+									mode='outlined'
+									textStyle={{
+										...styles.subText,
+										fontSize: 12,
+										marginVertical: -2,
+									}}
+									style={{
+										backgroundColor: '#FFAE8050',
+										marginVertical: 5,
+									}}
+								>
+									{value.product_type}
+								</Chip>
+							</View>
+							<Text
+								style={{
+									...styles.subText,
+									fontSize: 12,
+									position: 'absolute',
+									top: 85,
+								}}
+							>
+								Cantidad: {value.amount}
+								{'\n'}
+								Descuento: {Math.round(value.discount * 100) / 100}%
+							</Text>
+						</View>
 					</View>
-				</View>
-				<View style={styles.buyContainer}>
-					<View style={styles.buy}>
-						<AntDesing
-							name='shoppingcart'
-							style={{
-								fontSize: 25,
-								left: 5,
-								color: theme.colors.primary,
-							}}
-
-						/>
-						<Text
-							style={{
-								...styles.text,
-								fontSize: 12,
-							}}
-						>
-							Bs. {value.price}
-						</Text>
-						<Text></Text>
-						{isOwner && (
+					<View style={styles.buyContainer}>
+						<View style={styles.buy}>
+							<AntDesign
+								name='shoppingcart'
+								style={{ fontSize: 25, left: 5, color: theme.colors.primary }}
+							/>
+							<View style={{ flex: 1, alignItems: 'center', left: -25, width: 75 }}>
+								<Text
+									style={{
+										...styles.text,
+										fontSize: 12,
+									}}
+								>
+									Bs. {Math.round(value.price * 100) / 100}
+								</Text>
+							</View>
+							{/* {isOwner && ( */}
 							<View
 								style={{
 									flexDirection: 'column',
 									marginTop: 10,
 								}}
 							>
-								<AntDesing
+								<AntDesign
 									name='edit'
 									style={{ fontSize: 25, color: '#1687F0', marginBottom: 5 }}
 									onPress={() => onEdit(value.id_product)}
@@ -112,18 +125,17 @@ const Product = ({ value, isOwner, onEdit, onSelect }) => {
 								<Feather
 									name='trash-2'
 									style={{ fontSize: 25, color: theme.colors.error }}
-									onPress={() => onEdit(value.id_product)}
+									onPress={() => setShowModal(true)}
 								/>
 							</View>
-						)}
+							{/* )} */}
+						</View>
 					</View>
 				</View>
-			</View>
-		</TouchableOpacity>
+			</TouchableOpacity>
+		</>
 	);
 };
-
-export default Product;
 
 const styles = StyleSheet.create({
 	buy: {
@@ -169,3 +181,5 @@ const styles = StyleSheet.create({
 		color: '#B0AFAF',
 	},
 });
+
+export default Product;
