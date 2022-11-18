@@ -44,16 +44,17 @@ const Product = ({ value, isOwner, onEdit, onSelect }) => {
 						<Text
 							style={{
 								...styles.text,
-								fontSize: 18,
+								fontSize: 15,
+								width: 130,
 							}}
 						>
 							{value.name}
 						</Text>
-						<View style={{ flexDirection: 'row' }}>
+						<View style={{ flexDirection: 'row', position: 'absolute', top: 55 }}>
 							<Chip
 								compact={true}
 								mode='outlined'
-								textStyle={{ ...styles.subText, fontSize: 12 }}
+								textStyle={{ ...styles.subText, fontSize: 12, marginVertical: -2 }}
 								style={{
 									backgroundColor: '#FFAE8050',
 									marginVertical: 5,
@@ -66,6 +67,8 @@ const Product = ({ value, isOwner, onEdit, onSelect }) => {
 							style={{
 								...styles.subText,
 								fontSize: 12,
+								position: 'absolute',
+								top: 85,
 							}}
 						>
 							Cantidad: {value.amount}
@@ -78,12 +81,17 @@ const Product = ({ value, isOwner, onEdit, onSelect }) => {
 					<View style={styles.buy}>
 						<AntDesing
 							name='shoppingcart'
-							style={{ fontSize: 25, color: theme.colors.primary }}
+							style={{
+								fontSize: 25,
+								left: 5,
+								color: theme.colors.primary,
+							}}
+
 						/>
 						<Text
 							style={{
 								...styles.text,
-								fontSize: 15,
+								fontSize: 12,
 							}}
 						>
 							Bs. {value.price}
@@ -119,7 +127,8 @@ export default Product;
 
 const styles = StyleSheet.create({
 	buy: {
-		alignItems: 'center',
+		position: 'absolute',
+		left: -43,
 	},
 	buyContainer: {
 		marginRight: 10,
