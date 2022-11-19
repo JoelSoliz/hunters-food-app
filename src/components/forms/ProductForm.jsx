@@ -240,19 +240,19 @@ const ProductForm = ({ error, loading, onCancel, onSubmit, defaultValue = {} }) 
 					rules={{
 						required: { message: ERROR_MESSAGES.required, value: true },
 						validate: (value) => {
-							if (isNaN(parseInt(value)) && value % 1 != 0) {
+							if (isNaN(parseInt(value))) {
 								return ERROR_MESSAGES.valido;
 							}
-							if (parseInt(value) && value % 1 != 0) {
+							if (parseFloat(value) % 1 != 0) {
 								return ERROR_MESSAGES.entero;
 							}
-							if (!isNaN(parseInt(value)) && value < 0) {
+							if (parseInt(value) < 0) {
 								return ERROR_MESSAGES.number;
 							}
-							if (!isNaN(parseInt(value)) && parseInt(value) <= 0) {
+							if (parseInt(value) <= 0) {
 								return ERROR_MESSAGES.quantityMin;
 							}
-							if (!isNaN(parseInt(value)) && parseInt(value) > 100) {
+							if (parseInt(value) > 100) {
 								return ERROR_MESSAGES.quantityMax;
 							}
 							return true;
