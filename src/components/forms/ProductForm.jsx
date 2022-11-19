@@ -30,7 +30,11 @@ const ERROR_MESSAGES = {
 	lessThirty: 'El fin del descuento debe ser menor a 30 días en el futuro.',
 	maxDiscount: 'El descuento máximo es del',
 	minDiscount: 'El descuento mínimo es del',
-	number: 'Ingrese una cantidad entre 1-100.',
+	number: 'Ingrese un número positivo.',
+	entero: 'Ingrese un número entero.',
+	valido: 'Ingrese un número válido.',
+	quantityMin: 'La cantidad mínima es 1.',
+	quantityMax: 'La cantidad máxima es 100.',
 	maxLength: 'La longitud máxima es',
 	minLength: 'La longitud mínima es',
 	required: 'Este campo es requerido.',
@@ -236,14 +240,22 @@ const ProductForm = ({ error, loading, onCancel, onSubmit, defaultValue = {} }) 
 					rules={{
 						required: { message: ERROR_MESSAGES.required, value: true },
 						validate: (value) => {
-							if (
-								!isNaN(parseInt(value)) &&
-								parseInt(value) > 0 &&
-								parseInt(value) <= 100
-							) {
-								return true;
+							if (isNaN(parseInt(value)) && value % 1 != 0) {
+								return ERROR_MESSAGES.valido;
 							}
-							return ERROR_MESSAGES.number;
+							if (parseInt(value) && value % 1 != 0) {
+								return ERROR_MESSAGES.entero;
+							}
+							if (!isNaN(parseInt(value)) && value < 0) {
+								return ERROR_MESSAGES.number;
+							}
+							if (!isNaN(parseInt(value)) && parseInt(value) <= 0) {
+								return ERROR_MESSAGES.quantityMin;
+							}
+							if (!isNaN(parseInt(value)) && parseInt(value) > 100) {
+								return ERROR_MESSAGES.quantityMax;
+							}
+							return true;
 						},
 					}}
 					render={({ field: { onChange, value } }) => (
