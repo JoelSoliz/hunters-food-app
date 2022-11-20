@@ -2,6 +2,18 @@ import { convertToDate } from '../components/operaciones/fecha';
 
 const HOST = 'https://blooming-inlet-07928.herokuapp.com';
 
+export const deleteProductAsync = async (id, token) => {
+	const apiURL = `${HOST}/product/${id}`;
+	return fetch(apiURL, {
+		method: 'DELETE',
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	})
+		.then((response) => response.json())
+		.catch((error) => console.log(error));
+};
+
 export const getProductAsync = async (id) => {
 	const apiURL = `${HOST}/product/${id}`;
 	return fetch(apiURL)

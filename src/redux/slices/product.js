@@ -5,7 +5,24 @@ import {
 	getProductAsync,
 	registerProductAsync,
 	updateProductAsync,
+	deleteProductAsync,
 } from '../../api/product';
+
+export const deleteProduct = createAsyncThunk('deleteProduct/deleteProductAsync', async (id) => {
+	let token = await AsyncStorage.getItem('token');
+	if (!token) {
+		console.error('Vuelve a iniciar sesión');
+		throw new Error('invalid credential');
+	}
+
+	const result = await deleteProductAsync(id, token);
+	const { detail } = result;
+	if (detail) {
+		console.error(detail);
+		throw Error(detail);
+	}
+	return id;
+});
 
 export const getProduct = createAsyncThunk('getProduct/getProductAsync', async (id) => {
 	const result = await getProductAsync(id);
@@ -70,6 +87,7 @@ export const updateProduct = createAsyncThunk(
 );
 
 const initialState = {
+	deleting: false,
 	loading: 'idle',
 	products: [],
 	selectedProduct: undefined,
@@ -86,6 +104,17 @@ export const productsSlice = createSlice({
 		},
 	},
 	extraReducers: (builder) => {
+		builder.addCase(deleteProduct.pending, (state, _) => {
+			state.deleting = true;
+		});
+		builder.addCase(deleteProduct.fulfilled, (state, { payload }) => {
+			state.deleting = false;
+			state.products = state.products.filter((product) => product.id_product != payload);
+		});
+		builder.addCase(deleteProduct.rejected, (state, _) => {
+			state.deleting = false;
+		});
+
 		builder.addCase(getProduct.pending, (state, _) => {
 			state.loading = 'pending';
 		});

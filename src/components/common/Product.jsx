@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Chip, useTheme } from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { useDispatch, useSelector } from 'react-redux';
 import { Feather } from '@expo/vector-icons';
 
+import { deleteProduct, productsSelector } from '../../redux/slices/product';
 import image from '../../../assets/comida.png';
 import fecha from '../operaciones/fecha.js';
 import ConfirmationModal from './ConfirmationModal';
@@ -13,9 +15,21 @@ const API_HOST = 'https://blooming-inlet-07928.herokuapp.com';
 const Product = ({ value, isOwner, onEdit, onSelect }) => {
 	const [imageError, setImageError] = useState(false);
 	const [showModal, setShowModal] = useState(false);
+	const { deleting } = useSelector(productsSelector);
+	const dispatch = useDispatch();
 	const theme = useTheme();
 
-	const onDelete = () => setShowModal(false);
+	useEffect(() => {
+		if (!deleting) {
+			setShowModal(false);
+		}
+	}, [deleting]);
+
+	const onDelete = () => {
+		if (!deleting) {
+			dispatch(deleteProduct(value.id_product));
+		}
+	};
 
 	return (
 		<>
@@ -110,25 +124,25 @@ const Product = ({ value, isOwner, onEdit, onSelect }) => {
 									Bs. {Math.round(value.price * 100) / 100}
 								</Text>
 							</View>
-							{/* {isOwner && ( */}
-							<View
-								style={{
-									flexDirection: 'column',
-									marginTop: 10,
-								}}
-							>
-								<AntDesign
-									name='edit'
-									style={{ fontSize: 25, color: '#1687F0', marginBottom: 5 }}
-									onPress={() => onEdit(value.id_product)}
-								/>
-								<Feather
-									name='trash-2'
-									style={{ fontSize: 25, color: theme.colors.error }}
-									onPress={() => setShowModal(true)}
-								/>
-							</View>
-							{/* )} */}
+							{isOwner && (
+								<View
+									style={{
+										flexDirection: 'column',
+										marginTop: 10,
+									}}
+								>
+									<AntDesign
+										name='edit'
+										style={{ fontSize: 25, color: '#1687F0', marginBottom: 5 }}
+										onPress={() => onEdit(value.id_product)}
+									/>
+									<Feather
+										name='trash-2'
+										style={{ fontSize: 25, color: theme.colors.error }}
+										onPress={() => setShowModal(true)}
+									/>
+								</View>
+							)}
 						</View>
 					</View>
 				</View>
