@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import AntDesing from 'react-native-vector-icons/AntDesign';
-
 import image from '../../../assets/comida.png';
 
 const API_HOST = 'https://blooming-inlet-07928.herokuapp.com';
@@ -13,7 +12,6 @@ const Business = ({ value, onSelect }) => {
 		const supportedURL = value.location;
 		await Linking.openURL(supportedURL);
 	};
-
 	return (
 		<TouchableOpacity onPress={() => onSelect(value.id_business)}>
 			<View style={styles.card}>
@@ -32,14 +30,26 @@ const Business = ({ value, onSelect }) => {
 						style={styles.logo}
 					/>
 				</View>
+
 				<View style={styles.mainContainer}>
+					<AntDesing
+						name='heart'
+						onPress={locations}
+						style={{
+							fontSize: 25,
+							color: 'gray',
+							position: 'absolute',
+							marginLeft: 145,
+							top: 10,
+						}}
+					/>
 					<Text
 						style={{
 							...styles.text,
 							fontSize: 18,
 							width: 180,
 							position: 'absolute',
-							top: 20,
+							top: 40,
 						}}
 					>
 						{value.name}
