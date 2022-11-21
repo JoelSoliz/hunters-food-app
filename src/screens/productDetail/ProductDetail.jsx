@@ -79,7 +79,7 @@ const ProductDetail = ({ route }) => {
 										fontWeight: 'bold',
 									}}
 								>
-									- {selectedProduct?.discount} %
+									{selectedProduct?.discount} %
 								</Text>
 							</View>
 
