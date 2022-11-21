@@ -101,8 +101,18 @@ const ProductForm = ({ error, loading, onCancel, onSubmit, defaultValue = {} }) 
 					name='price'
 					rules={{
 						required: { message: ERROR_MESSAGES.required, value: true },
-						validate: (value) =>
-							(!isNaN(parseFloat(value)) && value > 0) || ERROR_MESSAGES.number,
+						validate: (value) => {
+							let length = value * 100;
+							if (!isNaN(parseFloat(value)) && value < 0) {
+								return ERROR_MESSAGES.number;
+							}
+							if (value > 1000) {
+								return 'El costo del producto no debe exeder los 1000 Bs';
+							}
+							if (length % 1 != 0) {
+								return ERROR_MESSAGES.valido;
+							}
+						},
 					}}
 					render={({ field: { onChange, value } }) => (
 						<>
@@ -113,7 +123,7 @@ const ProductForm = ({ error, loading, onCancel, onSubmit, defaultValue = {} }) 
 								style={styles.input}
 								value={value}
 								onChangeText={(value) => onChange(value)}
-								maxLength={4}
+								maxLength={6}
 							/>
 							<HelperText type='error'>{errors.price?.message}</HelperText>
 						</>
@@ -124,8 +134,15 @@ const ProductForm = ({ error, loading, onCancel, onSubmit, defaultValue = {} }) 
 					name='discount'
 					rules={{
 						required: { message: ERROR_MESSAGES.required, value: true },
-						validate: (value) =>
-							(value >= 0 && value < 100) || 'El porcentaje debe ser entre 0%-100%',
+						validate: (value) => {
+							let length = value * 100;
+							if (value < 0 || value > 100) {
+								return 'El porcentaje debe ser entre 0%-100%';
+							}
+							if (length % 1 != 0) {
+								return ERROR_MESSAGES.valido;
+							}
+						},
 					}}
 					render={({ field: { onChange, value } }) => (
 						<>

@@ -39,10 +39,10 @@ const ProductDetail = ({ route }) => {
 		console.log(selectedProduct);
 	}, [selectedProduct]);
 	return (
-		<ScrollView nestedscrollenabled style={styles.container}>
+		<ScrollView style={styles.container}>
 			{loading === 'pending' ? (
 				<View style={styles.center}>
-					<Text style={styles.text}>Cargando los detalles del negocio...</Text>
+					<Text style={styles.text}>Cargando los detalles del producto...</Text>
 				</View>
 			) : (
 				<View>
@@ -104,7 +104,7 @@ const ProductDetail = ({ route }) => {
 										marginLeft: 20,
 									}}
 								>
-									{selectedProduct?.price} bs
+									{selectedProduct?.price} Bs
 								</Text>
 							</View>
 							<View
@@ -129,7 +129,7 @@ const ProductDetail = ({ route }) => {
 										marginLeft: 20,
 									}}
 								>
-									{descuento()} bs
+									{descuento()} Bs
 								</Text>
 							</View>
 						</View>
