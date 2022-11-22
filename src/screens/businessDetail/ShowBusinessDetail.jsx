@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, ScrollView, View, Image, Text, FlatList } from 'react-native';
 import { useTheme, Chip, Card } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
+import AntDesing from 'react-native-vector-icons/AntDesign';
 
 import image from '../../../assets/picture.png';
 import BrowserLinking from '../../components/linking/BrowserLinking';
@@ -66,6 +67,16 @@ const ShowBusinessDetail = ({ route, navigation }) => {
 						/>
 					</View>
 					<View>
+						<AntDesing
+							name='heart'
+							style={{
+								fontSize: 25,
+								color: 'gray',
+								position: 'absolute',
+								marginLeft: 280,
+								top: 10,
+							}}
+						/>
 						<Text style={styles.title}>{business?.name}</Text>
 
 						<View style={{ flexDirection: 'column' }}>
