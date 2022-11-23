@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import HomeHeader from '../../components/common/HomeHeader';
 import Product from '../../components/common/Product';
+import productCategories from '../../data/productCategory.json';
 import { businessSelector } from '../../redux/slices/business';
 import { getProducts, productsSelector, reset } from '../../redux/slices/product';
 import ProductCategories from './ProductCategories';
@@ -13,6 +14,7 @@ const ListProducts = ({ navigation }) => {
 	const [page, setPage] = useState(1);
 	const [refreshing, setRefreshing] = useState(false);
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
+	const [filter, setFilter] = useState({ category: '' });
 	const { colors } = useTheme();
 	const { loading, products, total_pages } = useSelector(productsSelector);
 	const { userBusiness } = useSelector(businessSelector);
@@ -23,16 +25,16 @@ const ListProducts = ({ navigation }) => {
 	}, []);
 
 	useEffect(() => {
-		dispatch(getProducts(page));
-	}, [page]);
+		dispatch(getProducts({ page, filter }));
+	}, [page, filter]);
 
 	const onRefresh = useCallback(() => {
 		setRefreshing(true);
 		setPage(1);
 		dispatch(reset());
-		dispatch(getProducts(1));
+		dispatch(getProducts({ page: 1, filter }));
 		setRefreshing(false);
-	}, [refreshing]);
+	}, [refreshing, filter]);
 
 	const onSelectProduct = (id_product) =>
 		navigation.navigate('productDetail', { id: id_product });
@@ -40,9 +42,12 @@ const ListProducts = ({ navigation }) => {
 	const onEditProduct = (id_product) => navigation.navigate('updateProduct', { id: id_product });
 
 	const onSelectCategory = (productCategory) => {
-		console.log(productCategory);
+		dispatch(reset());
+		setFilter({ ...filter, category: productCategory });
+		setPage(1);
 		setIsFilterOpen(false);
 	};
+	let category = productCategories.filter((category) => category.value == filter.category);
 
 	return (
 		<View style={styles.container}>
@@ -58,7 +63,7 @@ const ListProducts = ({ navigation }) => {
 						mode='contained'
 						style={{ ...styles.chipSearch, backgroundColor: colors.primary }}
 					>
-						Todas
+						{category.length ? category[0].label : 'Todas'}
 					</Chip>
 				</View>
 			</View>
@@ -110,7 +115,6 @@ const styles = StyleSheet.create({
 		height: 30,
 		justifyContent: 'center',
 		marginVertical: 5,
-		width: 100,
 	},
 	container: {
 		backgroundColor: '#282928',
