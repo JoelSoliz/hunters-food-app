@@ -1,26 +1,20 @@
-import { useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { TextInput, useTheme } from 'react-native-paper';
-import AntDesing from 'react-native-vector-icons/AntDesign';
-import ProductCategory from '../../components/common/ProductCategory';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+
 import logo from '../../../assets/logo.png';
 
-const HomeHeader = () => {
+const HomeHeader = ({ onOpenFilter }) => {
 	const { colors } = useTheme();
-	const [isModalOpen, setIsModalOpen] = useState(false);
+
 	return (
 		<>
 			<View style={styles.header}>
 				<View style={{ flexDirection: 'row' }}>
-					<AntDesing
+					<AntDesign
 						name='menu-fold'
 						style={{ ...styles.menu, color: colors.primary }}
-						onPress={() => setIsModalOpen(!isModalOpen)}
-					/>
-					<ProductCategory
-						style={{ ...styles.menu, color: colors.primary }}
-						isModalOpen={isModalOpen}
-						setIsModalOpen={setIsModalOpen}
+						onPress={onOpenFilter}
 					/>
 				</View>
 				<View style={styles.appName}>
