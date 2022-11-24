@@ -21,8 +21,8 @@ export const getProductAsync = async (id) => {
 		.catch((error) => console.log(error));
 };
 
-export const getProductsAsync = async (page) => {
-	const apiURL = `${HOST}/product/?current_page=${page}`;
+export const getProductsAsync = async (page, filter) => {
+	const apiURL = `${HOST}/product/?current_page=${page}&product_type=${filter?.category}`;
 	return fetch(apiURL)
 		.then((response) => response.json())
 		.catch((error) => console.log(error));

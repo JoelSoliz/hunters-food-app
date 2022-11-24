@@ -34,15 +34,18 @@ export const getProduct = createAsyncThunk('getProduct/getProductAsync', async (
 	return result;
 });
 
-export const getProducts = createAsyncThunk('getProducts/getProductsAsync', async (page) => {
-	const result = await getProductsAsync(page);
-	const { detail } = result;
-	if (detail) {
-		console.error(detail);
-		throw Error(detail);
+export const getProducts = createAsyncThunk(
+	'getProducts/getProductsAsync',
+	async ({ page, filter }) => {
+		const result = await getProductsAsync(page, filter);
+		const { detail } = result;
+		if (detail) {
+			console.error(detail);
+			throw Error(detail);
+		}
+		return result;
 	}
-	return result;
-});
+);
 
 export const registerProduct = createAsyncThunk(
 	'registerProduct/registerProductAsync',
