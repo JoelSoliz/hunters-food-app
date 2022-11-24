@@ -19,6 +19,7 @@ const API_HOST = 'https://blooming-inlet-07928.herokuapp.com';
 const ShowBusinessDetail = ({ route, navigation }) => {
 	const [imageError, setImageError] = useState(false);
 	const [page, setPage] = useState(1);
+	const [isFavorite, setIsFavorite] = useState(false);
 	const {
 		loading,
 		selectedBusiness: { business, products, total_pages },
@@ -44,7 +45,7 @@ const ShowBusinessDetail = ({ route, navigation }) => {
 	const onEditProduct = (id_product) => navigation.navigate('updateProduct', { id: id_product });
 
 	return (
-		<ScrollView nestedscrollenabled style={styles.container}>
+		<ScrollView nestedScrollEnabled style={styles.container}>
 			{loading === 'pending' ? (
 				<View style={styles.center}>
 					<Text style={styles.text}>Cargando los detalles del negocio...</Text>
@@ -67,25 +68,31 @@ const ShowBusinessDetail = ({ route, navigation }) => {
 						/>
 					</View>
 					<View>
-						<AntDesing
-							name='heart'
+						<View
 							style={{
-								fontSize: 25,
-								color: 'gray',
-								position: 'absolute',
-								marginLeft: 280,
-								top: 10,
+								flex: 1,
+								flexDirection: 'row',
+								alignItems: 'center',
+								justifyContent: 'space-between',
 							}}
-						/>
-						<Text style={styles.title}>{business?.name}</Text>
-
+						>
+							<Text style={styles.title}>{business?.name}</Text>
+							<AntDesing
+								name='heart'
+								style={{
+									color: !isFavorite ? 'gray' : colors.primary,
+									fontSize: 25,
+									marginRight: 20,
+								}}
+								onPress={() => setIsFavorite((fav) => !fav)}
+							/>
+						</View>
 						<View style={{ flexDirection: 'column' }}>
 							<Text style={styles.subtitle}>Descripción:</Text>
 							<Card>
 								<Text style={styles.descrip}>{business?.description}</Text>
 							</Card>
 						</View>
-
 						<View
 							style={{
 								flexDirection: 'row',
@@ -112,7 +119,7 @@ const ShowBusinessDetail = ({ route, navigation }) => {
 					</View>
 					<View>
 						<FlatList
-							nestedscrollenabled
+							nestedScrollEnabled
 							contentContainerStyle={{
 								justifyContent: 'center',
 								paddingTop: 0,
@@ -199,7 +206,6 @@ const styles = StyleSheet.create({
 		color: '#fff',
 		backgroundColor: '#222222',
 		width: '90%',
-		height: 100,
 		paddingHorizontal: 10,
 		paddingVertical: 10,
 		borderRadius: 5,
