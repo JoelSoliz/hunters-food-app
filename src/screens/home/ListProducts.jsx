@@ -7,10 +7,12 @@ import HomeHeader from '../../components/common/HomeHeader';
 import Product from '../../components/common/Product';
 import { businessSelector } from '../../redux/slices/business';
 import { getProducts, productsSelector, reset } from '../../redux/slices/product';
+import ProductCategories from './ProductCategories';
 
 const ListProducts = ({ navigation }) => {
 	const [page, setPage] = useState(1);
 	const [refreshing, setRefreshing] = useState(false);
+	const [isFilterOpen, setIsFilterOpen] = useState(false);
 	const { colors } = useTheme();
 	const { loading, products, total_pages } = useSelector(productsSelector);
 	const { userBusiness } = useSelector(businessSelector);
@@ -37,16 +39,28 @@ const ListProducts = ({ navigation }) => {
 
 	const onEditProduct = (id_product) => navigation.navigate('updateProduct', { id: id_product });
 
+	const onSelectCategory = (productCategory) => {
+		console.log(productCategory);
+		setIsFilterOpen(false);
+	};
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.containerHeader}>
-				<HomeHeader />
-				<Chip
-					mode='contained'
-					style={{ ...styles.chipSearch, backgroundColor: colors.primary }}
-				>
-					Todas
-				</Chip>
+				{!isFilterOpen && <HomeHeader onOpenFilter={() => setIsFilterOpen(true)} />}
+				<ProductCategories
+					isModalOpen={isFilterOpen}
+					setIsModalOpen={setIsFilterOpen}
+					onSelectCategory={onSelectCategory}
+				/>
+				<View style={{ alignItems: 'center' }}>
+					<Chip
+						mode='contained'
+						style={{ ...styles.chipSearch, backgroundColor: colors.primary }}
+					>
+						Todas
+					</Chip>
+				</View>
 			</View>
 			<FlatList
 				contentContainerStyle={{ justifyContent: 'center' }}

@@ -1,16 +1,21 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { TextInput, useTheme } from 'react-native-paper';
-import AntDesing from 'react-native-vector-icons/AntDesign';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import logo from '../../../assets/logo.png';
 
-const HomeHeader = () => {
+const HomeHeader = ({ onOpenFilter }) => {
 	const { colors } = useTheme();
+
 	return (
 		<>
 			<View style={styles.header}>
 				<View style={{ flexDirection: 'row' }}>
-					<AntDesing name='menu-fold' style={{ ...styles.menu, color: colors.primary }} />
+					<AntDesign
+						name='menu-fold'
+						style={{ ...styles.menu, color: colors.primary }}
+						onPress={onOpenFilter}
+					/>
 				</View>
 				<View style={styles.appName}>
 					<Image source={logo} style={styles.image} />
@@ -36,7 +41,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'center',
-		left: -17,
+		marginLeft: -17,
 	},
 	header: {
 		alignItems: 'center',
