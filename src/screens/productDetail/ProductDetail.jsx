@@ -27,7 +27,7 @@ const ProductDetail = ({ route }) => {
 			dt?.getMinutes()
 		)}`;
 	};
-
+	const { loading } = useSelector(productsSelector);
 	const { selectedProduct } = useSelector(productsSelector);
 	const dispatch = useDispatch();
 	const [imageError, setImageError] = useState(false);
@@ -40,96 +40,125 @@ const ProductDetail = ({ route }) => {
 	}, [selectedProduct]);
 	return (
 		<ScrollView style={styles.container}>
-			<Image
-				onError={() => {
-					setImageError(true);
-				}}
-				source={
-					imageError
-						? image
-						: {
-								uri: `${API_HOST}/product/${selectedProduct?.id_product}/image`,
-						  }
-				}
-				style={styles.image}
-			/>
-			<View style={styles.priceContainer}>
-				<View style={styles.buy}>
-					<View
-						style={{
-							flexDirection: 'row',
-							alignItems: 'center',
-							textAlignVertical: 'center',
+			{loading === 'pending' ? (
+				<View style={styles.center}>
+					<Text style={styles.text}>Cargando los detalles del producto...</Text>
+				</View>
+			) : (
+				<View>
+					<Image
+						onError={() => {
+							setImageError(true);
 						}}
-					>
-						<Ionicons
-							name='fast-food-outline'
-							style={{ fontSize: 35, color: '#F97316', left: 25 }}
-						/>
-						<Text
-							style={{
-								fontSize: 25,
-								left: 25,
-								color: '#F97316',
-								fontWeight: 'bold',
-							}}
-						>
-							{selectedProduct?.discount} %
-						</Text>
-					</View>
+						source={
+							imageError
+								? image
+								: {
+										uri: `${API_HOST}/product/${selectedProduct?.id_product}/image`,
+								  }
+						}
+						style={styles.image}
+					/>
+					<View style={styles.priceContainer}>
+						<View style={styles.buy}>
+							<View
+								style={{
+									flexDirection: 'row',
+									alignItems: 'center',
+									textAlignVertical: 'center',
+								}}
+							>
+								<Ionicons
+									name='fast-food-outline'
+									style={{ fontSize: 35, color: '#F97316', left: 25 }}
+								/>
+								<Text
+									style={{
+										fontSize: 28,
+                    left: 25,
+										color: '#F97316',
+										fontWeight: 'bold',
+									}}
+								>
+									{selectedProduct?.discount} %
+								</Text>
+							</View>
 
-					<View
-						style={{
-							flexDirection: 'row',
-							alignItems: 'center',
-							textAlignVertical: 'center',
-						}}
-					>
-						<Text
-							style={{
-								...styles.subText,
-								left: 30,
-							}}
-						>
-							Antes:
-						</Text>
-						<Text
-							style={{
-								...styles.subText,
-								textDecorationLine: 'line-through',
-								marginLeft: 20,
-								left: 20,
-							}}
-						>
-							{selectedProduct?.price} bs
-						</Text>
+							<View
+								style={{
+									flexDirection: 'row',
+									alignItems: 'center',
+									textAlignVertical: 'center',
+								}}
+							>
+								<Text
+									style={{
+										...styles.subText,
+                    left: 30,
+									}}
+								>
+									Antes:
+								</Text>
+								<Text
+									style={{
+										...styles.subText,
+										textDecorationLine: 'line-through',
+										marginLeft: 20,
+                    left: 20,
+									}}
+								>
+									{selectedProduct?.price} Bs
+								</Text>
+							</View>
+							<View
+								style={{
+									flexDirection: 'row',
+									alignItems: 'center',
+									textAlignVertical: 'center',
+								}}
+							>
+								<Text
+									style={{
+										...styles.subText,
+                    left: 38,
+									}}
+								>
+									Ahora:
+								</Text>
+								<Text
+									style={{
+										fontSize: 20,
+								    color: '#fff',
+							    	fontWeight: 'bold',
+							    	marginLeft: 20,
+							    	left: 20,
+									}}
+								>
+									{descuento()} Bs
+								</Text>
+							</View>
+						</View>
 					</View>
-					<View
-						style={{
-							flexDirection: 'row',
-							alignItems: 'center',
-							textAlignVertical: 'center',
-						}}
-					>
+					<View style={styles.leftContainer}>
 						<Text
 							style={{
-								...styles.subText,
-								left: 38,
-							}}
-						>
-							Ahora:
-						</Text>
-						<Text
-							style={{
-								fontSize: 20,
+								marginBottom: 10,
+								fontSize: 27,
 								color: '#fff',
+								backgroundColor: '#282928',
+								width: '60%',
+								height: 120,
+								paddingVertical: 10,
+								borderRadius: 5,
 								fontWeight: 'bold',
 								marginLeft: 20,
 								left: 20,
+
 							}}
 						>
-							{descuento()} bs
+							{selectedProduct?.name}
 						</Text>
+
 					</View>
 				</View>
 			</View>
@@ -172,137 +201,141 @@ const ProductDetail = ({ route }) => {
 						</Chip>
 					</View>
 
-					<View style={{ alignItems: 'flex-end' }}>
-						<Chip
-							compact={true}
-							mode='outlined'
-							style={{
-								fontSize: 15,
-								color: '#fff',
-								fontWeight: 'bold',
-								width: '45%',
-								height: 35,
-								alignItems: 'center',
-								backgroundColor: '#52525240',
-								borderRadius: 10,
-								marginLeft: 20,
-								top: -25,
-							}}
-						>
-							{selectedProduct?.business}
-						</Chip>
-					</View>
 
-					<View
-						style={{
-							top: 10,
-							marginVertical: 10,
-							flexDirection: 'row',
-						}}
-					>
-						<Text
-							style={{
-								fontSize: 17,
-								color: '#fff',
-								fontWeight: 'bold',
-							}}
-						>
-							Cantidad disponible:
-						</Text>
-						<Text
-							style={{
-								fontSize: 20,
-								color: '#fff',
-								marginLeft: 20,
-							}}
-						>
-							{selectedProduct?.amount}
-						</Text>
-					</View>
-					<View
-						style={{
-							top: 10,
-							marginVertical: 10,
-							flexDirection: 'row',
-						}}
-					>
-						<Text
-							style={{
-								fontSize: 17,
-								color: '#fff',
-								fontWeight: 'bold',
-							}}
-						>
-							Inicio del descuento:
-						</Text>
-						<Text
-							style={{
-								fontSize: 15,
-								color: '#fff',
-								marginLeft: 20,
-							}}
-						>
-							{formatDatetime(selectedProduct?.start_time)} hrs
-						</Text>
-					</View>
-					<View
-						style={{
-							top: 10,
-							marginVertical: 10,
-							flexDirection: 'row',
-						}}
-					>
-						<Text
-							style={{
-								fontSize: 17,
-								color: '#fff',
-								fontWeight: 'bold',
-							}}
-						>
-							Fin del descuento:
-						</Text>
-						<Text
-							style={{
-								fontSize: 15,
-								color: '#fff',
-								marginLeft: 20,
-							}}
-						>
-							{formatDatetime(selectedProduct?.final_time)} hrs
-						</Text>
-					</View>
 
-					<View style={{ flexDirection: 'column', marginVertical: 10, top: 10 }}>
-						<Text
-							style={{
-								fontSize: 17,
-								color: '#fff',
-								fontWeight: 'bold',
-							}}
-						>
-							Descripción:
-						</Text>
-						<Card>
-							<Text
+							<View style={{ alignItems: 'flex-end' }}>
+								<Chip
+									compact={true}
+									mode='outlined'
+									style={{
+										fontSize: 15,
+										color: '#fff',
+										fontWeight: 'bold',
+										width: '45%',
+										height: 35,
+										alignItems: 'center',
+										backgroundColor: '#52525240',
+										borderRadius: 10,
+										marginLeft: 20,
+										top: -25,
+									}}
+								>
+									{selectedProduct?.business}
+								</Chip>
+							</View>
+
+							<View
 								style={{
-									marginBottom: 10,
+									top: 10,
 									marginVertical: 10,
-									fontSize: 17,
-									color: '#fff',
-									backgroundColor: '#222222',
-									width: '100%',
-									height: 100,
-									paddingHorizontal: 10,
-									paddingVertical: 10,
-									borderRadius: 5,
+									flexDirection: 'row',
 								}}
 							>
-								{selectedProduct?.description}
-							</Text>
-						</Card>
+								<Text
+									style={{
+										fontSize: 17,
+										color: '#fff',
+										fontWeight: 'bold',
+									}}
+								>
+									Cantidad disponible:
+								</Text>
+								<Text
+									style={{
+										fontSize: 20,
+										color: '#fff',
+										marginLeft: 20,
+									}}
+								>
+									{selectedProduct?.amount}
+								</Text>
+							</View>
+							<View
+								style={{
+									top: 10,
+									marginVertical: 10,
+									flexDirection: 'row',
+								}}
+							>
+								<Text
+									style={{
+										fontSize: 17,
+										color: '#fff',
+										fontWeight: 'bold',
+									}}
+								>
+									Inicio del descuento:
+								</Text>
+								<Text
+									style={{
+										fontSize: 15,
+										color: '#fff',
+										marginLeft: 20,
+									}}
+								>
+									{formatDatetime(selectedProduct?.start_time)} hrs
+								</Text>
+							</View>
+							<View
+								style={{
+									top: 10,
+									marginVertical: 10,
+									flexDirection: 'row',
+								}}
+							>
+								<Text
+									style={{
+										fontSize: 17,
+										color: '#fff',
+										fontWeight: 'bold',
+									}}
+								>
+									Fin del descuento:
+								</Text>
+								<Text
+									style={{
+										fontSize: 15,
+										color: '#fff',
+										marginLeft: 20,
+									}}
+								>
+									{formatDatetime(selectedProduct?.final_time)} hrs
+								</Text>
+							</View>
+
+							<View style={{ flexDirection: 'column', marginVertical: 10, top: 10 }}>
+								<Text
+									style={{
+										fontSize: 17,
+										color: '#fff',
+										fontWeight: 'bold',
+									}}
+								>
+									Descripción:
+								</Text>
+								<Card>
+									<Text
+										style={{
+											marginBottom: 10,
+											marginVertical: 10,
+											fontSize: 17,
+											color: '#fff',
+											backgroundColor: '#222222',
+											width: '100%',
+											height: 100,
+											paddingHorizontal: 10,
+											paddingVertical: 10,
+											borderRadius: 5,
+										}}
+									>
+										{selectedProduct?.description}
+									</Text>
+								</Card>
+							</View>
+						</View>
 					</View>
 				</View>
-			</View>
+			)}
 		</ScrollView>
 	);
 };

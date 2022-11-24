@@ -37,6 +37,9 @@ const Business = ({ value, onSelect }) => {
 						style={{
 							...styles.text,
 							fontSize: 18,
+							width: 180,
+							position: 'absolute',
+							top: 20,
 						}}
 					>
 						{value.name}
@@ -47,6 +50,9 @@ const Business = ({ value, onSelect }) => {
 							fontSize: 15,
 							marginTop: 10,
 							textAlign: 'right',
+							position: 'absolute',
+							top: 80,
+							left: 80,
 						}}
 					>
 						Ubicación
@@ -94,7 +100,6 @@ const styles = StyleSheet.create({
 		width: 100,
 	},
 	mainContainer: {
-		flexGrow: 2,
 		justifyContent: 'center',
 		marginHorizontal: 20,
 	},
