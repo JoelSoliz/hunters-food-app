@@ -8,7 +8,7 @@ import { logout, sessionSelector } from '../../redux/slices/session';
 const Profile = ({ navigation }) => {
 	const { colors } = useTheme();
 	const { isAuthenticate, user } = useSelector(sessionSelector);
-	const { business } = useSelector(businessSelector);
+	const { userBusiness } = useSelector(businessSelector);
 	const dispatch = useDispatch();
 
 	const onLogout = () => dispatch(logout());
@@ -29,7 +29,7 @@ const Profile = ({ navigation }) => {
 			)}
 			{isAuthenticate && (
 				<>
-					{business && (
+					{userBusiness && (
 						<>
 							<Text
 								style={{
@@ -38,7 +38,7 @@ const Profile = ({ navigation }) => {
 									color: colors.text,
 								}}
 							>
-								Negocio: {business.name}
+								Negocio: {userBusiness.name}
 							</Text>
 							<Pressable
 								onPress={() => {

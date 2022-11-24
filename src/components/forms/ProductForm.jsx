@@ -30,24 +30,28 @@ const ERROR_MESSAGES = {
 	lessThirty: 'El fin del descuento debe ser menor a 30 días en el futuro.',
 	maxDiscount: 'El descuento máximo es del',
 	minDiscount: 'El descuento mínimo es del',
-	number: 'Solo son válidos numeros positivos.',
+	number: 'Ingrese un número positivo.',
+	entero: 'Ingrese un número entero.',
+	valido: 'Ingrese un número válido.',
+	quantityMin: 'La cantidad mínima es 1.',
+	quantityMax: 'La cantidad máxima es 100.',
 	maxLength: 'La longitud máxima es',
 	minLength: 'La longitud mínima es',
 	required: 'Este campo es requerido.',
 };
 
-const ProductForm = ({ onSubmit }) => {
+const ProductForm = ({ error, loading, onCancel, onSubmit, defaultValue = {} }) => {
 	const [visible, setVisible] = useState(false);
 
 	const submit = (data) => onSubmit(data);
 
 	const {
 		control,
-		formState: { errors, isValid },
+		formState: { errors },
 		handleSubmit,
 		trigger,
 		watch,
-	} = useForm({ mode: 'onChange' });
+	} = useForm({ mode: 'onChange', defaultValues: defaultValue });
 
 	return (
 		<ScrollView style={styles.container}>
@@ -97,8 +101,18 @@ const ProductForm = ({ onSubmit }) => {
 					name='price'
 					rules={{
 						required: { message: ERROR_MESSAGES.required, value: true },
-						validate: (value) =>
-							(!isNaN(parseFloat(value)) && value > 0) || ERROR_MESSAGES.number,
+						validate: (value) => {
+							let length = value * 100;
+							if (!isNaN(parseFloat(value)) && value < 0) {
+								return ERROR_MESSAGES.number;
+							}
+							if (value > 1000) {
+								return 'El costo del producto no debe exeder los 1000 Bs';
+							}
+							if (length % 1 != 0) {
+								return ERROR_MESSAGES.valido;
+							}
+						},
 					}}
 					render={({ field: { onChange, value } }) => (
 						<>
@@ -119,8 +133,15 @@ const ProductForm = ({ onSubmit }) => {
 					name='discount'
 					rules={{
 						required: { message: ERROR_MESSAGES.required, value: true },
-						validate: (value) =>
-							(value >= 0 && value < 100) || 'El porcentaje debe ser entre 0%-100%',
+						validate: (value) => {
+							let length = value * 100;
+							if (value < 0 || value > 100) {
+								return 'El porcentaje debe ser entre 0%-100%';
+							}
+							if (length % 1 != 0) {
+								return ERROR_MESSAGES.valido;
+							}
+						},
 					}}
 					render={({ field: { onChange, value } }) => (
 						<>
@@ -141,6 +162,19 @@ const ProductForm = ({ onSubmit }) => {
 					name='date_start'
 					rules={{
 						validate: (value) => {
+							let hours = defaultValue?.date_start?.hours;
+							let minutes = defaultValue?.date_start?.minutes;
+							let date = defaultValue?.date_start?.date;
+							if (
+								hours >= 0 &&
+								minutes >= 0 &&
+								date &&
+								value?.hours == hours &&
+								value?.minutes == minutes &&
+								value?.date == date
+							) {
+								return true;
+							}
 							if (!validateGreaterThanToday(value)) {
 								return ERROR_MESSAGES.greaterToday;
 							}
@@ -220,6 +254,27 @@ const ProductForm = ({ onSubmit }) => {
 				<Controller
 					control={control}
 					name='amount'
+					rules={{
+						required: { message: ERROR_MESSAGES.required, value: true },
+						validate: (value) => {
+							if (isNaN(parseInt(value))) {
+								return ERROR_MESSAGES.valido;
+							}
+							if (parseFloat(value) % 1 != 0) {
+								return ERROR_MESSAGES.entero;
+							}
+							if (parseInt(value) < 0) {
+								return ERROR_MESSAGES.number;
+							}
+							if (parseInt(value) <= 0) {
+								return ERROR_MESSAGES.quantityMin;
+							}
+							if (parseInt(value) > 100) {
+								return ERROR_MESSAGES.quantityMax;
+							}
+							return true;
+						},
+					}}
 					render={({ field: { onChange, value } }) => (
 						<>
 							<TextInput
@@ -269,23 +324,32 @@ const ProductForm = ({ onSubmit }) => {
 						</>
 					)}
 				/>
+				{error && (
+					<HelperText type='error' style={{ textAlign: 'center' }}>
+						Producto no registrado, vuelve a intentarlo en unos minutos.
+					</HelperText>
+				)}
 				<View style={styles.buttonContainer}>
-					<View style={{ flexDirection: 'row' }}>
-						<Button
-							style={{ ...styles.button, marginRight: 10 }}
-							mode='outlined'
-							onPress={handleSubmit(submit)}
-						>
-							Cancelar
-						</Button>
-						<Button
-							style={styles.button}
-							mode='contained'
-							onPress={handleSubmit(submit)}
-						>
-							Guardar
-						</Button>
-					</View>
+					{loading ? (
+						<HelperText type='info'>Loading...</HelperText>
+					) : (
+						<View style={{ flexDirection: 'row' }}>
+							<Button
+								style={{ ...styles.button, marginRight: 10 }}
+								mode='outlined'
+								onPress={onCancel}
+							>
+								Cancelar
+							</Button>
+							<Button
+								style={styles.button}
+								mode='contained'
+								onPress={handleSubmit(submit)}
+							>
+								Guardar
+							</Button>
+						</View>
+					)}
 				</View>
 			</View>
 		</ScrollView>
@@ -316,11 +380,10 @@ const styles = StyleSheet.create({
 		borderRadius: 45,
 	},
 	buttonContainer: {
-		marginVertical: 5,
+		marginBottom: 20,
+		marginTop: 10,
 		display: 'flex',
 		alignItems: 'center',
-		flexDirection: 'row',
-		justifyContent: 'space-between',
 	},
 });
 

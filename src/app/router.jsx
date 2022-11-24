@@ -2,26 +2,91 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useTheme } from 'react-native-paper';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Ionicons from 'react-native-vector-icons/FontAwesome5';
 
 import Home from '../screens/home/Home';
+import Businesses from '../screens/businesses/HomeBusiness';
 import Profile from '../screens/profile/Profile';
 import RegisterBusiness from '../screens/registerBusiness/Form';
 import RegisterProduct from '../screens/registerProduct/RegisterProduct';
 import SignIn from '../screens/login/Login';
 import SignUp from '../screens/registerUser/RegisterUser';
+import ShowBusinessDetail from '../screens/businessDetail/ShowBusinessDetail';
+import ProductDetail from '../screens/productDetail/ProductDetail';
+import UpdateProduct from '../screens/updateProduct/UpdateProduct';
 
 const Stack = createNativeStackNavigator();
 
 const HomeRouter = () => {
+	const theme = useTheme();
 	return (
 		<Stack.Navigator
 			initialRouteName='home'
 			screenOptions={{
-				headerShown: false,
+				headerStyle: {
+					backgroundColor: theme.colors.primary,
+				},
+				headerTintColor: 'black',
+				headerTitleStyle: {
+					textAlign: 'center',
+					fontWeight: '#F97316',
+				},
 			}}
 		>
-			<Stack.Screen name='home' component={Home} options={{ title: 'Home' }} />
+			<Stack.Screen
+				name='home'
+				component={Home}
+				options={{ title: 'Home', headerShown: false }}
+			/>
+			<Stack.Screen
+				name='updateProduct'
+				component={UpdateProduct}
+				options={{ title: 'Actualizar Producto' }}
+			/>
+			<Stack.Screen
+				name='productDetail'
+				component={ProductDetail}
+				options={{ title: 'Detalles del producto' }}
+			/>
+		</Stack.Navigator>
+	);
+};
+const BusinessRouter = () => {
+	const theme = useTheme();
+	return (
+		<Stack.Navigator
+			initialRouteName='home'
+			screenOptions={{
+				headerStyle: {
+					backgroundColor: theme.colors.primary,
+				},
+				headerTintColor: 'black',
+				headerTitleStyle: {
+					textAlign: 'center',
+					fontWeight: '#F97316',
+				},
+			}}
+		>
+			<Stack.Screen
+				name='home'
+				component={Businesses}
+				options={{ title: 'Home', headerShown: false }}
+			/>
+			<Stack.Screen
+				name='detailBusiness'
+				component={ShowBusinessDetail}
+				options={{ title: 'Detalles del Negocio' }}
+			/>
+			<Stack.Screen
+				name='updateProduct'
+				component={UpdateProduct}
+				options={{ title: 'Actualizar Producto' }}
+			/>
+			<Stack.Screen
+				name='productDetail'
+				component={ProductDetail}
+				options={{ title: 'Detalles del producto' }}
+			/>
 		</Stack.Navigator>
 	);
 };
@@ -59,13 +124,19 @@ const ProfileRouter = () => {
 				component={RegisterProduct}
 				options={{ title: 'Registrar Producto' }}
 			/>
+			<Stack.Screen
+				name='updateProduct'
+				component={UpdateProduct}
+				options={{ title: 'Actualizar Producto' }}
+			/>
 		</Stack.Navigator>
 	);
 };
 
 const ICONS = {
-	Home: 'home-sharp',
-	Perfil: 'person',
+	Home: 'home',
+	Negocios: 'shopping-bag',
+	Perfil: 'user-alt',
 };
 
 const Tab = createBottomTabNavigator();
@@ -89,6 +160,7 @@ const Navigator = () => {
 				})}
 			>
 				<Tab.Screen name='Home' component={HomeRouter} />
+				<Tab.Screen name='Negocios' component={BusinessRouter} />
 				<Tab.Screen name='Perfil' component={ProfileRouter} />
 			</Tab.Navigator>
 		</NavigationContainer>

@@ -1,19 +1,16 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Chip, useTheme } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 
+import Business from './Business';
 import HomeHeader from '../../components/common/HomeHeader';
-import Product from '../../components/common/Product';
-import { businessSelector } from '../../redux/slices/business';
-import { getProducts, productsSelector, reset } from '../../redux/slices/product';
+import { businessSelector, getBusinesses, reset } from '../../redux/slices/business';
 
-const ListProducts = ({ navigation }) => {
+const ListBusiness = ({ navigation }) => {
 	const [page, setPage] = useState(1);
-	const [refreshing, setRefreshing] = useState(false);
 	const { colors } = useTheme();
-	const { loading, products, total_pages } = useSelector(productsSelector);
-	const { userBusiness } = useSelector(businessSelector);
+	const { loading, businesses, total_pages } = useSelector(businessSelector);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -21,21 +18,11 @@ const ListProducts = ({ navigation }) => {
 	}, []);
 
 	useEffect(() => {
-		dispatch(getProducts(page));
+		dispatch(getBusinesses(page));
 	}, [page]);
 
-	const onRefresh = useCallback(() => {
-		setRefreshing(true);
-		setPage(1);
-		dispatch(reset());
-		dispatch(getProducts(1));
-		setRefreshing(false);
-	}, [refreshing]);
-
-	const onSelectProduct = (id_product) =>
-		navigation.navigate('productDetail', { id: id_product });
-
-	const onEditProduct = (id_product) => navigation.navigate('updateProduct', { id: id_product });
+	const onSelectBusiness = (id_business) =>
+		navigation.navigate('detailBusiness', { id: id_business });
 
 	return (
 		<View style={styles.container}>
@@ -50,7 +37,7 @@ const ListProducts = ({ navigation }) => {
 			</View>
 			<FlatList
 				contentContainerStyle={{ justifyContent: 'center' }}
-				data={products}
+				data={businesses}
 				onEndReached={() => {
 					if (page + 1 <= total_pages) {
 						setPage(page + 1);
@@ -61,24 +48,16 @@ const ListProducts = ({ navigation }) => {
 					loading !== 'pending' && (
 						<View style={styles.center}>
 							<Text style={styles.text}>
-								No hay productos disponibles para mostrar.
+								No hay negocios disponibles para mostrar.
 							</Text>
 						</View>
 					)
 				}
-				renderItem={({ item }) => (
-					<Product
-						value={item}
-						isOwner={item.id_business === userBusiness?.id_business}
-						onEdit={onEditProduct}
-						onSelect={onSelectProduct}
-					/>
-				)}
-				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+				renderItem={({ item }) => <Business value={item} onSelect={onSelectBusiness} />}
 			/>
 			{loading === 'pending' && (
 				<View style={styles.center}>
-					<Text style={styles.text}>Cargando productos...</Text>
+					<Text style={styles.text}>Cargando negocios...</Text>
 				</View>
 			)}
 		</View>
@@ -112,4 +91,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default ListProducts;
+export default ListBusiness;

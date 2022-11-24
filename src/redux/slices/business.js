@@ -1,6 +1,44 @@
 import { AsyncStorage } from 'react-native';
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
-import { registerBusinessAsync } from '../../api/business';
+import {
+	getBusinessAsync,
+	getBusinessProductsAsync,
+	getBusinessesAsync,
+	registerBusinessAsync,
+} from '../../api/business';
+
+export const getBusiness = createAsyncThunk('getBusiness/getBusinessAsync', async (id) => {
+	const result = await getBusinessAsync(id);
+	const { detail } = result;
+	if (detail) {
+		console.error(detail);
+		throw Error(detail);
+	}
+	return result;
+});
+
+export const getBusinessProducts = createAsyncThunk(
+	'getBusinessProducts/getBusinessProductsAsync',
+	async ({ id, page }) => {
+		const result = await getBusinessProductsAsync(id, page);
+		const { detail } = result;
+		if (detail) {
+			console.error(detail);
+			throw Error(detail);
+		}
+		return result;
+	}
+);
+
+export const getBusinesses = createAsyncThunk('getBusinesses/getBusinessesAsync', async (page) => {
+	const result = await getBusinessesAsync(page);
+	const { detail } = result;
+	if (detail) {
+		console.error(detail);
+		throw Error(detail);
+	}
+	return result;
+});
 
 export const registerBusiness = createAsyncThunk(
 	'registerBusiness/registerBusinessAsync',
@@ -25,23 +63,83 @@ export const registerBusiness = createAsyncThunk(
 
 const initialState = {
 	loading: 'idle',
-	business: undefined,
+	businesses: [],
+	selectedBusiness: {
+		business: undefined,
+		products: [],
+		total_pages: 1,
+	},
+	userBusiness: undefined,
 };
 
 export const businessSlice = createSlice({
 	name: 'business',
 	initialState,
-	reducers: {},
+	reducers: {
+		reset: (state, _) => {
+			state.total_pages = 1;
+			state.businesses = [];
+		},
+		resetLoading: (state, _) => {
+			state.loading = 'idle';
+		},
+		resetSelectedBusiness: (state, _) => {
+			state.selectedBusiness = {
+				business: undefined,
+				products: [],
+				total_pages: 1,
+			};
+		},
+	},
 	extraReducers: (builder) => {
+		builder.addCase(getBusiness.pending, (state, _) => {
+			state.loading = 'pending';
+		});
+		builder.addCase(getBusiness.fulfilled, (state, { payload }) => {
+			state.loading = 'succeeded';
+			state.selectedBusiness.business = payload;
+		});
+		builder.addCase(getBusiness.rejected, (state, _) => {
+			state.loading = 'failed';
+		});
+
+		builder.addCase(getBusinessProducts.pending, (state, _) => {
+			state.loading = 'pending';
+		});
+		builder.addCase(getBusinessProducts.fulfilled, (state, { payload }) => {
+			state.loading = 'succeeded';
+			if (!(state.selectedBusiness.products.length > 0 && payload.current_page === 1)) {
+				state.selectedBusiness.products = [
+					...state.selectedBusiness.products,
+					...payload.results,
+				];
+			}
+			state.selectedBusiness.total_pages = payload.total_pages;
+		});
+		builder.addCase(getBusinessProducts.rejected, (state, _) => {
+			state.loading = 'failed';
+		});
+
+		builder.addCase(getBusinesses.pending, (state, _) => {
+			state.loading = 'pending';
+		});
+		builder.addCase(getBusinesses.fulfilled, (state, { payload }) => {
+			state.loading = 'succeeded';
+			state.businesses = [...state.businesses, ...payload.results];
+			state.total_pages = payload.total_pages;
+		});
+		builder.addCase(getBusinesses.rejected, (state, _) => {
+			state.loading = 'failed';
+		});
+
 		builder.addCase(registerBusiness.pending, (state, _) => {
 			state.loading = 'pending';
 		});
 		builder.addCase(registerBusiness.fulfilled, (state, { payload }) => {
 			state.loading = 'succeeded';
-			state.business = payload;
+			state.userBusiness = payload;
 		});
 		builder.addCase(registerBusiness.rejected, (state, _) => {
-			console.log('Failed');
 			state.loading = 'failed';
 		});
 	},
@@ -54,6 +152,6 @@ export const businessSelector = createSelector(
 	(state) => state
 );
 
-// export const {} = businessSlice.actions;
+export const { reset, resetLoading, resetSelectedBusiness } = businessSlice.actions;
 
 export default businessSlice.reducer;
