@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useTheme } from 'react-native-paper';
 import AntDesing from 'react-native-vector-icons/AntDesign';
 import image from '../../../assets/comida.png';
 
@@ -7,6 +8,8 @@ const API_HOST = 'https://blooming-inlet-07928.herokuapp.com';
 
 const Business = ({ value, onSelect }) => {
 	const [imageError, setImageError] = useState(false);
+	const [isFavorite, setIsFavorite] = useState(false);
+	const { colors } = useTheme();
 
 	const locations = async () => {
 		const supportedURL = value.location;
@@ -30,17 +33,16 @@ const Business = ({ value, onSelect }) => {
 						style={styles.logo}
 					/>
 				</View>
-
 				<View style={styles.mainContainer}>
 					<AntDesing
 						name='heart'
-						onPress={locations}
+						onPress={() => setIsFavorite((fav) => !fav)}
 						style={{
 							fontSize: 25,
-							color: 'gray',
+							color: !isFavorite ? 'gray' : colors.primary,
 							position: 'absolute',
-							marginLeft: 145,
 							top: 10,
+							right: 0,
 						}}
 					/>
 					<Text
@@ -112,6 +114,7 @@ const styles = StyleSheet.create({
 	mainContainer: {
 		justifyContent: 'center',
 		marginHorizontal: 20,
+		width: '55%',
 	},
 	text: {
 		color: '#fff',
