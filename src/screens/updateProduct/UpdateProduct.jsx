@@ -15,7 +15,7 @@ const date = (datetime) => {
 	};
 };
 
-const API_HOST = 'https://blooming-inlet-07928.herokuapp.com';
+const API_HOST = 'https://hunters-food-api-sco3ixymzq-ue.a.run.app';
 const UpdateProduct = ({ route, navigation }) => {
 	const [newValue, setNewValue] = useState();
 	const [showModal, setShowModal] = useState(false);

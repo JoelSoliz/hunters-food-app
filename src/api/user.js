@@ -1,4 +1,4 @@
-const HOST = 'https://blooming-inlet-07928.herokuapp.com';
+const HOST = 'https://hunters-food-api-sco3ixymzq-ue.a.run.app';
 
 export const getUserInfoAsync = (token) => {
 	const apiURL = `${HOST}/user/me`;

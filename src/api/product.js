@@ -1,6 +1,6 @@
 import { convertToDate } from '../components/operaciones/fecha';
 
-const HOST = 'https://blooming-inlet-07928.herokuapp.com';
+const HOST = 'https://hunters-food-api-sco3ixymzq-ue.a.run.app';
 
 export const deleteProductAsync = async (id, token) => {
 	const apiURL = `${HOST}/product/${id}`;
