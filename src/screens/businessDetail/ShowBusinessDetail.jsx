@@ -73,8 +73,8 @@ const ShowBusinessDetail = ({ route, navigation }) => {
 								fontSize: 25,
 								color: 'gray',
 								position: 'absolute',
-								marginLeft: 280,
-								top: 10,
+								marginLeft: 310,
+								marginTop: 20,
 							}}
 						/>
 						<Text style={styles.title}>{business?.name}</Text>
@@ -176,9 +176,10 @@ const styles = StyleSheet.create({
 	title: {
 		color: '#fff',
 		fontSize: 30,
-		marginVertical: 5,
 		marginLeft: 20,
+		marginTop: 10,
 		fontWeight: 'bold',
+		width: '85%',
 	},
 	subText: {
 		color: '#fff',
