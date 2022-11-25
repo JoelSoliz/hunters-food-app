@@ -72,7 +72,7 @@ const ShowBusinessDetail = ({ route, navigation }) => {
 							style={{
 								flex: 1,
 								flexDirection: 'row',
-								alignItems: 'center',
+								alignItems: 'flex-start',
 								justifyContent: 'space-between',
 							}}
 						>
@@ -82,6 +82,7 @@ const ShowBusinessDetail = ({ route, navigation }) => {
 								style={{
 									color: !isFavorite ? 'gray' : colors.primary,
 									fontSize: 25,
+									marginTop: 20,
 									marginRight: 20,
 								}}
 								onPress={() => setIsFavorite((fav) => !fav)}
