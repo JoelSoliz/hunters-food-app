@@ -10,7 +10,7 @@ import image from '../../../assets/comida.png';
 import fecha from '../operaciones/fecha.js';
 import ConfirmationModal from './ConfirmationModal';
 
-const API_HOST = 'https://blooming-inlet-07928.herokuapp.com';
+const API_HOST = 'https://hunters-food-api-sco3ixymzq-ue.a.run.app';
 
 const Product = ({ value, isOwner, onEdit, onSelect }) => {
 	const [imageError, setImageError] = useState(false);

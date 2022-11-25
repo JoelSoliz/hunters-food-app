@@ -31,7 +31,7 @@ const ProductDetail = ({ route }) => {
 	const { selectedProduct } = useSelector(productsSelector);
 	const dispatch = useDispatch();
 	const [imageError, setImageError] = useState(false);
-	const API_HOST = 'https://blooming-inlet-07928.herokuapp.com';
+	const API_HOST = 'https://hunters-food-api-sco3ixymzq-ue.a.run.app';
 	useEffect(() => {
 		dispatch(getProduct(route.params.id));
 	}, []);
