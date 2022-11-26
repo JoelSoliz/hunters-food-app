@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, ScrollView, View, Image, Text, FlatList } from 'react-native';
 import { useTheme, Chip, Card } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
+import AntDesing from 'react-native-vector-icons/AntDesign';
 
 import image from '../../../assets/picture.png';
 import BrowserLinking from '../../components/linking/BrowserLinking';
@@ -18,6 +19,7 @@ const API_HOST = 'https://hunters-food-api-sco3ixymzq-ue.a.run.app';
 const ShowBusinessDetail = ({ route, navigation }) => {
 	const [imageError, setImageError] = useState(false);
 	const [page, setPage] = useState(1);
+	const [isFavorite, setIsFavorite] = useState(false);
 	const {
 		loading,
 		selectedBusiness: { business, products, total_pages },
@@ -43,7 +45,7 @@ const ShowBusinessDetail = ({ route, navigation }) => {
 	const onEditProduct = (id_product) => navigation.navigate('updateProduct', { id: id_product });
 
 	return (
-		<ScrollView nestedscrollenabled style={styles.container}>
+		<ScrollView nestedScrollEnabled style={styles.container}>
 			{loading === 'pending' ? (
 				<View style={styles.center}>
 					<Text style={styles.text}>Cargando los detalles del negocio...</Text>
@@ -66,15 +68,32 @@ const ShowBusinessDetail = ({ route, navigation }) => {
 						/>
 					</View>
 					<View>
-						<Text style={styles.title}>{business?.name}</Text>
-
+						<View
+							style={{
+								flex: 1,
+								flexDirection: 'row',
+								alignItems: 'flex-start',
+								justifyContent: 'space-between',
+							}}
+						>
+							<Text style={styles.title}>{business?.name}</Text>
+							<AntDesing
+								name='heart'
+								style={{
+									color: !isFavorite ? 'gray' : colors.primary,
+									fontSize: 25,
+									marginTop: 20,
+									marginRight: 20,
+								}}
+								onPress={() => setIsFavorite((fav) => !fav)}
+							/>
+						</View>
 						<View style={{ flexDirection: 'column' }}>
 							<Text style={styles.subtitle}>Descripción:</Text>
 							<Card>
 								<Text style={styles.descrip}>{business?.description}</Text>
 							</Card>
 						</View>
-
 						<View
 							style={{
 								flexDirection: 'row',
@@ -101,7 +120,7 @@ const ShowBusinessDetail = ({ route, navigation }) => {
 					</View>
 					<View>
 						<FlatList
-							nestedscrollenabled
+							nestedScrollEnabled
 							contentContainerStyle={{
 								justifyContent: 'center',
 								paddingTop: 0,
@@ -165,9 +184,10 @@ const styles = StyleSheet.create({
 	title: {
 		color: '#fff',
 		fontSize: 30,
-		marginVertical: 5,
 		marginLeft: 20,
+		marginTop: 10,
 		fontWeight: 'bold',
+		width: '85%',
 	},
 	subText: {
 		color: '#fff',
@@ -188,7 +208,6 @@ const styles = StyleSheet.create({
 		color: '#fff',
 		backgroundColor: '#222222',
 		width: '90%',
-		height: 100,
 		paddingHorizontal: 10,
 		paddingVertical: 10,
 		borderRadius: 5,

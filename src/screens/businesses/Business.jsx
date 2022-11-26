@@ -1,19 +1,20 @@
 import { useState } from 'react';
 import { Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useTheme } from 'react-native-paper';
 import AntDesing from 'react-native-vector-icons/AntDesign';
-
 import image from '../../../assets/comida.png';
 
 const API_HOST = 'https://hunters-food-api-sco3ixymzq-ue.a.run.app';
 
 const Business = ({ value, onSelect }) => {
 	const [imageError, setImageError] = useState(false);
+	const [isFavorite, setIsFavorite] = useState(false);
+	const { colors } = useTheme();
 
 	const locations = async () => {
 		const supportedURL = value.location;
 		await Linking.openURL(supportedURL);
 	};
-
 	return (
 		<TouchableOpacity onPress={() => onSelect(value.id_business)}>
 			<View style={styles.card}>
@@ -33,13 +34,24 @@ const Business = ({ value, onSelect }) => {
 					/>
 				</View>
 				<View style={styles.mainContainer}>
+					<AntDesing
+						name='heart'
+						onPress={() => setIsFavorite((fav) => !fav)}
+						style={{
+							fontSize: 25,
+							color: !isFavorite ? 'gray' : colors.primary,
+							position: 'absolute',
+							top: 10,
+							right: 0,
+						}}
+					/>
 					<Text
 						style={{
 							...styles.text,
 							fontSize: 18,
 							width: 180,
 							position: 'absolute',
-							top: 20,
+							top: 40,
 						}}
 					>
 						{value.name}
@@ -102,6 +114,7 @@ const styles = StyleSheet.create({
 	mainContainer: {
 		justifyContent: 'center',
 		marginHorizontal: 20,
+		width: '55%',
 	},
 	text: {
 		color: '#fff',
