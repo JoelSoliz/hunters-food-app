@@ -119,6 +119,12 @@ const ProfileRouter = () => {
 				component={RegisterBusiness}
 				options={{ title: 'Registrar Negocio' }}
 			/>
+
+			<Stack.Screen
+				name='detailBusiness'
+				component={ShowBusinessDetail}
+				options={{ title: 'Detalles del Negocio' }}
+			/>
 			<Stack.Screen
 				name='registerProduct'
 				component={RegisterProduct}

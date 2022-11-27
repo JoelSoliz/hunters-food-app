@@ -15,7 +15,8 @@ const ProductDetail = ({ route }) => {
 		let porcentaje = selectedProduct?.discount / 100;
 		let des = selectedProduct?.price * porcentaje;
 		let nuevoPrecio = selectedProduct?.price - des;
-		return nuevoPrecio.toString();
+
+		return Math.round(nuevoPrecio * 100) / 100;
 	};
 	const formatTime = (time) => {
 		return ('0' + (time || '0')).slice(-2);
