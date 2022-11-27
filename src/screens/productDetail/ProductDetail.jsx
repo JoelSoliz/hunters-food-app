@@ -70,11 +70,12 @@ const ProductDetail = ({ route }) => {
 							>
 								<Ionicons
 									name='fast-food-outline'
-									style={{ fontSize: 60, color: '#F97316' }}
+									style={{ fontSize: 35, color: '#F97316', left: 25 }}
 								/>
 								<Text
 									style={{
 										fontSize: 28,
+                    left: 25,
 										color: '#F97316',
 										fontWeight: 'bold',
 									}}
@@ -93,6 +94,7 @@ const ProductDetail = ({ route }) => {
 								<Text
 									style={{
 										...styles.subText,
+                    left: 30,
 									}}
 								>
 									Antes:
@@ -102,6 +104,7 @@ const ProductDetail = ({ route }) => {
 										...styles.subText,
 										textDecorationLine: 'line-through',
 										marginLeft: 20,
+                    left: 20,
 									}}
 								>
 									{selectedProduct?.price} Bs
@@ -117,6 +120,7 @@ const ProductDetail = ({ route }) => {
 								<Text
 									style={{
 										...styles.subText,
+                    left: 38,
 									}}
 								>
 									Ahora:
@@ -124,9 +128,10 @@ const ProductDetail = ({ route }) => {
 								<Text
 									style={{
 										fontSize: 20,
-										color: '#fff',
-										fontWeight: 'bold',
-										marginLeft: 20,
+								    color: '#fff',
+							    	fontWeight: 'bold',
+							    	marginLeft: 20,
+							    	left: 20,
 									}}
 								>
 									{descuento()} Bs
@@ -146,30 +151,57 @@ const ProductDetail = ({ route }) => {
 								paddingVertical: 10,
 								borderRadius: 5,
 								fontWeight: 'bold',
+								marginLeft: 20,
+								left: 20,
+
 							}}
 						>
 							{selectedProduct?.name}
 						</Text>
-						<View style={{ top: 0 }}>
-							<View style={{ alignItems: 'flex-start' }}>
-								<Chip
-									compact={true}
-									mode='outlined'
-									style={{
-										fontSize: 15,
-										color: '#fff',
-										fontWeight: 'bold',
-										width: '45%',
-										height: 35,
-										alignItems: 'center',
-										backgroundColor: '#52525240',
-										borderRadius: 10,
-										top: 10,
-									}}
-								>
-									{selectedProduct?.product_type}
-								</Chip>
-							</View>
+
+					</View>
+				</View>
+			</View>
+			<View style={styles.leftContainer}>
+				<Text
+					style={{
+						marginBottom: 10,
+						fontSize: 25,
+						color: '#fff',
+						backgroundColor: '#282928',
+						top: 22,
+						left: -20,
+						width: '60%',
+						height: 120,
+						paddingVertical: 10,
+						borderRadius: 5,
+						fontWeight: 'bold',
+					}}
+				>
+					{selectedProduct?.name}
+				</Text>
+				<View style={{ top: 0 }}>
+					<View style={{ alignItems: 'flex-start' }}>
+						<Chip
+							compact={true}
+							mode='outlined'
+							style={{
+								fontSize: 15,
+								color: '#fff',
+								fontWeight: 'bold',
+								width: '45%',
+								height: 35,
+								alignItems: 'center',
+								backgroundColor: '#52525240',
+								borderRadius: 10,
+								top: 10,
+							}}
+						>
+							{selectedProduct?.product_type}
+						</Chip>
+					</View>
+
+
 
 							<View style={{ alignItems: 'flex-end' }}>
 								<Chip
