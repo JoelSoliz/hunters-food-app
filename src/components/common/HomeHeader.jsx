@@ -53,10 +53,8 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		marginVertical: 5,
-		//borderColor: 'red',
 		borderRadius: 15,
 		backgroundColor: '#474747',
-		//color: 'blue',
 	},
 	menu: {
 		fontSize: 35,
