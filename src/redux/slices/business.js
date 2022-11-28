@@ -62,15 +62,15 @@ export const registerBusiness = createAsyncThunk(
 	}
 );
 
-export const addFavoriteBusiness = createAsyncThunk(
+export const addFavoriteBusiness = createAsyncThunk( 
 	'addFavoriteBusiness/addFavoriteBusinessAsync',
-	async ({ idBusiness }) => {
+	async ({ business_id}) => {
 		let token = await AsyncStorage.getItem('token');
 		if (!token) {
 			console.error('Vuelve a iniciar sesión');
 			throw new Error('invalid credential');
 		}
-		const result = await addFavoriteBusinessAsync( idBusiness);
+		const result = await addFavoriteBusinessAsync( business_id, token);
 		if (!result) {
 			console.error('Intenta de nuevo');
 			throw new Error('Intenta de nuevo');
@@ -162,6 +162,16 @@ export const businessSlice = createSlice({
 			state.userBusiness = payload;
 		});
 		builder.addCase(registerBusiness.rejected, (state, _) => {
+			state.loading = 'failed';
+		});
+		builder.addCase(addFavoriteBusiness.pending, (state, _) => {
+			state.loading = 'pending';
+		});
+		builder.addCase(addFavoriteBusiness.fulfilled, (state, { payload }) => {
+			state.loading = 'succeeded';
+			state.userBusiness = payload;
+		});
+		builder.addCase(addFavoriteBusiness.rejected, (state, _) => {
 			state.loading = 'failed';
 		});
 	},

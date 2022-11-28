@@ -24,8 +24,13 @@ const Business = ({ value, onSelect }) => {
 	}, [addfavorite]);
 
 	const addFavorites = () => {
-		if (!addfavorite) {
-			dispatch(addFavoriteBusiness(value.id_business));
+		if (!isFavorite) {
+			setIsFavorite(true);
+			if (!addfavorite) {
+				dispatch(addFavoriteBusiness(value.id_business));
+			}
+		} else {
+			setIsFavorite(false);
 		}
 	};
 
@@ -56,7 +61,7 @@ const Business = ({ value, onSelect }) => {
 				<View style={styles.mainContainer}>
 					<AntDesing
 						name='heart'
-						onPress={() => setIsFavorite((fav) => !fav)}
+						onPress={addFavorites}
 						style={{
 							fontSize: 25,
 							color: !isFavorite ? 'gray' : colors.primary,
