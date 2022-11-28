@@ -22,7 +22,7 @@ export const getProductAsync = async (id) => {
 };
 
 export const getProductsAsync = async (page, filter) => {
-	const apiURL = `${HOST}/product/?current_page=${page}&product_type=${filter?.category}`;
+	const apiURL = `${HOST}/product/?current_page=${page}&product_type=${filter?.category}&name_similar=${filter?.name}`;
 	return fetch(apiURL)
 		.then((response) => response.json())
 		.catch((error) => console.log(error));
