@@ -1,11 +1,5 @@
-import { AsyncStorage } from 'react-native';
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
-import {
-	getBusinessAsync,
-	getBusinessProductsAsync,
-	getBusinessesAsync,
-	registerBusinessAsync,
-} from '../../api/business';
+import { getBusinessAsync, getBusinessProductsAsync, getBusinessesAsync } from '../../api/business';
 
 export const getBusiness = createAsyncThunk('getBusiness/getBusinessAsync', async (id) => {
 	const result = await getBusinessAsync(id);
@@ -40,27 +34,6 @@ export const getBusinesses = createAsyncThunk('getBusinesses/getBusinessesAsync'
 	return result;
 });
 
-export const registerBusiness = createAsyncThunk(
-	'registerBusiness/registerBusinessAsync',
-	async (business) => {
-		let token = await AsyncStorage.getItem('token');
-		if (!token) {
-			console.error('Vuelve a iniciar sesión');
-			throw new Error('invalid credential');
-		}
-		const result = await registerBusinessAsync(business, token);
-		if (!result) {
-			console.error('Intenta de nuevo');
-			throw new Error('Intenta de nuevo');
-		}
-		if (result?.detail) {
-			console.error(detail);
-			throw new Error(detail);
-		}
-		return result;
-	}
-);
-
 const initialState = {
 	loading: 'idle',
 	businesses: [],
@@ -69,7 +42,6 @@ const initialState = {
 		products: [],
 		total_pages: 1,
 	},
-	userBusiness: undefined,
 };
 
 export const businessSlice = createSlice({
@@ -129,17 +101,6 @@ export const businessSlice = createSlice({
 			state.total_pages = payload.total_pages;
 		});
 		builder.addCase(getBusinesses.rejected, (state, _) => {
-			state.loading = 'failed';
-		});
-
-		builder.addCase(registerBusiness.pending, (state, _) => {
-			state.loading = 'pending';
-		});
-		builder.addCase(registerBusiness.fulfilled, (state, { payload }) => {
-			state.loading = 'succeeded';
-			state.userBusiness = payload;
-		});
-		builder.addCase(registerBusiness.rejected, (state, _) => {
 			state.loading = 'failed';
 		});
 	},

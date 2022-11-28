@@ -1,32 +1,42 @@
+import { useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Chip, useTheme } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { businessSelector } from '../../redux/slices/business';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import rp from '../../../assets/rp.png';
 import nf from '../../../assets/nf.png';
 import rn from '../../../assets/rn.png';
+import { getUserBusiness, logout, sessionSelector } from '../../redux/slices/session';
 import Business from '../businesses/Business';
-import { logout, sessionSelector } from '../../redux/slices/session';
 
 const Profile = ({ navigation }) => {
 	const { colors } = useTheme();
-	const { isAuthenticate, user } = useSelector(sessionSelector);
-	const { userBusiness, selectedBusiness } = useSelector(businessSelector);
+	const { isAuthenticate, user, userBusiness, loading } = useSelector(sessionSelector);
 	const dispatch = useDispatch();
+
+	useEffect(() => {
+		if (isAuthenticate) {
+			dispatch(getUserBusiness());
+		}
+	}, [isAuthenticate]);
 
 	const onLogout = () => dispatch(logout());
 
 	const onSelectBusiness = (id_business) =>
 		navigation.navigate('detailBusiness', { id: id_business });
-	useEffect(() => {
-		console.log(selectedBusiness);
-	}, [selectedBusiness]);
+
 	return (
 		<View style={{ ...styles.view, backgroundColor: colors.surface }}>
 			<View style={{ margin: 15 }}>
-				<Text style={{ ...styles.text, color: colors.primary, marginVertical: 30 }}>
+				<Text
+					style={{
+						...styles.text,
+						color: colors.primary,
+						marginVertical: 30,
+						marginBottom: 40,
+					}}
+				>
 					Bienvenido a tu perfil {user?.name || 'Desconocido'}!
 				</Text>
 
@@ -53,25 +63,35 @@ const Profile = ({ navigation }) => {
 				)}
 				{isAuthenticate && (
 					<>
-						{userBusiness && (
-							<View>
-								<Text style={{ fontSize: 15, color: '#fff', marginBottom: 10 }}>
-									Mi Negocio:
-								</Text>
+						<View>
+							{userBusiness && (
+								<>
+									<View style={{ marginBottom: 30 }}>
+										<Text
+											style={{
+												fontSize: 15,
+												color: '#fff',
+												marginBottom: 10,
+											}}
+										>
+											Mi Negocio:
+										</Text>
 
-								<Business value={userBusiness} onSelect={onSelectBusiness} />
+										<Business
+											value={userBusiness}
+											onSelect={onSelectBusiness}
+										/>
+									</View>
 
-								<View
-									style={{
-										flexDirection: 'row',
-										justifyContent: 'center',
-										//alignItems: 'center',
-										marginVertical: 50,
-									}}
-								>
-									<View style={{}}>
+									<View
+										style={{
+											marginBottom: 100,
+											alignContent: 'center',
+											flexDirection: 'row',
+											marginLeft: 50,
+										}}
+									>
 										<TouchableOpacity
-											style={{}}
 											onPress={() => {
 												navigation.navigate('registerProduct');
 											}}
@@ -79,7 +99,6 @@ const Profile = ({ navigation }) => {
 											<View
 												style={{
 													alignItems: 'center',
-													//marginBottom: 10,
 												}}
 											>
 												<Image source={rp} style={styles.image} />
@@ -95,48 +114,21 @@ const Profile = ({ navigation }) => {
 											</View>
 										</TouchableOpacity>
 									</View>
-									<View>
-										<Text style={{ color: colors.surface }}>
-											xxxxxxxxxxxxxxxx
-										</Text>
-									</View>
-									<View style={{}}>
-										<TouchableOpacity style={{}}>
-											<View
-												style={{
-													alignItems: 'center',
-													//marginBottom: 10,
-												}}
-											>
-												<Image source={nf} style={styles.image} />
-
-												<Text
-													style={{
-														textDecorationLine: 'underline',
-														color: colors.accent,
-													}}
-												>
-													Negocios Favoritos
-												</Text>
-											</View>
-										</TouchableOpacity>
-									</View>
-								</View>
-							</View>
-						)}
-						{!userBusiness && (
-							<View>
-								<View
-									style={{
-										flexDirection: 'row',
-										justifyContent: 'center',
-										//alignItems: 'center',
-										marginVertical: 50,
-									}}
-								>
-									<View style={{}}>
+								</>
+							)}
+							{!userBusiness && (
+								<>
+									{loading === 'pending' && <Text>Buscando tu negocio...</Text>}
+									<View
+										style={{
+											marginBottom: 100,
+											alignContent: 'center',
+											flexDirection: 'row',
+											marginLeft: 50,
+										}}
+									>
 										<TouchableOpacity
-											style={{}}
+											disabled={loading === 'pending'}
 											onPress={() => {
 												navigation.navigate('registerBusiness');
 											}}
@@ -144,7 +136,6 @@ const Profile = ({ navigation }) => {
 											<View
 												style={{
 													alignItems: 'center',
-													//marginBottom: 10,
 												}}
 											>
 												<Image source={rn} style={styles.image} />
@@ -160,36 +151,33 @@ const Profile = ({ navigation }) => {
 											</View>
 										</TouchableOpacity>
 									</View>
-									<View>
-										<Text style={{ color: colors.surface }}>
-											xxxxxxxxxxxxxxxx
+								</>
+							)}
+							<View style={{ flexDirection: 'row-reverse' }}>
+								<TouchableOpacity>
+									<View
+										style={{
+											alignItems: 'center',
+											marginVertical: -218,
+											marginRight: 50,
+										}}
+									>
+										<Image source={nf} style={styles.image} />
+
+										<Text
+											style={{
+												textDecorationLine: 'underline',
+												color: colors.accent,
+											}}
+										>
+											Negocios Favoritos
 										</Text>
 									</View>
-									<View style={{}}>
-										<TouchableOpacity style={{}}>
-											<View
-												style={{
-													alignItems: 'center',
-													//marginBottom: 10,
-												}}
-											>
-												<Image source={nf} style={styles.image} />
-
-												<Text
-													style={{
-														textDecorationLine: 'underline',
-														color: colors.accent,
-													}}
-												>
-													Negocios Favoritos
-												</Text>
-											</View>
-										</TouchableOpacity>
-									</View>
-								</View>
+								</TouchableOpacity>
 							</View>
-						)}
-						<View style={styles.centeredContent}>
+						</View>
+
+						<View style={{ ...styles.centeredContent }}>
 							<Chip
 								mode='outlined'
 								onPress={onLogout}
@@ -213,15 +201,12 @@ const styles = StyleSheet.create({
 	view: {
 		width: '100%',
 		height: '100%',
-		//justifyContent: 'flex-start',
 	},
 	text: {
 		textAlign: 'center',
 		fontSize: 36,
 	},
 	navigate: {
-		//textAlign: 'center',
-		//textDecorationLine: 'underline',
 		justifyContent: 'center',
 		width: '60%',
 		height: 35,

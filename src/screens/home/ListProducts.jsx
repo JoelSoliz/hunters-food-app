@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import HomeHeader from '../../components/common/HomeHeader';
 import Product from '../../components/common/Product';
 import productCategories from '../../data/productCategory.json';
-import { businessSelector } from '../../redux/slices/business';
+import { sessionSelector } from '../../redux/slices/session';
 import { getProducts, productsSelector, reset } from '../../redux/slices/product';
 import ProductCategories from './ProductCategories';
 
@@ -17,7 +17,7 @@ const ListProducts = ({ navigation }) => {
 	const [filter, setFilter] = useState({ category: '' });
 	const { colors } = useTheme();
 	const { loading, products, total_pages } = useSelector(productsSelector);
-	const { userBusiness } = useSelector(businessSelector);
+	const { userBusiness } = useSelector(sessionSelector);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
