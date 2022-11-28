@@ -3,7 +3,8 @@ import { StyleSheet, ScrollView, View, Image, Text, FlatList } from 'react-nativ
 import { useTheme, Chip, Card } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import AntDesing from 'react-native-vector-icons/AntDesign';
-
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import ConfirmationModal from '../../components/common/ConfirmationModal';
 import image from '../../../assets/picture.png';
 import BrowserLinking from '../../components/linking/BrowserLinking';
 import Product from '../../components/common/Product';
@@ -21,6 +22,8 @@ const ShowBusinessDetail = ({ route, navigation }) => {
 	const [imageError, setImageError] = useState(false);
 	const [page, setPage] = useState(1);
 	const [isFavorite, setIsFavorite] = useState(false);
+	const [modalOpen, setModalOpen] = useState(false);
+
 	const {
 		loading,
 		selectedBusiness: { business, products, total_pages },
@@ -28,6 +31,14 @@ const ShowBusinessDetail = ({ route, navigation }) => {
 	const { userBusiness } = useSelector(sessionSelector);
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
+
+	const handlerSetFavorite = () => {
+		if (isFavorite) {
+			setModalOpen(true);
+		} else {
+			setIsFavorite(true);
+		}
+	};
 
 	useEffect(() => {
 		dispatch(resetSelectedBusiness());
@@ -53,6 +64,21 @@ const ShowBusinessDetail = ({ route, navigation }) => {
 				</View>
 			) : (
 				<>
+					<ConfirmationModal
+						isOpen={modalOpen}
+						message={`¿Quitar de favoritos a ${business?.name}?`}
+						onCancel={() => setModalOpen(false)}
+						onConfirm={() => {
+							setIsFavorite(false);
+							setModalOpen(false);
+						}}
+						icon={
+							<MaterialCommunityIcons
+								name='heart-broken'
+								style={{ fontSize: 60, color: '#F97316' }}
+							/>
+						}
+					/>
 					<View>
 						<Image
 							onError={() => {
@@ -86,7 +112,7 @@ const ShowBusinessDetail = ({ route, navigation }) => {
 									marginTop: 20,
 									marginRight: 20,
 								}}
-								onPress={() => setIsFavorite((fav) => !fav)}
+								onPress={handlerSetFavorite}
 							/>
 						</View>
 						<View style={{ flexDirection: 'column' }}>
