@@ -13,6 +13,7 @@ import {
 	businessSelector,
 	resetSelectedBusiness,
 } from '../../redux/slices/business';
+import { sessionSelector } from '../../redux/slices/session';
 
 const API_HOST = 'https://hunters-food-api-sco3ixymzq-ue.a.run.app';
 
@@ -23,8 +24,8 @@ const ShowBusinessDetail = ({ route, navigation }) => {
 	const {
 		loading,
 		selectedBusiness: { business, products, total_pages },
-		userBusiness,
 	} = useSelector(businessSelector);
+	const { userBusiness } = useSelector(sessionSelector);
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
 

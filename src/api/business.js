@@ -21,6 +21,17 @@ export const getBusinessesAsync = async (page) => {
 		.catch((error) => console.log(error));
 };
 
+export const getUserBusinessAsync = async (token) => {
+	const apiURL = `${HOST}/user/business`;
+	return fetch(apiURL, {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	})
+		.then((response) => response.json())
+		.catch((error) => console.log(error));
+};
+
 export const registerBusinessAsync = async (business, token) => {
 	const url = `${HOST}/business/register`;
 	const apiURL = new URL(url);

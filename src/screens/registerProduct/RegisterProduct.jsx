@@ -4,13 +4,13 @@ import { Snackbar } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ProductForm from '../../components/forms/ProductForm';
-import { businessSelector, resetLoading } from '../../redux/slices/business';
-import { productsSelector, registerProduct } from '../../redux/slices/product';
+import { sessionSelector } from '../../redux/slices/session';
+import { productsSelector, registerProduct, resetLoading } from '../../redux/slices/product';
 
 const RegisterProductForm = ({ navigation }) => {
 	const [loaded, setLoaded] = useState(false);
 	const [visible, setVisible] = useState(false);
-	const { userBusiness } = useSelector(businessSelector);
+	const { userBusiness } = useSelector(sessionSelector);
 	const { loading } = useSelector(productsSelector);
 	const dispatch = useDispatch();
 

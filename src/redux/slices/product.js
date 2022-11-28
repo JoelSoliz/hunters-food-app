@@ -105,6 +105,9 @@ export const productsSlice = createSlice({
 			state.total_pages = 1;
 			state.products = [];
 		},
+		resetLoading: (state, _) => {
+			state.loading = 'idle';
+		},
 	},
 	extraReducers: (builder) => {
 		builder.addCase(deleteProduct.pending, (state, _) => {
@@ -172,6 +175,6 @@ export const productsSelector = createSelector(
 	(state) => state
 );
 
-export const { reset } = productsSlice.actions;
+export const { reset, resetLoading } = productsSlice.actions;
 
 export default productsSlice.reducer;

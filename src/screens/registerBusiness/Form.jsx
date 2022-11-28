@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import ImagePicker from '../../components/input/ImagePicker';
 import categories from '../../data/categories.json';
-import { businessSelector, registerBusiness } from '../../redux/slices/business';
+import { registerBusiness, sessionSelector } from '../../redux/slices/session';
 
 const ERROR_MESSAGES = {
 	link: 'Url inválido',
@@ -24,7 +24,7 @@ const RegisterForm = ({ navigation }) => {
 		formState: { errors, isValid },
 		handleSubmit,
 	} = useForm({ mode: 'onChange' });
-	const { loading } = useSelector(businessSelector);
+	const { loading } = useSelector(sessionSelector);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
