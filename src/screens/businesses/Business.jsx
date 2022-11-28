@@ -1,15 +1,35 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import AntDesing from 'react-native-vector-icons/AntDesign';
 import image from '../../../assets/comida.png';
+import { useDispatch, useSelector } from 'react-redux';
+import { addFavoriteBusiness, businessSelector } from '../../redux/slices/business';
 
 const API_HOST = 'https://hunters-food-api-sco3ixymzq-ue.a.run.app';
 
 const Business = ({ value, onSelect }) => {
 	const [imageError, setImageError] = useState(false);
 	const [isFavorite, setIsFavorite] = useState(false);
+	const { addfavorite } = useSelector(businessSelector);
 	const { colors } = useTheme();
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		if (!addfavorite) {
+			setIsFavorite(false);
+		} else {
+			setIsFavorite(true);
+		}
+	}, [addfavorite]);
+
+	const addFavorites = () => {
+		if (!addfavorite) {
+			dispatch(addFavoriteBusiness(value.id_business));
+		}
+	};
+
+	/* como puedo utilizar esa funcion de addFavorite*/
 
 	const locations = async () => {
 		const supportedURL = value.location;

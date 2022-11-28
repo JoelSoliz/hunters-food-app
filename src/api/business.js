@@ -49,3 +49,22 @@ export const registerBusinessAsync = async (business, token) => {
 		.then((response) => response.json())
 		.catch((error) => console.log(error));
 };
+
+export const addFavoriteBusinessAsync = async (business_id, token) => {
+	const apiURL = new URL(`${HOST}/business/add_favorite/`);
+	apiURL.searchParams.append('id_business', business_id );
+	let data = null;
+	let urlStr = apiURL.toString();
+	urlStr = urlStr.replace('add_favorite/', 'add_favorite');
+
+	return fetch(urlStr, {
+		method: 'POST',
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+		mode: 'cors',
+		body: data,
+	})
+		.then((response) => response.json())
+		.catch((error) => console.error(error));
+};

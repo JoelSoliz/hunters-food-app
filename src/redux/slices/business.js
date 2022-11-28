@@ -5,6 +5,7 @@ import {
 	getBusinessProductsAsync,
 	getBusinessesAsync,
 	registerBusinessAsync,
+	addFavoriteBusinessAsync, 
 } from '../../api/business';
 
 export const getBusiness = createAsyncThunk('getBusiness/getBusinessAsync', async (id) => {
@@ -56,6 +57,27 @@ export const registerBusiness = createAsyncThunk(
 		if (result?.detail) {
 			console.error(detail);
 			throw new Error(detail);
+		}
+		return result;
+	}
+);
+
+export const addFavoriteBusiness = createAsyncThunk(
+	'addFavoriteBusiness/addFavoriteBusinessAsync',
+	async ({ idBusiness }) => {
+		let token = await AsyncStorage.getItem('token');
+		if (!token) {
+			console.error('Vuelve a iniciar sesión');
+			throw new Error('invalid credential');
+		}
+		const result = await addFavoriteBusinessAsync( idBusiness);
+		if (!result) {
+			console.error('Intenta de nuevo');
+			throw new Error('Intenta de nuevo');
+		}
+		if (result?.detail) {
+			console.log(result.detail);
+			throw new Error(result.detail);
 		}
 		return result;
 	}
