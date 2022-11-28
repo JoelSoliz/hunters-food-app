@@ -14,7 +14,8 @@ const ListProducts = ({ navigation }) => {
 	const [page, setPage] = useState(1);
 	const [refreshing, setRefreshing] = useState(false);
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
-	const [filter, setFilter] = useState({ category: '' });
+	const [filter, setFilter] = useState({ category: '', name: '' });
+	const [value, setValue] = useState('');
 	const { colors } = useTheme();
 	const { loading, products, total_pages } = useSelector(productsSelector);
 	const { userBusiness } = useSelector(sessionSelector);
@@ -47,12 +48,26 @@ const ListProducts = ({ navigation }) => {
 		setPage(1);
 		setIsFilterOpen(false);
 	};
+
+	const onSearch = (data) => {
+		dispatch(reset());
+		setFilter({ ...filter, name: data });
+		setPage(1);
+	};
+
 	let category = productCategories.filter((category) => category.value == filter.category);
 
 	return (
 		<View style={styles.container}>
 			<View style={styles.containerHeader}>
-				{!isFilterOpen && <HomeHeader onOpenFilter={() => setIsFilterOpen(true)} />}
+				{!isFilterOpen && (
+					<HomeHeader
+						onOpenFilter={() => setIsFilterOpen(true)}
+						onSearch={onSearch}
+						value={value}
+						setValue={setValue}
+					/>
+				)}
 				<ProductCategories
 					isModalOpen={isFilterOpen}
 					setIsModalOpen={setIsFilterOpen}

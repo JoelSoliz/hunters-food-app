@@ -27,7 +27,7 @@ const ListBusiness = ({ navigation }) => {
 	return (
 		<View style={styles.container}>
 			<View style={styles.containerHeader}>
-				<HomeHeader onOpenFilter={() => {}} />
+				<HomeHeader onOpenFilter={() => {}} onSearch={() => {}} setValue={() => {}} />
 				<Chip
 					mode='contained'
 					style={{ ...styles.chipSearch, backgroundColor: colors.primary }}

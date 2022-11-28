@@ -1,10 +1,10 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
-import { TextInput, useTheme } from 'react-native-paper';
+import { useTheme, Searchbar } from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import logo from '../../../assets/logo.png';
 
-const HomeHeader = ({ onOpenFilter }) => {
+const HomeHeader = ({ onOpenFilter, onSearch, value, setValue }) => {
 	const { colors } = useTheme();
 
 	return (
@@ -22,11 +22,11 @@ const HomeHeader = ({ onOpenFilter }) => {
 					<Text style={{ ...styles.text, color: colors.primary }}>Hunters Food</Text>
 				</View>
 			</View>
-			<TextInput
-				disabled={true}
-				mode='outlined'
+			<Searchbar
 				placeholder='Buscar...'
-				placeholderTextColor='#948F8F'
+				onChangeText={setValue}
+				value={value}
+				onIconPress={() => onSearch(value)}
 				style={styles.input}
 			/>
 		</>
@@ -53,10 +53,10 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		marginVertical: 5,
-		borderColor: 'red',
-		borderRadius: 20,
-		backgroundColor: '#52525240',
-		color: 'blue',
+		//borderColor: 'red',
+		borderRadius: 15,
+		backgroundColor: '#474747',
+		//color: 'blue',
 	},
 	menu: {
 		fontSize: 35,
