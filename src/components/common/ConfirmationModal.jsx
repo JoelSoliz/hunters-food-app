@@ -1,13 +1,18 @@
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-const ConfirmationModal = ({ message, isOpen, onCancel, onConfirm }) => {
+const ConfirmationModal = ({ message, isOpen, onCancel, onConfirm, icon = null }) => {
 	return (
 		<Modal visible={isOpen} transparent animationType='fade'>
 			<View style={styles.container}>
 				<View style={styles.modal}>
 					<View style={styles.content}>
-						<AntDesign name='warning' style={{ fontSize: 60, color: '#F97316' }} />
+						{icon ?? (
+							<AntDesign
+								name={'warning'}
+								style={{ fontSize: 60, color: '#F97316' }}
+							/>
+						)}
 						<Text style={styles.message}>{message}</Text>
 					</View>
 					<Pressable style={styles.confirmButton} onPress={onConfirm}>
