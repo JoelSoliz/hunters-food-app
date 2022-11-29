@@ -6,11 +6,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import Business from './Business';
 import HomeHeader from '../../components/common/HomeHeader';
 import { businessSelector, getBusinesses, reset } from '../../redux/slices/business';
+import { sessionSelector } from '../../redux/slices/session';
 
 const ListBusiness = ({ navigation }) => {
 	const [page, setPage] = useState(1);
 	const { colors } = useTheme();
 	const { loading, businesses, total_pages } = useSelector(businessSelector);
+	const { userFavoriteBusiness } = useSelector(sessionSelector);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -53,7 +55,13 @@ const ListBusiness = ({ navigation }) => {
 						</View>
 					)
 				}
-				renderItem={({ item }) => <Business value={item} onSelect={onSelectBusiness} />}
+				renderItem={({ item }) => (
+					<Business
+						value={item}
+						onSelect={onSelectBusiness}
+						isFavorite={userFavoriteBusiness.includes(item?.id_business)}
+					/>
+				)}
 			/>
 			{loading === 'pending' && (
 				<View style={styles.center}>

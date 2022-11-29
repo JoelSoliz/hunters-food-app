@@ -60,3 +60,42 @@ export const registerBusinessAsync = async (business, token) => {
 		.then((response) => response.json())
 		.catch((error) => console.log(error));
 };
+
+export const addFavoriteBusinessAsync = async (business_id, token) => {
+	const apiURL = `${HOST}/business/add_favorite?id_business=${business_id}`;
+
+	return fetch(apiURL, {
+		method: 'POST',
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+		mode: 'cors',
+	})
+		.then((response) => response.json())
+		.catch((error) => console.error(error));
+};
+
+export const getUserFavoriteBusinessAsync = async (token) => {
+	const apiURL = `${HOST}/user/favorite-business`;
+	return fetch(apiURL, {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	})
+		.then((response) => response.json())
+		.catch((error) => console.log(error));
+};
+
+export const removeFavoriteBusinessAsync = async (business_id, token) => {
+	const apiURL = `${HOST}/business/favorite/${business_id}`;
+
+	return fetch(apiURL, {
+		method: 'DELETE',
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+		mode: 'cors',
+	})
+		.then((response) => response.json())
+		.catch((error) => console.error(error));
+};

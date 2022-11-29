@@ -7,7 +7,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import rp from '../../../assets/rp.png';
 import nf from '../../../assets/nf.png';
 import rn from '../../../assets/rn.png';
-import { getUserBusiness, logout, sessionSelector } from '../../redux/slices/session';
+import {
+	getUserBusiness,
+	getUserFavoriteBusiness,
+	logout,
+	sessionSelector,
+} from '../../redux/slices/session';
 import Business from '../businesses/Business';
 
 const Profile = ({ navigation }) => {
@@ -18,6 +23,7 @@ const Profile = ({ navigation }) => {
 	useEffect(() => {
 		if (isAuthenticate) {
 			dispatch(getUserBusiness());
+			dispatch(getUserFavoriteBusiness());
 		}
 	}, [isAuthenticate]);
 
