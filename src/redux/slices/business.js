@@ -1,10 +1,5 @@
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
-import {
-	getBusinessAsync,
-	getBusinessProductsAsync,
-	getBusinessesAsync,
-	addFavoriteBusinessAsync,
-} from '../../api/business';
+import { getBusinessAsync, getBusinessProductsAsync, getBusinessesAsync } from '../../api/business';
 
 export const getBusiness = createAsyncThunk('getBusiness/getBusinessAsync', async (id) => {
 	const result = await getBusinessAsync(id);
@@ -38,27 +33,6 @@ export const getBusinesses = createAsyncThunk('getBusinesses/getBusinessesAsync'
 	}
 	return result;
 });
-
-export const addFavoriteBusiness = createAsyncThunk(
-	'addFavoriteBusiness/addFavoriteBusinessAsync',
-	async ({ business_id }) => {
-		let token = await AsyncStorage.getItem('token');
-		if (!token) {
-			console.error('Vuelve a iniciar sesión');
-			throw new Error('invalid credential');
-		}
-		const result = await addFavoriteBusinessAsync(business_id, token);
-		if (!result) {
-			console.error('Intenta de nuevo');
-			throw new Error('Intenta de nuevo');
-		}
-		if (result?.detail) {
-			console.log(result.detail);
-			throw new Error(result.detail);
-		}
-		return result;
-	}
-);
 
 const initialState = {
 	loading: 'idle',
@@ -127,16 +101,6 @@ export const businessSlice = createSlice({
 			state.total_pages = payload.total_pages;
 		});
 		builder.addCase(getBusinesses.rejected, (state, _) => {
-			state.loading = 'failed';
-		});
-		builder.addCase(addFavoriteBusiness.pending, (state, _) => {
-			state.loading = 'pending';
-		});
-		builder.addCase(addFavoriteBusiness.fulfilled, (state, { payload }) => {
-			state.loading = 'succeeded';
-			state.userBusiness = payload;
-		});
-		builder.addCase(addFavoriteBusiness.rejected, (state, _) => {
 			state.loading = 'failed';
 		});
 	},
