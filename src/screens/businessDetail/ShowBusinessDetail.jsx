@@ -4,8 +4,9 @@ import { useTheme, Chip, Card } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import AntDesing from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import ConfirmationModal from '../../components/common/ConfirmationModal';
+
 import image from '../../../assets/picture.png';
+import ConfirmationModal from '../../components/common/ConfirmationModal';
 import BrowserLinking from '../../components/linking/BrowserLinking';
 import Product from '../../components/common/Product';
 import {
