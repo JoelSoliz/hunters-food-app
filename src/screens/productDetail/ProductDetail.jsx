@@ -15,7 +15,8 @@ const ProductDetail = ({ route }) => {
 		let porcentaje = selectedProduct?.discount / 100;
 		let des = selectedProduct?.price * porcentaje;
 		let nuevoPrecio = selectedProduct?.price - des;
-		return nuevoPrecio.toString();
+
+		return Math.round(nuevoPrecio * 100) / 100;
 	};
 	const formatTime = (time) => {
 		return ('0' + (time || '0')).slice(-2);
@@ -70,11 +71,11 @@ const ProductDetail = ({ route }) => {
 							>
 								<Ionicons
 									name='fast-food-outline'
-									style={{ fontSize: 60, color: '#F97316' }}
+									style={{ fontSize: 55, color: '#F97316' }}
 								/>
 								<Text
 									style={{
-										fontSize: 28,
+										fontSize: 23,
 										color: '#F97316',
 										fontWeight: 'bold',
 									}}
@@ -101,7 +102,7 @@ const ProductDetail = ({ route }) => {
 									style={{
 										...styles.subText,
 										textDecorationLine: 'line-through',
-										marginLeft: 20,
+										marginLeft: 15,
 									}}
 								>
 									{selectedProduct?.price} Bs
@@ -126,7 +127,7 @@ const ProductDetail = ({ route }) => {
 										fontSize: 20,
 										color: '#fff',
 										fontWeight: 'bold',
-										marginLeft: 20,
+										marginLeft: 15,
 									}}
 								>
 									{descuento()} Bs

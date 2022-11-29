@@ -1,6 +1,7 @@
 import { AsyncStorage } from 'react-native';
 import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
 import { getUserInfoAsync, loginAsync, registerUserAsync } from '../../api/user';
+import { registerBusinessAsync, getUserBusinessAsync } from '../../api/business';
 
 export const login = createAsyncThunk('login/loginAsync', async (userLogin) => {
 	const result = await loginAsync(userLogin);
@@ -27,11 +28,50 @@ export const registerUser = createAsyncThunk('registerUser/registerUserAsync', a
 	return email;
 });
 
+export const registerBusiness = createAsyncThunk(
+	'registerBusiness/registerBusinessAsync',
+	async (business) => {
+		let token = await AsyncStorage.getItem('token');
+		if (!token) {
+			console.error('Vuelve a iniciar sesión');
+			throw new Error('invalid credential');
+		}
+		const result = await registerBusinessAsync(business, token);
+		if (!result) {
+			console.error('Intenta de nuevo');
+			throw new Error('Intenta de nuevo');
+		}
+		if (result?.detail) {
+			console.error(detail);
+			throw new Error(detail);
+		}
+		return result;
+	}
+);
+
+export const getUserBusiness = createAsyncThunk(
+	'getUserBusiness/getUserBusinessAsync',
+	async () => {
+		let token = await AsyncStorage.getItem('token');
+		if (!token) {
+			console.error('Vuelve a iniciar sesión');
+			throw new Error('invalid credential');
+		}
+		const result = await getUserBusinessAsync(token);
+		if (result?.detail) {
+			console.error(detail);
+			return undefined;
+		}
+		return result;
+	}
+);
+
 const initialState = {
 	isAuthenticate: false,
 	loading: 'idle',
 	theme: 'dark',
 	user: undefined,
+	userBusiness: undefined,
 };
 
 export const sessionSlice = createSlice({
@@ -44,6 +84,7 @@ export const sessionSlice = createSlice({
 		logout: (state) => {
 			state.isAuthenticate = false;
 			state.user = undefined;
+			state.userBusiness = undefined;
 		},
 		resetLoading: (state, _) => {
 			state.loading = 'idle';
@@ -71,6 +112,28 @@ export const sessionSlice = createSlice({
 		});
 		builder.addCase(login.rejected, (state, _) => {
 			state.isAuthenticate = false;
+			state.loading = 'failed';
+		});
+
+		builder.addCase(registerBusiness.pending, (state, _) => {
+			state.loading = 'pending';
+		});
+		builder.addCase(registerBusiness.fulfilled, (state, { payload }) => {
+			state.loading = 'succeeded';
+			state.userBusiness = payload;
+		});
+		builder.addCase(registerBusiness.rejected, (state, _) => {
+			state.loading = 'failed';
+		});
+
+		builder.addCase(getUserBusiness.pending, (state, _) => {
+			state.loading = 'pending';
+		});
+		builder.addCase(getUserBusiness.fulfilled, (state, { payload }) => {
+			state.loading = 'succeeded';
+			state.userBusiness = payload;
+		});
+		builder.addCase(getUserBusiness.rejected, (state, _) => {
 			state.loading = 'failed';
 		});
 	},

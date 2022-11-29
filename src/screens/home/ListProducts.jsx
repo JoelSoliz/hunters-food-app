@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import HomeHeader from '../../components/common/HomeHeader';
 import Product from '../../components/common/Product';
 import productCategories from '../../data/productCategory.json';
-import { businessSelector } from '../../redux/slices/business';
+import { sessionSelector } from '../../redux/slices/session';
 import { getProducts, productsSelector, reset } from '../../redux/slices/product';
 import ProductCategories from './ProductCategories';
 
@@ -14,10 +14,11 @@ const ListProducts = ({ navigation }) => {
 	const [page, setPage] = useState(1);
 	const [refreshing, setRefreshing] = useState(false);
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
-	const [filter, setFilter] = useState({ category: '' });
+	const [filter, setFilter] = useState({ category: '', name: '' });
+	const [value, setValue] = useState('');
 	const { colors } = useTheme();
 	const { loading, products, total_pages } = useSelector(productsSelector);
-	const { userBusiness } = useSelector(businessSelector);
+	const { userBusiness } = useSelector(sessionSelector);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -47,12 +48,26 @@ const ListProducts = ({ navigation }) => {
 		setPage(1);
 		setIsFilterOpen(false);
 	};
+
+	const onSearch = (data) => {
+		dispatch(reset());
+		setFilter({ ...filter, name: data });
+		setPage(1);
+	};
+
 	let category = productCategories.filter((category) => category.value == filter.category);
 
 	return (
 		<View style={styles.container}>
 			<View style={styles.containerHeader}>
-				{!isFilterOpen && <HomeHeader onOpenFilter={() => setIsFilterOpen(true)} />}
+				{!isFilterOpen && (
+					<HomeHeader
+						onOpenFilter={() => setIsFilterOpen(true)}
+						onSearch={onSearch}
+						value={value}
+						setValue={setValue}
+					/>
+				)}
 				<ProductCategories
 					isModalOpen={isFilterOpen}
 					setIsModalOpen={setIsFilterOpen}
