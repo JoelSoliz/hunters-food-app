@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
+import ConfirmationModal from '../../components/common/ConfirmationModal';
 import AntDesing from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import image from '../../../assets/comida.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { addFavoriteBusiness, businessSelector } from '../../redux/slices/business';
@@ -11,7 +13,7 @@ const API_HOST = 'https://hunters-food-api-sco3ixymzq-ue.a.run.app';
 const Business = ({ value, onSelect }) => {
 	const [imageError, setImageError] = useState(false);
 	const [isFavorite, setIsFavorite] = useState(false);
-	const { addfavorite } = useSelector(businessSelector);
+	const [modalOpen, setModalOpen] = useState(false);
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
 
@@ -36,6 +38,14 @@ const Business = ({ value, onSelect }) => {
 
 	/* como puedo utilizar esa funcion de addFavorite*/
 
+	const handlerSetFavorite = () => {
+		if (isFavorite) {
+			setModalOpen(true);
+		} else {
+			setIsFavorite(true);
+		}
+	};
+
 	const locations = async () => {
 		const supportedURL = value.location;
 		await Linking.openURL(supportedURL);
@@ -43,6 +53,21 @@ const Business = ({ value, onSelect }) => {
 	return (
 		<TouchableOpacity onPress={() => onSelect(value.id_business)}>
 			<View style={styles.card}>
+				<ConfirmationModal
+					isOpen={modalOpen}
+					message={`Quitar de favoritos a ${value.name}`}
+					onCancel={() => setModalOpen(false)}
+					onConfirm={() => {
+						setIsFavorite(false);
+						setModalOpen(false);
+					}}
+					icon={
+						<MaterialCommunityIcons
+							name='heart-broken'
+							style={{ fontSize: 60, color: '#F97316' }}
+						/>
+					}
+				/>
 				<View style={styles.logoContainer}>
 					<Image
 						onError={() => {
@@ -61,7 +86,7 @@ const Business = ({ value, onSelect }) => {
 				<View style={styles.mainContainer}>
 					<AntDesing
 						name='heart'
-						onPress={addFavorites}
+						onPress={handlerSetFavorite}
 						style={{
 							fontSize: 25,
 							color: !isFavorite ? 'gray' : colors.primary,
