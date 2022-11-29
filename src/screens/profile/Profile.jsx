@@ -17,7 +17,8 @@ import Business from '../businesses/Business';
 
 const Profile = ({ navigation }) => {
 	const { colors } = useTheme();
-	const { isAuthenticate, user, userBusiness, loading } = useSelector(sessionSelector);
+	const { isAuthenticate, user, userBusiness, loading, userFavoriteBusiness } =
+		useSelector(sessionSelector);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -86,6 +87,9 @@ const Profile = ({ navigation }) => {
 										<Business
 											value={userBusiness}
 											onSelect={onSelectBusiness}
+											isFavorite={userFavoriteBusiness.includes(
+												userBusiness?.id_business
+											)}
 										/>
 									</View>
 
