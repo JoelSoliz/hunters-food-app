@@ -15,29 +15,31 @@ import {
 	businessSelector,
 	resetSelectedBusiness,
 } from '../../redux/slices/business';
-import { sessionSelector } from '../../redux/slices/session';
+import {
+	addFavoriteBusiness,
+	removeFavoriteBusiness,
+	sessionSelector,
+} from '../../redux/slices/session';
 
 const API_HOST = 'https://hunters-food-api-sco3ixymzq-ue.a.run.app';
 
 const ShowBusinessDetail = ({ route, navigation }) => {
 	const [imageError, setImageError] = useState(false);
 	const [page, setPage] = useState(1);
-	const [isFavorite, setIsFavorite] = useState(false);
 	const [modalOpen, setModalOpen] = useState(false);
-
 	const {
 		loading,
 		selectedBusiness: { business, products, total_pages },
 	} = useSelector(businessSelector);
-	const { userBusiness } = useSelector(sessionSelector);
+	const { userBusiness, userFavoriteBusiness } = useSelector(sessionSelector);
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
 
 	const handlerSetFavorite = () => {
-		if (isFavorite) {
+		if (userFavoriteBusiness.includes(business.id_business)) {
 			setModalOpen(true);
 		} else {
-			setIsFavorite(true);
+			dispatch(addFavoriteBusiness(business.id_business));
 		}
 	};
 
@@ -70,7 +72,7 @@ const ShowBusinessDetail = ({ route, navigation }) => {
 						message={`¿Quitar de favoritos a ${business?.name}?`}
 						onCancel={() => setModalOpen(false)}
 						onConfirm={() => {
-							setIsFavorite(false);
+							dispatch(removeFavoriteBusiness(business.id_business));
 							setModalOpen(false);
 						}}
 						icon={
@@ -108,7 +110,9 @@ const ShowBusinessDetail = ({ route, navigation }) => {
 							<AntDesing
 								name='heart'
 								style={{
-									color: !isFavorite ? 'gray' : colors.primary,
+									color: !userFavoriteBusiness.includes(business.id_business)
+										? 'gray'
+										: colors.primary,
 									fontSize: 25,
 									marginTop: 20,
 									marginRight: 20,

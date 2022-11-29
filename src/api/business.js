@@ -62,7 +62,7 @@ export const registerBusinessAsync = async (business, token) => {
 };
 
 export const addFavoriteBusinessAsync = async (business_id, token) => {
-	const apiURL = new URL(`${HOST}/business/add_favorite?id_business=${business_id}`);
+	const apiURL = `${HOST}/business/add_favorite?id_business=${business_id}`;
 
 	return fetch(apiURL, {
 		method: 'POST',
@@ -87,7 +87,7 @@ export const getUserFavoriteBusinessAsync = async (token) => {
 };
 
 export const removeFavoriteBusinessAsync = async (business_id, token) => {
-	const apiURL = new URL(`${HOST}/business/favorite/${business_id}`);
+	const apiURL = `${HOST}/business/favorite/${business_id}`;
 
 	return fetch(apiURL, {
 		method: 'DELETE',

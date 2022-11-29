@@ -1,48 +1,27 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
-import ConfirmationModal from '../../components/common/ConfirmationModal';
-import AntDesing from 'react-native-vector-icons/AntDesign';
+import { useDispatch } from 'react-redux';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import image from '../../../assets/comida.png';
-import { useDispatch, useSelector } from 'react-redux';
-import { addFavoriteBusiness, businessSelector } from '../../redux/slices/business';
+import ConfirmationModal from '../../components/common/ConfirmationModal';
+import { addFavoriteBusiness, removeFavoriteBusiness } from '../../redux/slices/session';
 
 const API_HOST = 'https://hunters-food-api-sco3ixymzq-ue.a.run.app';
 
-const Business = ({ value, onSelect }) => {
+const Business = ({ value, onSelect, isFavorite }) => {
 	const [imageError, setImageError] = useState(false);
-	const [isFavorite, setIsFavorite] = useState(false);
 	const [modalOpen, setModalOpen] = useState(false);
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
-
-	useEffect(() => {
-		if (!addfavorite) {
-			setIsFavorite(false);
-		} else {
-			setIsFavorite(true);
-		}
-	}, [addfavorite]);
-
-	const addFavorites = () => {
-		if (!isFavorite) {
-			setIsFavorite(true);
-			if (!addfavorite) {
-				dispatch(addFavoriteBusiness(value.id_business));
-			}
-		} else {
-			setIsFavorite(false);
-		}
-	};
-
-	/* como puedo utilizar esa funcion de addFavorite*/
 
 	const handlerSetFavorite = () => {
 		if (isFavorite) {
 			setModalOpen(true);
 		} else {
-			setIsFavorite(true);
+			dispatch(addFavoriteBusiness(value.id_business));
 		}
 	};
 
@@ -50,6 +29,7 @@ const Business = ({ value, onSelect }) => {
 		const supportedURL = value.location;
 		await Linking.openURL(supportedURL);
 	};
+
 	return (
 		<TouchableOpacity onPress={() => onSelect(value.id_business)}>
 			<View style={styles.card}>
@@ -58,7 +38,7 @@ const Business = ({ value, onSelect }) => {
 					message={`Quitar de favoritos a ${value.name}`}
 					onCancel={() => setModalOpen(false)}
 					onConfirm={() => {
-						setIsFavorite(false);
+						dispatch(removeFavoriteBusiness(value.id_business));
 						setModalOpen(false);
 					}}
 					icon={
@@ -84,7 +64,7 @@ const Business = ({ value, onSelect }) => {
 					/>
 				</View>
 				<View style={styles.mainContainer}>
-					<AntDesing
+					<AntDesign
 						name='heart'
 						onPress={handlerSetFavorite}
 						style={{
@@ -118,7 +98,7 @@ const Business = ({ value, onSelect }) => {
 						}}
 					>
 						Ubicación
-						<AntDesing
+						<AntDesign
 							name='enviroment'
 							onPress={locations}
 							style={{ fontSize: 25, color: '#F97316' }}
