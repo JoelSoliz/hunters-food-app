@@ -9,6 +9,7 @@ import image from '../../../assets/picture.png';
 import ConfirmationModal from '../../components/common/ConfirmationModal';
 import BrowserLinking from '../../components/linking/BrowserLinking';
 import Product from '../../components/common/Product';
+import categories from '../../data/categories.json';
 import {
 	getBusiness,
 	getBusinessProducts,
@@ -42,6 +43,8 @@ const ShowBusinessDetail = ({ route, navigation }) => {
 			dispatch(addFavoriteBusiness(business.id_business));
 		}
 	};
+
+	let category = categories.filter((category) => category.value == business?.category);
 
 	useEffect(() => {
 		dispatch(resetSelectedBusiness());
@@ -110,7 +113,7 @@ const ShowBusinessDetail = ({ route, navigation }) => {
 							<AntDesing
 								name='heart'
 								style={{
-									color: !userFavoriteBusiness.includes(business.id_business)
+									color: !userFavoriteBusiness.includes(business?.id_business)
 										? 'gray'
 										: colors.primary,
 									fontSize: 25,
@@ -134,7 +137,9 @@ const ShowBusinessDetail = ({ route, navigation }) => {
 							}}
 						>
 							<Text style={styles.subtitle}>Categoría:</Text>
-							<Chip style={styles.categoria}>{business?.category}</Chip>
+							<Chip style={styles.categoria}>
+								{category.length ? category[0].label : ''}
+							</Chip>
 						</View>
 
 						<View

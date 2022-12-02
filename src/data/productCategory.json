@@ -1,7 +1,7 @@
 [
 	{ "label": "Cereal", "value": "cereal" },
 	{ "label": "Fruta", "value": "fruta" },
-	{ "label": "Lacteos y derivados", "value": "lacteos-y-derivados" },
+	{ "label": "Lácteos y derivados", "value": "lacteos-y-derivados" },
 	{ "label": "Soda", "value": "soda" },
 	{ "label": "Fruto seco", "value": "fruto-seco" },
 	{ "label": "Conservas", "value": "conservas" },

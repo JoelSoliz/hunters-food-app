@@ -27,6 +27,7 @@ const HomeHeader = ({ onOpenFilter, onSearch, value, setValue }) => {
 				onChangeText={setValue}
 				value={value}
 				onIconPress={() => onSearch(value)}
+				onSubmitEditing={() => onSearch(value)}
 				style={styles.input}
 			/>
 		</>

@@ -95,7 +95,7 @@ const Profile = ({ navigation }) => {
 
 									<View
 										style={{
-											marginBottom: 100,
+											marginBottom: 70,
 											alignContent: 'center',
 											flexDirection: 'row',
 											marginLeft: 50,
@@ -131,7 +131,7 @@ const Profile = ({ navigation }) => {
 									{loading === 'pending' && <Text>Buscando tu negocio...</Text>}
 									<View
 										style={{
-											marginBottom: 100,
+											marginBottom: 70,
 											alignContent: 'center',
 											flexDirection: 'row',
 											marginLeft: 50,
@@ -168,8 +168,9 @@ const Profile = ({ navigation }) => {
 									<View
 										style={{
 											alignItems: 'center',
-											marginVertical: -218,
+											marginVertical: -190,
 											marginRight: 50,
+											marginLeft: 10,
 										}}
 									>
 										<Image source={nf} style={styles.image} />

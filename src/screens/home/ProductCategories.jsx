@@ -1,4 +1,4 @@
-import { Text, Modal, View, StyleSheet, ScrollView } from 'react-native';
+import { Text, Modal, View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useTheme, Chip } from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
@@ -33,18 +33,23 @@ const ProductCategories = ({ isModalOpen, setIsModalOpen, onSelectCategory }) =>
 					</View>
 				</View>
 				<ScrollView>
-					<View style={styles.centeredContent}>
+					<View style={{ ...styles.centeredContent }}>
 						{[...productCategories, { value: '', label: 'Todas' }].map(
 							(category, index) => (
-								<Chip
-									key={index}
-									compact={true}
-									mode='outlined'
-									onPress={() => onSelectCategory(category.value)}
-									style={styles.chipStyle}
-								>
-									{category.label}
-								</Chip>
+								<View style={{ width: '100%' }} key={index}>
+									<TouchableOpacity
+										style={styles.centeredContent}
+										onPress={() => onSelectCategory(category.value)}
+									>
+										<Chip
+											compact={true}
+											mode='outlined'
+											style={styles.chipStyle}
+										>
+											{category.label}
+										</Chip>
+									</TouchableOpacity>
+								</View>
 							)
 						)}
 					</View>
