@@ -26,10 +26,10 @@ const HomeRouter = () => {
 				headerStyle: {
 					backgroundColor: theme.colors.primary,
 				},
-				headerTintColor: 'black',
+				headerTintColor: '#000',
 				headerTitleStyle: {
 					textAlign: 'center',
-					fontWeight: '#F97316',
+					fontWeight: '900',
 				},
 			}}
 		>
@@ -60,10 +60,10 @@ const BusinessRouter = () => {
 				headerStyle: {
 					backgroundColor: theme.colors.primary,
 				},
-				headerTintColor: 'black',
+				headerTintColor: '#000',
 				headerTitleStyle: {
 					textAlign: 'center',
-					fontWeight: '#F97316',
+					fontWeight: '900',
 				},
 			}}
 		>
@@ -100,10 +100,10 @@ const ProfileRouter = () => {
 				headerStyle: {
 					backgroundColor: theme.colors.primary,
 				},
-				headerTintColor: 'black',
+				headerTintColor: '#000',
 				headerTitleStyle: {
 					textAlign: 'center',
-					fontWeight: '#F97316',
+					fontWeight: '900',
 				},
 			}}
 		>

@@ -9,6 +9,7 @@ import { deleteProduct, productsSelector } from '../../redux/slices/product';
 import image from '../../../assets/comida.png';
 import fecha from '../operaciones/fecha.js';
 import ConfirmationModal from './ConfirmationModal';
+import productCategories from '../../data/productCategory.json';
 
 const API_HOST = 'https://hunters-food-api-sco3ixymzq-ue.a.run.app';
 
@@ -18,6 +19,7 @@ const Product = ({ value, isOwner, onEdit, onSelect }) => {
 	const { deleting } = useSelector(productsSelector);
 	const dispatch = useDispatch();
 	const theme = useTheme();
+	let category = productCategories.filter((category) => category.value == value.product_type);
 
 	useEffect(() => {
 		if (!deleting) {
@@ -91,7 +93,7 @@ const Product = ({ value, isOwner, onEdit, onSelect }) => {
 										marginVertical: 5,
 									}}
 								>
-									{value.product_type}
+									{category[0].label}
 								</Chip>
 							</View>
 							<Text

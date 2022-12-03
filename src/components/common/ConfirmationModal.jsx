@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
 	buttonText: {
 		color: '#F97316',
 		fontSize: 19,
+		fontWeight: 'bold',
 	},
 });
 

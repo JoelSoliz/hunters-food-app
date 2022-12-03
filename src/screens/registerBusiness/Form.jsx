@@ -42,7 +42,7 @@ const RegisterForm = ({ navigation }) => {
 					control={control}
 					name='name'
 					rules={{
-						maxLength: { message: `${ERROR_MESSAGES.maxLength} 50.`, value: 50 },
+						maxLength: { message: `${ERROR_MESSAGES.maxLength} 30.`, value: 30 },
 						minLength: { message: `${ERROR_MESSAGES.minLength} 3.`, value: 3 },
 						required: { message: ERROR_MESSAGES.required, value: true },
 					}}

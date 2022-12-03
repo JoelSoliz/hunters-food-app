@@ -60,7 +60,7 @@ const ProductForm = ({ error, loading, onCancel, onSubmit, defaultValue = {} }) 
 					control={control}
 					name='name'
 					rules={{
-						maxLength: { message: `${ERROR_MESSAGES.maxLength} 100.`, value: 100 },
+						maxLength: { message: `${ERROR_MESSAGES.maxLength} 30.`, value: 30 },
 						minLength: { message: `${ERROR_MESSAGES.minLength} 3.`, value: 3 },
 						required: { message: ERROR_MESSAGES.required, value: true },
 					}}

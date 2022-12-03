@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import image from '../../../assets/comida.png';
 import { useState } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import productCategories from '../../data/productCategory.json';
 
 const ProductDetail = ({ route }) => {
 	const descuento = () => {
@@ -33,6 +34,10 @@ const ProductDetail = ({ route }) => {
 	const dispatch = useDispatch();
 	const [imageError, setImageError] = useState(false);
 	const API_HOST = 'https://hunters-food-api-sco3ixymzq-ue.a.run.app';
+	let category = productCategories.filter(
+		(category) => category.value == selectedProduct?.product_type
+	);
+
 	useEffect(() => {
 		dispatch(getProduct(route.params.id));
 	}, []);
@@ -168,7 +173,7 @@ const ProductDetail = ({ route }) => {
 										top: 10,
 									}}
 								>
-									{selectedProduct?.product_type}
+									{category.length ? category[0].label : ''}
 								</Chip>
 							</View>
 
@@ -180,7 +185,7 @@ const ProductDetail = ({ route }) => {
 										fontSize: 15,
 										color: '#fff',
 										fontWeight: 'bold',
-										width: '45%',
+										width: '50%',
 										height: 35,
 										alignItems: 'center',
 										backgroundColor: '#52525240',
