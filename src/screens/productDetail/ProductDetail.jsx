@@ -157,50 +157,51 @@ const ProductDetail = ({ route }) => {
 							{selectedProduct?.name}
 						</Text>
 						<View style={{ top: 0 }}>
-							<View style={{ alignItems: 'flex-start' }}>
-								<Chip
-									compact={true}
-									mode='outlined'
-									style={{
-										fontSize: 15,
-										color: '#fff',
-										fontWeight: 'bold',
-										width: '45%',
-										height: 35,
-										alignItems: 'center',
-										backgroundColor: '#52525240',
-										borderRadius: 10,
-										top: 10,
-									}}
-								>
-									{category.length ? category[0].label : ''}
-								</Chip>
-							</View>
+							<View style={{ flexDirection: 'row' }}>
+								<View style={{ alignItems: 'flex-start' }}>
+									<Chip
+										compact={true}
+										mode='outlined'
+										style={{
+											fontSize: 15,
+											color: '#fff',
+											fontWeight: 'bold',
+											width: 'auto',
+											height: 35,
+											alignItems: 'center',
+											backgroundColor: '#52525240',
+											borderRadius: 10,
+											top: 10,
+										}}
+									>
+										{category.length ? category[0].label : ''}
+									</Chip>
+								</View>
 
-							<View style={{ alignItems: 'flex-end' }}>
-								<Chip
-									compact={true}
-									mode='outlined'
-									style={{
-										fontSize: 15,
-										color: '#fff',
-										fontWeight: 'bold',
-										width: '50%',
-										height: 35,
-										alignItems: 'center',
-										backgroundColor: '#52525240',
-										borderRadius: 10,
-										marginLeft: 20,
-										top: -25,
-									}}
-								>
-									{selectedProduct?.business}
-								</Chip>
+								<View style={{ alignItems: 'flex-end' }}>
+									<Chip
+										compact={true}
+										mode='outlined'
+										style={{
+											fontSize: 15,
+											color: '#fff',
+											fontWeight: 'bold',
+											width: 'auto',
+											height: 35,
+											alignItems: 'center',
+											backgroundColor: '#52525240',
+											borderRadius: 10,
+											marginLeft: 20,
+											top: 10,
+										}}
+									>
+										{selectedProduct?.business}
+									</Chip>
+								</View>
 							</View>
-
 							<View
 								style={{
-									top: 10,
+									top: 20,
 									marginVertical: 10,
 									flexDirection: 'row',
 								}}
@@ -295,8 +296,8 @@ const ProductDetail = ({ route }) => {
 											fontSize: 17,
 											color: '#fff',
 											backgroundColor: '#222222',
-											width: '100%',
-											height: 100,
+											width: 'auto',
+											height: 'auto',
 											paddingHorizontal: 10,
 											paddingVertical: 10,
 											borderRadius: 5,

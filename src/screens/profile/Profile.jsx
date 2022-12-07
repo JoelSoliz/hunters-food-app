@@ -117,6 +117,8 @@ const Profile = ({ navigation }) => {
 													style={{
 														textDecorationLine: 'underline',
 														color: colors.accent,
+														left: 10,
+														marginLeft: -15,
 													}}
 												>
 													Registrar Producto
@@ -179,6 +181,8 @@ const Profile = ({ navigation }) => {
 											style={{
 												textDecorationLine: 'underline',
 												color: colors.accent,
+												left: 20,
+												marginLeft: -25,
 											}}
 										>
 											Negocios Favoritos
