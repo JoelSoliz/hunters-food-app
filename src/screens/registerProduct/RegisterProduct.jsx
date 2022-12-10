@@ -47,7 +47,7 @@ const RegisterProductForm = ({ navigation }) => {
 					},
 				}}
 			>
-				Producto registrado correctamente.
+				<Text style={{ color: 'white' }}>Producto registrado correctamente.</Text>
 			</Snackbar>
 		</View>
 	);

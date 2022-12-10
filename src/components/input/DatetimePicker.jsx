@@ -20,8 +20,10 @@ const DatetimePicker = ({ onChange, value }) => {
 
 	const onConfirmDate = useCallback(
 		({ date }) => {
-			setVisible('time');
-			onChange({ ...value, date });
+			if (date) {
+				setVisible('time');
+				onChange({ ...value, date });
+			}
 		},
 		[setVisible, value]
 	);

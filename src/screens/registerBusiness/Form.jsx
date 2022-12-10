@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView, Text } from 'react-native';
 import { Button, TextInput, HelperText, Snackbar } from 'react-native-paper';
 import DropDown from 'react-native-paper-dropdown';
 import { useSelector, useDispatch } from 'react-redux';
 
 import ImagePicker from '../../components/input/ImagePicker';
 import categories from '../../data/categories.json';
-import { registerBusiness, sessionSelector } from '../../redux/slices/session';
+import { registerBusiness, sessionSelector, resetLoading } from '../../redux/slices/session';
 
 const ERROR_MESSAGES = {
 	link: 'Url inválido',
@@ -17,6 +17,7 @@ const ERROR_MESSAGES = {
 };
 
 const RegisterForm = ({ navigation }) => {
+	const [loaded, setLoaded] = useState(false);
 	const [visibleS, setVisibleS] = useState(true);
 	const [visible, setVisible] = useState(false);
 	const {
@@ -28,7 +29,12 @@ const RegisterForm = ({ navigation }) => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		if (loading === 'succeeded') {
+		dispatch(resetLoading());
+		setLoaded(true);
+	}, []);
+
+	useEffect(() => {
+		if (loading === 'succeeded' && loaded) {
 			setVisibleS(true);
 		}
 	}, [loading]);
@@ -168,7 +174,7 @@ const RegisterForm = ({ navigation }) => {
 					},
 				}}
 			>
-				Negocio creado correctamente.
+				<Text style={{ color: 'white' }}> Negocio creado correctamente.</Text>
 			</Snackbar>
 		</ScrollView>
 	);
